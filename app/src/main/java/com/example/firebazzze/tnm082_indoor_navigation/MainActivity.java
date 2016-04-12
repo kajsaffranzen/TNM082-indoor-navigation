@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.i("kalle", "wooorking");
 
+                //Change this into our database
                 Firebase DB = new Firebase("https://kalle.firebaseio.com/");
 
                 DB.child("Tappan").addValueEventListener(new ValueEventListener() {
