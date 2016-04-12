@@ -33,15 +33,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.i("kalle", "wooorking");
 
+                //This thing should probably be moved somewhere else!
                 //Change this into our database
+                //Reference to Database
                 Firebase DB = new Firebase("https://kalle.firebaseio.com/");
 
+                //Eventlistener to listen if the data is changed.
+                //snapshot.getValue() contains the whole tree at the moment
+                //Change "Tappan" depending on house choosen
+                //Add extra .child("Skrivare") after .child("Tappan"), to go further down the tree
                 DB.child("Tappan").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
-                        Log.i("kalle", "heeeerreeeee");
-                        System.out.println(snapshot.getValue());  //prints "Do you have data? You'll love Firebase."'
-                        Log.i("kalle", "heeeerreeeee2323223");
+                        System.out.println(snapshot.getValue());
                     }
                     @Override public void onCancelled(FirebaseError error) { }
                 });
