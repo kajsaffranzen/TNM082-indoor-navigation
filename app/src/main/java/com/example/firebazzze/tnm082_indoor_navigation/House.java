@@ -6,7 +6,8 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 /**
- * Created by Rickard on 2016-04-12.
+ * This class represents a house object. A house object has a name and a list of interest points. 
+ *
  */
 public class House {
 
@@ -27,7 +28,7 @@ public class House {
 
         //Change this into our database
         //Reference to Database
-        Firebase DB = new Firebase("https://kalle.firebaseio.com/");
+        Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/");
 
         //Eventlistener to listen if the data is changed.
         //snapshot.getValue() contains the whole tree of the clicked house at the moment

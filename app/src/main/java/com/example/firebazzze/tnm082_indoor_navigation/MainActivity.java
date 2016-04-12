@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("kalle", "wooorking");
 
                 //This is where all the POIS will be read
-                House house = new House("Tappan");
+                House house = new House("tappan");
 
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
