@@ -35,6 +35,7 @@ public class House {
         DB.child(this.houseName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                //Here is where POIs should be created
                 System.out.println(snapshot.getValue());
             }
             @Override public void onCancelled(FirebaseError error) { }
