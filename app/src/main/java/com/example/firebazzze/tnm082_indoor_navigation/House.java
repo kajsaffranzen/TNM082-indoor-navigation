@@ -31,7 +31,7 @@ public class House {
 
         //Eventlistener to listen if the data is changed.
         //snapshot.getValue() contains the whole tree of the clicked house at the moment
-        //Add extra .child("Skrivare") after .child("Tappan"), to go further down the tree
+        //Add extra .child("Skrivare") after .child(this.houseName), to go further down the tree
         DB.child(this.houseName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
