@@ -6,7 +6,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 /**
- * This class represents a house object. A house object has a name and a list of interest points. 
+ * This class represents a house object. A house object has a name and a list of interest points.
  *
  */
 public class House {
