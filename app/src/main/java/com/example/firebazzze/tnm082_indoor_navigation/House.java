@@ -25,16 +25,14 @@ public class House {
 
     private void getData(){
 
-        //This thing should probably be moved somewhere else!
         //Change this into our database
         //Reference to Database
         Firebase DB = new Firebase("https://kalle.firebaseio.com/");
 
         //Eventlistener to listen if the data is changed.
-        //snapshot.getValue() contains the whole tree at the moment
-        //Change "Tappan" depending on house choosen
+        //snapshot.getValue() contains the whole tree of the clicked house at the moment
         //Add extra .child("Skrivare") after .child("Tappan"), to go further down the tree
-        DB.child("Tappan").addValueEventListener(new ValueEventListener() {
+        DB.child(this.houseName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println(snapshot.getValue());
