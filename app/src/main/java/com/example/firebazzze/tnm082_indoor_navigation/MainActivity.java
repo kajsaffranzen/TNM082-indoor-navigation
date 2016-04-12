@@ -14,6 +14,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.ValueEventListener;
 import com.firebase.client.DataSnapshot;
 
+import com.example.firebazzze.tnm082_indoor_navigation.House;
+
 import com.firebase.client.FirebaseError;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -33,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.i("kalle", "wooorking");
 
-                //This thing should probably be moved somewhere else!
+                House house = new House("Tappan");
+
+                /*//This thing should probably be moved somewhere else!
                 //Change this into our database
                 //Reference to Database
                 Firebase DB = new Firebase("https://kalle.firebaseio.com/");
@@ -49,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     @Override public void onCancelled(FirebaseError error) { }
                 });
+
+                */
 
 
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
