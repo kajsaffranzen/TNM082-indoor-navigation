@@ -10,12 +10,18 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+/*
+    All the functions are android standards for an expandable list view.
+
+ */
+
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<String> listGroup;
     private HashMap<String, List<String>> listChild;
 
+    // Create an ExpandableListAdapter with values from the ListAndSearchView
     public ExpandableListAdapter(Context context, List<String> listGroup,
                                  HashMap<String, List<String>> listChild) {
         this.context = context;
@@ -24,11 +30,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
+    // Returns the number of values in a list
     public int getGroupCount() {
         return listGroup.size();
     }
 
     @Override
+    // Get the number of children that an object has
     public int getChildrenCount(int groupPosition) {
         return listChild.get(listGroup.get(groupPosition)).size();
     }
@@ -44,11 +52,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
+    // Get the ID of a group
     public long getGroupId(int groupPosition) {
         return groupPosition;
     }
 
     @Override
+    // Get the ID of a Child
     public long getChildId(int groupPosition, int childPosition) {
         return childPosition;
     }

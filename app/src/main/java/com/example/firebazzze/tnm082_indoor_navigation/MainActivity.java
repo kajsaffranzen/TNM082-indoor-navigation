@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-
+        // When the button is clicked start the goToListAndSearch() function
         testListAndSearch = (Button)findViewById(R.id.listAndSearchButton);
         testListAndSearch.setOnClickListener(new View.OnClickListener() {
             @Override

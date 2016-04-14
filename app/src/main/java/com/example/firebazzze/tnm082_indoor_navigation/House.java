@@ -14,11 +14,13 @@ public class House {
     private String houseName;
     private POI[] POIs;
 
+    // Creates an object for the house with the name of the house and the listof POI
     public House(String houseName, POI[] POIs){
         this.houseName = houseName;
         this.POIs = POIs;
     }
 
+    // Creates an object for the house and then gets the data for it
     public House(String houseName){
         this.houseName = houseName;
         getData();
@@ -44,14 +46,17 @@ public class House {
 
     }
 
+    // Returns the name of the house
     public String getHouseName(){
         return houseName;
     }
 
+    // Returns an array of all the POI that exists in the house
     public POI[] getPOIs(){
         return POIs;
     }
 
+    // Returns one POI that exists in the house correlating to a specific index
     public POI getOnePOI(int index) {
         return POIs[index];
     }
