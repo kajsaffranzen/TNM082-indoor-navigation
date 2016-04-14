@@ -53,6 +53,7 @@ captures/
 
 # IDEA
 .idea
+.idea/workspace.xml
 
 #vim extensions
 *.swp
