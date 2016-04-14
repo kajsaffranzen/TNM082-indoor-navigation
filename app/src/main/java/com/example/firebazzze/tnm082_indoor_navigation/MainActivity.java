@@ -32,9 +32,6 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
-    //used to test list and search view
-    Button testListAndSearch;
-
     CameraSource cameraSource;
     SurfaceView cameraView;
     TextView barcodeInfo;
@@ -64,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         cameraSource = new CameraSource
                 .Builder(this, barcodeDetector)
-                .setRequestedPreviewSize(640, 480)
+                .setRequestedPreviewSize(540, 540)
                 .build();
 
         //callback to the surface holder
@@ -127,18 +124,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        init();
-    }
-
-    private void init() {
-
-        //testListAndSearch = (Button)findViewById(R.id.listAndSearchButton);
-        /*testListAndSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToListAndSearch();
-            }
-        });*/
     }
 
     //go to list and search view
