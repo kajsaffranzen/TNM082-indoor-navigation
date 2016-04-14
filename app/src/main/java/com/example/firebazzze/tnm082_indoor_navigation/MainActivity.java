@@ -22,7 +22,7 @@ import com.firebase.client.FirebaseError;
 
 public class MainActivity extends AppCompatActivity {
 
-    //used to test list and search view
+    //Used to test list and search view
     Button testListAndSearch;
 
     @Override

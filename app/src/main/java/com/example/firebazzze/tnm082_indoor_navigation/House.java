@@ -26,8 +26,8 @@ public class House {
         getData();
     }
 
+    // Gets the data from the firebase database
     private void getData(){
-
         //Change this into our database
         //Reference to Database
         Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/");

@@ -1,7 +1,7 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
 /**
- * Created by Rickard on 2016-04-12.
+ *
  */
 public class POI {
 
