@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     SurfaceView cameraView;
     TextView barcodeInfo;
 
+    House house;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,10 +102,9 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
 
                             //This is where all the POIS will be read
-                            House house = new House(barcodes.valueAt(0).displayValue);
+                            if (house == null) house = new House(barcodes.valueAt(0).displayValue);
 
                             barcodeInfo.setText(    // Update the TextView
-
                                     barcodes.valueAt(0).displayValue
                             );
                         }
