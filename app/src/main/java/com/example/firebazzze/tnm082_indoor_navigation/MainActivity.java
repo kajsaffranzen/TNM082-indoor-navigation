@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //QR code stuff
+        //QR code stuff -> put this in a class instead
         setContentView(R.layout.activity_main);
 
         cameraView = (SurfaceView)findViewById(R.id.camera_view);
@@ -59,9 +59,10 @@ public class MainActivity extends AppCompatActivity {
                         .setBarcodeFormats(Barcode.QR_CODE)
                         .build();
 
+        // TODO: cameraView.getHeight() & cameraView.getWidth()
         cameraSource = new CameraSource
                 .Builder(this, barcodeDetector)
-                .setRequestedPreviewSize(540, 540)
+                .setRequestedPreviewSize(540, 540)  // get the size from the SurfaceView
                 .build();
 
         //callback to the surface holder
@@ -116,9 +117,6 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("kalle", "wooorking");
-
-
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
