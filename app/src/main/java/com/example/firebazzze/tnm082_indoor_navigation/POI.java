@@ -5,20 +5,12 @@ package com.example.firebazzze.tnm082_indoor_navigation;
  */
 public class POI {
 
-    private String name, category, description;
-    int floor;
+    public String category;
+    public String description;
+    public int floor;
 
-    // Creates an object for a POI with it's name, category, description and floor as variables
-    public POI(String name, String category, String description, int floor){
-        this.name = name;
-        this.category = category;
-        this.description = description;
-        this.floor = floor;
-    }
 
-    // Returns the name of the POI
-    public String getName(){
-        return name;
+    public POI(){
     }
 
     // Returns the type/category of the POI

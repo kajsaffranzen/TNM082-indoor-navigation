@@ -1,21 +1,28 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
+import android.util.Log;
+
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
+import com.firebase.client.Query;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents a house object. A house object has a name and a list of interest points.
  *
  */
+
 public class House {
 
     private String houseName;
-    private POI[] POIs;
+    private List<POI> POIs;
 
     // Creates an object for the house with the name of the house and the listof POI
-    public House(String houseName, POI[] POIs){
+    public House(String houseName, List<POI> POIs){
         this.houseName = houseName;
         this.POIs = POIs;
     }
@@ -23,6 +30,7 @@ public class House {
     // Creates an object for the house and then gets the data for it
     public House(String houseName){
         this.houseName = houseName;
+        POIs = new ArrayList<POI>();
         getData();
     }
 
@@ -30,17 +38,37 @@ public class House {
     private void getData(){
         //Change this into our database
         //Reference to Database
-        Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/");
+        Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/" + this.houseName);
+
+        Query queryRef = DB.orderByChild("floor");
 
         //Eventlistener to listen if the data is changed.
         //snapshot.getValue() contains the whole tree of the clicked house at the moment
         //Add extra .child("Skrivare") after .child(this.houseName), to go further down the tree
-        DB.child(this.houseName).addValueEventListener(new ValueEventListener() {
+        queryRef.addChildEventListener(new ChildEventListener() {
+
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                //Here is where POIs should be created
-                System.out.println(snapshot.getValue());
+            public void onChildAdded(DataSnapshot snapshot, String s) {
+
+                POI newPOI = snapshot.getValue(POI.class);
+                POIs.add(newPOI);
             }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
             @Override public void onCancelled(FirebaseError error) { }
         });
 
@@ -52,12 +80,12 @@ public class House {
     }
 
     // Returns an array of all the POI that exists in the house
-    public POI[] getPOIs(){
+    public List<POI> getPOIs(){
         return POIs;
     }
 
     // Returns one POI that exists in the house correlating to a specific index
     public POI getOnePOI(int index) {
-        return POIs[index];
+        return POIs.get(index);
     }
 }

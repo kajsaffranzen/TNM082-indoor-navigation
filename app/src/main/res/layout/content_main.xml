@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,15 +12,31 @@
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <SurfaceView
+        android:layout_width="540px"
+        android:layout_height="540px"
+        android:id="@+id/camera_view"
+        android:layout_centerHorizontal="true" />
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!1212" />
+        android:layout_below="@+id/camera_view"
+        android:layout_marginTop="15px"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorQRText"
+        android:textSize="35sp"
+        android:text="Skanna din QR-kod"
+        android:id="@+id/infoTxt"/>
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ListAndSearch"
-        android:id="@+id/listAndSearchButton"/>
+        android:layout_below="@+id/infoTxt"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:text="Nothing to read."
+        android:id="@+id/code_info" />
 
-</LinearLayout>
+</RelativeLayout>
