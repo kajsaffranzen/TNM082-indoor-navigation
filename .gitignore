@@ -52,9 +52,12 @@ captures/
 *.jks
 
 # IDEA
-.idea/
-.idea/workspace.xml
-
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
 #vim extensions
 *.swp
 *.sawo
