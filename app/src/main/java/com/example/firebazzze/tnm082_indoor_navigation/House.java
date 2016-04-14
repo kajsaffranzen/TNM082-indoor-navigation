@@ -9,6 +9,8 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
+import java.util.List;
+
 /**
  * This class represents a house object. A house object has a name and a list of interest points.
  *
@@ -16,9 +18,9 @@ import com.firebase.client.ValueEventListener;
 public class House {
 
     private String houseName;
-    private POI[] POIs;
+    private List<POI> POIs;
 
-    public House(String houseName, POI[] POIs){
+    public House(String houseName, List<POI> POIs){
         this.houseName = houseName;
         this.POIs = POIs;
     }
@@ -34,8 +36,7 @@ public class House {
         //Reference to Database
         Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/" + this.houseName);
 
-        Query queryRef = DB.orderByChild("height");
-
+        Query queryRef = DB.orderByChild("floor");
 
         //Eventlistener to listen if the data is changed.
         //snapshot.getValue() contains the whole tree of the clicked house at the moment
@@ -46,7 +47,8 @@ public class House {
             public void onChildAdded(DataSnapshot snapshot, String s) {
 
                 POI newPOI = snapshot.getValue(POI.class);
-                Log.i("test", ""+newPOI.getDescription());
+                POIs.add(newPOI);
+                //Log.i("test", "desc : " +newPOI.getDescription() + " , strings:  " + snapshot.getKey());
 
                 System.out.println(snapshot.getValue());
             }
