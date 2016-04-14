@@ -8,6 +8,7 @@ import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class ListAndSearchView extends AppCompatActivity {
@@ -17,8 +18,9 @@ public class ListAndSearchView extends AppCompatActivity {
 
     private List<String> categoryList;
     private HashMap<String, List<String>> interestPointsList;
-
     private List<List<String>> dynamicCategoryList;
+
+    private House newHouse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,20 +43,45 @@ public class ListAndSearchView extends AppCompatActivity {
 
         dynamicCategoryList = new ArrayList<List<String>>();
 
-        addTempData(myExpandableListView);
+        //addTempData(myExpandableListView);
 
         fillListWithData();
     }
 
     private void fillListWithData(){
-        House newHouse = new House("tappan");
+        newHouse = new House("tappan");
 
         newHouse.setOnDataLoadedListener(new House.OnDataLoaded() {
             @Override
             public void onLoaded() {
                 Log.d("data", "Data is loaded");
+                addData(newHouse);
             }
         });
+    }
+
+    private void addData(House newHouse) {
+
+        for(int i = 0; i < dynamicCategoryList.size(); i++)
+            dynamicCategoryList.get(i).clear();
+
+        for(int i = 0; i < newHouse.getPOIs().size(); i++) {
+            boolean flag = false;
+
+            for(int k = 0; k < categoryList.size(); k++) {
+                if(categoryList.get(k).equals( newHouse.getPOIs().get(i).getCategory() ))
+                    flag = true;
+            }
+
+            if(!flag)
+            addCategory( newHouse.getPOIs().get(i).getCategory() );
+            addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), newHouse.getPOIs().get(i).getDescription() );
+
+            myExpandableListAdapter.notifyDataSetChanged();
+        }
+
+        for(int k=0; k<dynamicCategoryList.size(); k++)
+            interestPointsList.put(categoryList.get(k), dynamicCategoryList.get(k));
     }
 
     //add some dummy data to the expandable list
