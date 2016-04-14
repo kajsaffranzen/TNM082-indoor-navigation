@@ -58,6 +58,7 @@ captures/
 /.idea/libraries
 .DS_Store
 /build
+
 #vim extensions
 *.swp
 *.sawo
