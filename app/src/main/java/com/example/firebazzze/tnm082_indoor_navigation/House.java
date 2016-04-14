@@ -7,7 +7,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,26 +15,29 @@ import java.util.List;
  * This class represents a house object. A house object has a name and a list of interest points.
  *
  */
+
 public class House {
 
     private String houseName;
     private List<POI> POIs;
     private OnDataLoaded listener;
 
+    // Creates an object for the house with the name of the house and the listof POI
     public House(String houseName, List<POI> POIs){
         this.houseName = houseName;
         this.POIs = POIs;
     }
 
+    // Creates an object for the house and then gets the data for it
     public House(String houseName){
         this.houseName = houseName;
+        POIs = new ArrayList<POI>();
         getData();
         POIs = new ArrayList<POI>();
     }
 
+    // Gets the data from the firebase database
     private void getData(){
-
-
 
         //Change this into our database
         //Reference to Database
@@ -52,7 +54,9 @@ public class House {
 
                 POI newPOI = snapshot.getValue(POI.class);
                 POIs.add(newPOI);
-                listener.onLoaded();
+
+                if(listener != null)
+                    listener.onLoaded();
             }
 
             @Override
@@ -75,14 +79,17 @@ public class House {
 
     }
 
+    // Returns the name of the house
     public String getHouseName(){
         return houseName;
     }
 
+    // Returns an array of all the POI that exists in the house
     public List<POI> getPOIs(){
         return POIs;
     }
 
+    // Returns one POI that exists in the house correlating to a specific index
     public POI getOnePOI(int index) {
         return POIs.get(index);
     }
@@ -93,7 +100,6 @@ public class House {
     }
 
     public void setOnDataLoadedListener(OnDataLoaded listener){
-
         this.listener = listener;
     }
 }

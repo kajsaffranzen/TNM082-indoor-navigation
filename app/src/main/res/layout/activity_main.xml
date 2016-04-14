@@ -23,12 +23,24 @@
 
     <include layout="@layout/content_main" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+
+    <!--<SurfaceView
+        android:layout_width="640px"
+        android:layout_height="480px"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/camera_view"
+        />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:id="@+id/code_info"
+        android:layout_below="@+id/camera_view"
+        android:textSize="20sp"
+        android:layout_marginLeft="16dp"
+        android:text="Nothing to read."
+        android:layout_alignParentTop="true"
+        />-->
 
 </android.support.design.widget.CoordinatorLayout>

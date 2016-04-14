@@ -1,7 +1,7 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
 /**
- * Created by Rickard on 2016-04-12.
+ *
  */
 public class POI {
 
@@ -9,28 +9,21 @@ public class POI {
     public String description;
     public int floor;
 
+
     public POI(){
     }
 
-    /*public POI(String name, String category, String description, int floor){
-        this.name = name;
-        this.category = category;
-        this.description = description;
-        this.floor = floor;
-    }*/
-
-    /*public String getName(){
-        return name;
-    }*/
-
+    // Returns the type/category of the POI
     public String getCategory(){
         return category;
     }
 
+    // Returns the description/information of the POI
     public String getDescription(){
         return description;
     }
 
+    // Returns which floor the POI is on
     public int getFloor(){
         return floor;
     }
