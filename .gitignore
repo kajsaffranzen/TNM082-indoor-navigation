@@ -52,7 +52,7 @@ captures/
 *.jks
 
 # IDEA
-/.idea/
+.idea/
 .idea/workspace.xml
 
 #vim extensions
