@@ -23,6 +23,9 @@ public class ListAndSearchView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        House hs = new House("tappan");
+
         setContentView(R.layout.activity_list_and_search_view);
 
         init();

@@ -1,8 +1,12 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
+import android.util.Log;
+
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 /**
@@ -28,17 +32,40 @@ public class House {
 
         //Change this into our database
         //Reference to Database
-        Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/");
+        Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/" + this.houseName);
+
+        Query queryRef = DB.orderByChild("height");
+
 
         //Eventlistener to listen if the data is changed.
         //snapshot.getValue() contains the whole tree of the clicked house at the moment
         //Add extra .child("Skrivare") after .child(this.houseName), to go further down the tree
-        DB.child(this.houseName).addValueEventListener(new ValueEventListener() {
+        queryRef.addChildEventListener(new ChildEventListener() {
+
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                //Here is where POIs should be created
+            public void onChildAdded(DataSnapshot snapshot, String s) {
+
+                POI newPOI = snapshot.getValue(POI.class);
+                Log.i("test", ""+newPOI.getDescription());
+
                 System.out.println(snapshot.getValue());
             }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
             @Override public void onCancelled(FirebaseError error) { }
         });
 

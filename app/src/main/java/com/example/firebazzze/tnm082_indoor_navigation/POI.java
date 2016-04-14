@@ -5,19 +5,23 @@ package com.example.firebazzze.tnm082_indoor_navigation;
  */
 public class POI {
 
-    private String name, category, description;
-    int floor;
+    public String category;
+    public String description;
+    public int floor;
 
-    public POI(String name, String category, String description, int floor){
+    public POI(){
+    }
+
+    /*public POI(String name, String category, String description, int floor){
         this.name = name;
         this.category = category;
         this.description = description;
         this.floor = floor;
-    }
+    }*/
 
-    public String getName(){
+    /*public String getName(){
         return name;
-    }
+    }*/
 
     public String getCategory(){
         return category;
