@@ -107,13 +107,13 @@ public class MainActivity extends AppCompatActivity {
                             barcodeInfo.setText(    // Update the TextView
                                     barcodes.valueAt(0).displayValue
                             );
+
+                            goToListAndSearch();
                         }
                     });
                 }
             }
         });
-
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -132,13 +132,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
 
-        testListAndSearch = (Button)findViewById(R.id.listAndSearchButton);
-        testListAndSearch.setOnClickListener(new View.OnClickListener() {
+        //testListAndSearch = (Button)findViewById(R.id.listAndSearchButton);
+        /*testListAndSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToListAndSearch();
             }
-        });
+        });*/
     }
 
     //go to list and search view
