@@ -29,7 +29,6 @@ public class House {
     public House(String houseName){
         this.houseName = houseName;
         POIs = new ArrayList<POI>();
-
         getData();
     }
 
