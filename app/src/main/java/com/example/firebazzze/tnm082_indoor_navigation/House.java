@@ -7,7 +7,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 
 import java.util.List;
 
@@ -15,6 +14,7 @@ import java.util.List;
  * This class represents a house object. A house object has a name and a list of interest points.
  *
  */
+
 public class House {
 
     private String houseName;
@@ -77,11 +77,11 @@ public class House {
         return houseName;
     }
 
-    public POI[] getPOIs(){
+    public List<POI> getPOIs(){
         return POIs;
     }
 
     public POI getOnePOI(int index) {
-        return POIs[index];
+        return POIs.get(index);
     }
 }
