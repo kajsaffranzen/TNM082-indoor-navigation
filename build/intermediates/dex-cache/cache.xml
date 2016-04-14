@@ -1,3 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="C:\Users\ricka\.gradle\caches\modules-2\files-2.1\com.firebase\tubesock\0.0.12\6ec0bbd3e161a73ed672284b587fd32309a86d7a\tubesock-0.0.12.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="6ec0bbd3e161a73ed672284b587fd32309a86d7a">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\tubesock-0.0.12_c5a8eecf4497d05a074bb346587289551be6b700\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\.gradle\caches\modules-2\files-2.1\com.firebase\firebase-client-android\2.5.2\f19f10d6276aa0b380e2d05d2ab3272d693a5433\firebase-client-android-2.5.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="f19f10d6276aa0b380e2d05d2ab3272d693a5433">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\firebase-client-android-2.5.2_4c866b2899ec3d79a264d75ffe4de6f9ba4d8ac6\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="673d77a5bbddd766037f088e775df525c46407f0">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.2.1_b13f00d9a0680fd670aa12362c7e7c2f1e33859b\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-core\2.2.2\d20be6a5ddd6f8cfd36ebf6dea329873a1c41f1b\jackson-core-2.2.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="d20be6a5ddd6f8cfd36ebf6dea329873a1c41f1b">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\jackson-core-2.2.2_02a241c5ba2c08474b6f0e2321a4df87e5e3e79b\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.2.1\support-annotations-23.2.1.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="ccb693bc0774fcb637246f7360de25b4af7df318">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-23.2.1_023ceb7087ea4e037aace7afeb48730b3187119a\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="e4d0cbb0b999604b349062f0214a0a228a7fd151">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.2.1_d28425277f6075b06f9cbc2c4661914061858b8f\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="e3885783ff8926ed9e2fdcd16816c2e1e73e7aee">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-23.2.1_7823ed562b297d3059a045604d9bc3d8a412d934\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\.gradle\caches\modules-2\files-2.1\com.firebase\firebase-client-jvm\2.5.2\91731b8f5868a3e8a8a773f29b8d06b5c358f5bb\firebase-client-jvm-2.5.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="91731b8f5868a3e8a8a773f29b8d06b5c358f5bb">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\firebase-client-jvm-2.5.2_55d1df750fa8786796ed4bc0989d37ba17352281\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="13ee3f9d1be04d0cf3d15f267b7993b4695a3bec">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_354740abc9d53ff8524d46c7351659198f0f6756\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-databind\2.2.2\3c8f6018eaa72d43b261181e801e6f8676c16ef6\jackson-databind-2.2.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="3c8f6018eaa72d43b261181e801e6f8676c16ef6">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\jackson-databind-2.2.2_234e74e1f58fc9c50b4d81d434c2e34ed8ab3b6f\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="3be474b1b21b31cf2fa93fe6bd641ae108d96452">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-23.2.1_e89ea4a4bd15a083d9187dbcdd57ef6f235b2eaf\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="5f698e38b0b5f65b8ca3dd965a33c1bca32af80d">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_b37a89c16ea5c1e0e9e54567b0fb673c2b6c418b\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="3469cb457f10f74c28cbc05f069b6c894f6cbdd0">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-23.2.1_aeadc8369d15ab997eb22ad314acb34e59029fb5\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-annotations\2.2.2\285cb9c666f0f0f3dd8a1be04e1f457eb7b15113\jackson-annotations-2.2.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="285cb9c666f0f0f3dd8a1be04e1f457eb7b15113">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\jackson-annotations-2.2.2_beb84f5b34abfcf9c96aa52adee1b21adbb7b26c\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\jars\libs\internal_impl-23.2.1.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="607a3d0b8013b4ccbfeb0b7cb293351994e021fb">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.2.1_a3bc6735b2f7e53a097e9934c8f280b5c6ab57b0\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\exploded-aar\com.android.support\design\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="72961d8b453b46e277702f18de9d210bc019e36e">
+        <dex dex="C:\Users\ricka\Documents\Utveckling\TNM082-indoor-navigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-23.2.1_7e14332e5ecf986c03ae0784b16a7cd67aa1f7b4\classes.dex" />
+    </item>
+
+</items>

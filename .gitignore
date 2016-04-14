@@ -50,3 +50,8 @@ captures/
 
 # Keystore files
 *.jks
+
+#vim extensions
+*.swp
+*.sawo
+*~
