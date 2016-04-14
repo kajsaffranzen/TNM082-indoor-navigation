@@ -51,6 +51,9 @@ captures/
 # Keystore files
 *.jks
 
+# IDEA
+.idea/workspace.xml
+
 #vim extensions
 *.swp
 *.sawo
