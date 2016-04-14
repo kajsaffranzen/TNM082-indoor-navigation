@@ -9,6 +9,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ public class House {
 
     private String houseName;
     private List<POI> POIs;
+    private OnDataLoaded listener;
 
     public House(String houseName, List<POI> POIs){
         this.houseName = houseName;
@@ -28,16 +30,18 @@ public class House {
     public House(String houseName){
         this.houseName = houseName;
         getData();
+        POIs = new ArrayList<POI>();
     }
 
     private void getData(){
+
+
 
         //Change this into our database
         //Reference to Database
         Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/" + this.houseName);
 
         Query queryRef = DB.orderByChild("floor");
-
         //Eventlistener to listen if the data is changed.
         //snapshot.getValue() contains the whole tree of the clicked house at the moment
         //Add extra .child("Skrivare") after .child(this.houseName), to go further down the tree
@@ -48,9 +52,7 @@ public class House {
 
                 POI newPOI = snapshot.getValue(POI.class);
                 POIs.add(newPOI);
-                //Log.i("test", "desc : " +newPOI.getDescription() + " , strings:  " + snapshot.getKey());
-
-                System.out.println(snapshot.getValue());
+                listener.onLoaded();
             }
 
             @Override
@@ -77,11 +79,21 @@ public class House {
         return houseName;
     }
 
-    public POI[] getPOIs(){
+    public List<POI> getPOIs(){
         return POIs;
     }
 
     public POI getOnePOI(int index) {
-        return POIs[index];
+        return POIs.get(index);
+    }
+
+    //Listener interface if data is loaded
+    public interface OnDataLoaded{
+        void onLoaded();
+    }
+
+    public void setOnDataLoadedListener(OnDataLoaded listener){
+
+        this.listener = listener;
     }
 }

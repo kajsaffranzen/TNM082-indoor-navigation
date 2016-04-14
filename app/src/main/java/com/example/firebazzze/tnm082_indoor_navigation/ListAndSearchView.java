@@ -24,7 +24,7 @@ public class ListAndSearchView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        House hs = new House("tappan");
+
 
         setContentView(R.layout.activity_list_and_search_view);
 
@@ -42,6 +42,19 @@ public class ListAndSearchView extends AppCompatActivity {
         dynamicCategoryList = new ArrayList<List<String>>();
 
         addTempData(myExpandableListView);
+
+        fillListWithData();
+    }
+
+    private void fillListWithData(){
+        House newHouse = new House("tappan");
+
+        newHouse.setOnDataLoadedListener(new House.OnDataLoaded() {
+            @Override
+            public void onLoaded() {
+                Log.d("data", "Data is loaded");
+            }
+        });
     }
 
     //add some dummy data to the expandable list
