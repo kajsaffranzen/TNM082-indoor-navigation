@@ -8,6 +8,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +28,8 @@ public class House {
 
     public House(String houseName){
         this.houseName = houseName;
+        POIs = new ArrayList<POI>();
+
         getData();
     }
 
@@ -45,12 +48,8 @@ public class House {
 
             @Override
             public void onChildAdded(DataSnapshot snapshot, String s) {
-
                 POI newPOI = snapshot.getValue(POI.class);
                 POIs.add(newPOI);
-                //Log.i("test", "desc : " +newPOI.getDescription() + " , strings:  " + snapshot.getKey());
-
-                System.out.println(snapshot.getValue());
             }
 
             @Override
