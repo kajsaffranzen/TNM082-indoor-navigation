@@ -47,6 +47,7 @@ public class House {
 
             @Override
             public void onChildAdded(DataSnapshot snapshot, String s) {
+
                 POI newPOI = snapshot.getValue(POI.class);
                 POIs.add(newPOI);
             }
