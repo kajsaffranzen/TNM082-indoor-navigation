@@ -88,22 +88,6 @@ public class ListAndSearchView extends AppCompatActivity {
             interestPointsList.put(categoryList.get(k), dynamicCategoryList.get(k));
     }
 
-    //add some dummy data to the expandable list
-    private void addTempData(ExpandableListView expList) {
-        List<String> kategoryList0 = new ArrayList<String>();
-
-        addCategory("Rum");
-        addCategory("Skrivare");
-        addCategory("Entréer");
-
-        addItemToCategoryByName("Skrivare", "skrivare1");
-        addItemToCategoryByName("Skrivare", "skrivare2");
-        addItemToCategoryByName("Skrivare", "skrivareTrasig");
-
-        for(int i=0; i<dynamicCategoryList.size(); i++)
-            interestPointsList.put(categoryList.get(i), dynamicCategoryList.get(i));
-    }
-
     //add a category to the categoryList and creating a list for the category's interest points
     private void addCategory(String name) {
 
