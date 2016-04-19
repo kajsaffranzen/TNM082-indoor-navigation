@@ -54,6 +54,8 @@ public class ListAndSearchView extends AppCompatActivity {
         //This is only for testing
         newHouse = new House(houseName);
 
+        newHouse.addPOI("myName", "myCat", "myDesc", 1);
+
         //samesame...
         newHouse.setOnDataLoadedListener(new House.OnDataLoaded() {
             @Override

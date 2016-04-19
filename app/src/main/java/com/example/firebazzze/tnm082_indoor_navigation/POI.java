@@ -13,6 +13,12 @@ public class POI {
     public POI(){
     }
 
+    public POI(String category, String description, int floor){
+
+
+
+    }
+
     // Returns the type/category of the POI
     public String getCategory(){
         return category;

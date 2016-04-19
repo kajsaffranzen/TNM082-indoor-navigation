@@ -79,6 +79,22 @@ public class House {
 
     }
 
+    //
+    public void addPOI(String name, String cat, String desc, int floor){
+
+        Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/" + this.houseName);
+
+        //DB.child("testing").setValue("name");
+
+        //DB.setValue("name");
+
+        //var POI = new POI();
+
+
+
+
+    }
+
     // Returns the name of the house
     public String getHouseName(){
         return houseName;
