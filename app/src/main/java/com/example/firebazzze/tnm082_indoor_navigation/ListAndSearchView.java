@@ -1,5 +1,7 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
+import android.app.Fragment;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +25,8 @@ public class ListAndSearchView extends AppCompatActivity {
 
     private House newHouse;
 
+    private CreatePOIFragment f;
+
     private Button b;
 
     @Override
@@ -31,6 +35,8 @@ public class ListAndSearchView extends AppCompatActivity {
         setContentView(R.layout.activity_list_and_search_view);
 
         b = (Button)findViewById(R.id.addPOI);
+
+        f = new CreatePOIFragment();
 
         init();
     }
@@ -65,6 +71,9 @@ public class ListAndSearchView extends AppCompatActivity {
                 //TODO: MOVE THIS 
                 //Should start new view and/or activity instead
                 //And move this to the new activity/view
+                //TODO: change to different fragment
+                //startActivity(new Intent(ListAndSearchView.this, CreatePOIFragment.class));
+
                 newHouse.addPOI("new", "category", "go left", 156);
             }
         });

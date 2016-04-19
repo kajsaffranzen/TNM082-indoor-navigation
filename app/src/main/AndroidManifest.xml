@@ -26,3 +26,6 @@
         <activity android:name=".ListAndSearchView"></activity>
     </application>
 </manifest>
+
+
+
