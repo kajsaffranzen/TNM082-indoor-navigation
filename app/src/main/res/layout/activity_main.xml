@@ -7,6 +7,7 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.MainActivity">
 
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,9 +22,17 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="hejksan"/>
 
-
+    <!--<include layout="@layout/content_main" />-->
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
     <!--<SurfaceView
         android:layout_width="640px"
         android:layout_height="480px"
