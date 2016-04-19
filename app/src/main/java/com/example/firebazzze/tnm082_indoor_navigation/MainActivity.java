@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     House house;
 
+    String toolbarTitle = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
                                     barcodes.valueAt(0).displayValue
                             );
 
+                            toolbarTitle = barcodes.valueAt(0).displayValue; //set title string based on qr code
+
                             goToListAndSearch();
                         }
                     });
@@ -126,7 +130,12 @@ public class MainActivity extends AppCompatActivity {
 
     //go to list and search view
     public void goToListAndSearch(){
-        startActivity(new Intent(MainActivity.this, ListAndSearchView.class));
+        //startActivity(new Intent(MainActivity.this, ListAndSearchView.class));
+
+        //send the toolbarTitle to ListAndSearchView when starting the activity
+        Intent i = new Intent(this, ListAndSearchView.class);
+        i.putExtra("title", toolbarTitle);
+        startActivity(i);
     }
 
     @Override

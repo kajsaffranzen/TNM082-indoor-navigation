@@ -1,10 +1,12 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +29,11 @@ public class ListAndSearchView extends AppCompatActivity {
         House hs = new House("tappan");
 
         setContentView(R.layout.activity_list_and_search_view);
+
+        //change toolbar text, depending on qr code
+        Intent intent = getIntent();
+        String title = intent.getExtras().getString("title"); //get string from MainActivity
+        getSupportActionBar().setTitle(title);
 
         init();
     }
