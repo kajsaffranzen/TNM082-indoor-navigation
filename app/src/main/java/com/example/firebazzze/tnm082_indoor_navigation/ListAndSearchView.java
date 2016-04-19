@@ -62,10 +62,10 @@ public class ListAndSearchView extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //TODO: MOVE THIS 
                 //Should start new view and/or activity instead
                 //And move this to the new activity/view
-                newHouse.addPOI("rilletestar", "category", "go left", 156);
+                newHouse.addPOI("new", "category", "go left", 156);
             }
         });
 
