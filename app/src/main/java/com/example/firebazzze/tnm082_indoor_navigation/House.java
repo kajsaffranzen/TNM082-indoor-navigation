@@ -79,7 +79,7 @@ public class House {
 
     }
 
-    //
+    // Add a new POI to the database
     public void addPOI(String name, String cat, String desc, int floor){
 
         Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/" + this.houseName);

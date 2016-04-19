@@ -32,6 +32,16 @@
     <ExpandableListView
         android:id="@+id/expList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
+    <RelativeLayout
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            android:id="@+id/addPOI"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_text" />
+    </RelativeLayout>
 
 </LinearLayout>

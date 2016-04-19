@@ -39,4 +39,6 @@
         android:text="Nothing to read."
         android:id="@+id/code_info" />
 
+
+
 </RelativeLayout>
