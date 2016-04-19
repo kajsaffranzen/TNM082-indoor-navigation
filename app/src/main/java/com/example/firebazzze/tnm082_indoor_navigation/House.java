@@ -84,14 +84,11 @@ public class House {
 
         Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/" + this.houseName);
 
-        //DB.child("testing").setValue("name");
+        Firebase newPOSDBref = DB.child(name);
 
-        //DB.setValue("name");
+        POI test = new POI(cat, desc, floor);
 
-        //var POI = new POI();
-
-
-
+        newPOSDBref.setValue(test);
 
     }
 

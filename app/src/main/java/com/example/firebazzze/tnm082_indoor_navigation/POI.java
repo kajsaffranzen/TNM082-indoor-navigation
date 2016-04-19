@@ -15,7 +15,9 @@ public class POI {
 
     public POI(String category, String description, int floor){
 
-
+        this.category = category;
+        this.description = description;
+        this.floor = floor;
 
     }
 
