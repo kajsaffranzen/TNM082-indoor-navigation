@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,6 +100,15 @@ public class ListAndSearchFragment extends Fragment {
 
                 //TODO: Call new fragment from here
                 Log.i("testing", "Call On New Fragment");
+
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+
+                Fragment addDataFragment = new AddDataFragment();
+                Bundle bundle = new Bundle();
+                //bundle.putString(KEY, houseName);
+
+                addDataFragment.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.fragmentContainer, addDataFragment).addToBackStack("AddDataFragment").commit();
             }
         });
 

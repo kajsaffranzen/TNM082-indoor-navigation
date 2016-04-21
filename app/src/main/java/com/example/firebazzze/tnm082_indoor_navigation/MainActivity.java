@@ -34,7 +34,10 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity implements QRFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements
+        QRFragment.OnFragmentInteractionListener,
+        ListAndSearchFragment.OnFragmentInteractionListener,
+        AddDataFragment.OnFragmentInteractionListener {
 
     //Used to test list and search view
     Button testListAndSearch;
@@ -92,4 +95,8 @@ public class MainActivity extends AppCompatActivity implements QRFragment.OnFrag
 
         return super.onOptionsItemSelected(item);
     }
+
+//    public void onFragmentInteraction(Uri uri) {
+//        //...
+//    }
 }
