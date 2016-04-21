@@ -91,9 +91,6 @@ public class QRFragment extends Fragment {
     //go to list and search view
     public void goToListAndSearch(String houseName){
 
-        Intent i = new Intent(getActivity(), ListAndSearchView.class);
-        i.putExtra("HOUSE_NAME", houseName);
-
         FragmentManager fm = getActivity().getSupportFragmentManager();
 
         Fragment f2 = new CreatePOIFragment();
