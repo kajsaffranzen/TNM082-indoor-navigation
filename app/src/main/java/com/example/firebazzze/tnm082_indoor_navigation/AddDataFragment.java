@@ -23,7 +23,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 /*
-* Fragment to create new POI uses House to add a new POI to the House
+* Fragment to create new POI
+* checks if the user has filled in all correct fields and
+ * uses House to add a new POI to the House
 */
 public class AddDataFragment extends Fragment {
 
@@ -65,17 +67,15 @@ public class AddDataFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         view = inflater.inflate(R.layout.fragment_add_data, container, false);
 
         fillScroller();
 
         POIdesc = (EditText) view.findViewById(R.id.POIdesc);
         POIname = (EditText) view.findViewById(R.id.POIname);
-
-
         createPOI = (Button) view.findViewById(R.id.createPOI);
 
+        //add a new POI to firebase, checks if the user has done it right or not
         createPOI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,17 +86,16 @@ public class AddDataFragment extends Fragment {
                     h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false);
 
                     Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
-                    POIname.setText("Name");
-                    POIdesc.setText("Description");
+                    POIname.setText("Namn");
+                    POIdesc.setText("Beskrivning");
                     chosenCat = null;
                 }
 
                 else
-                    Toast.makeText(getActivity(), "FYLL I ALLA FALT", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "FYLL I ALLA FÄLT DÅE", Toast.LENGTH_SHORT).show();
 
             }
         });
-
 
         return view;
     }

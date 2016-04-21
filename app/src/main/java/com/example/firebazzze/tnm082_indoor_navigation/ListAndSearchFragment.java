@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 
+import com.firebase.client.Firebase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +97,7 @@ public class ListAndSearchFragment extends Fragment {
         fillListWithData(houseName);
 
         setListeners(newHouse);
-
+        //getActivity().setTitle(houseName);
 
 
         // add button and add listener for add POI
@@ -157,19 +159,17 @@ public class ListAndSearchFragment extends Fragment {
             boolean flag = false;
 
             for(int k = 0; k < categoryList.size(); k++) {
-                if(categoryList.get(k).equals( newHouse.getPOIs().get(i).getCategory() ))
+                if(categoryList.get(k).equals( newHouse.getPOIs2().get(key).getCategory() ))
                     flag = true;
             }
 
             if(!flag)
-                addCategory( newHouse.getPOIs().get(i).getCategory() );
+                addCategory( newHouse.getPOIs2().get(key).getCategory() );
 
-            Log.i("hejsan", newHouse.getPOIs().get(i).getCategory() +  "======================" + key);
-
-            if(newHouse.getPOIs().get(i).isOfficial())
-                addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), "***" + key );
+            if(newHouse.getPOIs2().get(key).getOfficial())
+                addItemToCategoryByName( newHouse.getPOIs2().get(key).getCategory(), "***" + key );
             else
-                addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), key );
+                addItemToCategoryByName( newHouse.getPOIs2().get(key).getCategory(), key );
 
             myExpandableListAdapter.notifyDataSetChanged();
 
@@ -200,7 +200,7 @@ public class ListAndSearchFragment extends Fragment {
                 addCategory( newHouse.getPOIs().get(i).getCategory() );
 
 
-            if(newHouse.getPOIs().get(i).isOfficial())
+            if(newHouse.getPOIs().get(i).getOfficial())
                 addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), "***" + newHouse.getPOIs().get(i).getDescription() );
             else
                 addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), newHouse.getPOIs().get(i).getDescription() );
@@ -287,7 +287,7 @@ public class ListAndSearchFragment extends Fragment {
                 //Pass the POI object
                 //Maybe use id instead need to be tested
                 //http://developer.android.com/reference/android/widget/ExpandableListView.OnChildClickListener.html
-                Log.i("transform", "crash");
+
 
                 String POIkey = dynamicCategoryList.get(groupPosition).get(childPosition);
 
@@ -305,11 +305,11 @@ public class ListAndSearchFragment extends Fragment {
 
         Fragment DetailFragment = new DetailFragment();
 
-
         Bundle bundle = new Bundle();
         //Change the variable to send, it should be house and POI
         bundle.putString(KEY, POIkey);
 
+        //TODO - Change the variable to send, it should be house and POI
         DetailFragment.setArguments(bundle);
 
         fm.beginTransaction().replace(R.id.fragmentContainer, DetailFragment).addToBackStack("DetailFragment").commit();

@@ -8,7 +8,7 @@ public class POI {
     public String category;
     public String description;
     public int floor;
-    public boolean isOfficial;
+    public boolean official;
 
 
     public POI(){
@@ -19,7 +19,7 @@ public class POI {
         this.category = category;
         this.description = description;
         this.floor = floor;
-        this.isOfficial = isOfficial;
+        this.official = isOfficial;
 
     }
 
@@ -39,6 +39,6 @@ public class POI {
     }
 
     //returns true if POI is official
-    public boolean isOfficial() { return isOfficial; }
+    public boolean getOfficial() { return official; }
 
 }

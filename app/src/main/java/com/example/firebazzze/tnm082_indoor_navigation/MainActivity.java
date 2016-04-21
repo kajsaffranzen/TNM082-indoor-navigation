@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -39,14 +41,9 @@ public class MainActivity extends AppCompatActivity implements
         ListAndSearchFragment.OnFragmentInteractionListener,
         AddDataFragment.OnFragmentInteractionListener {
 
-    //Used to test list and search view
-    Button testListAndSearch;
-
-    House house;
-
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
-
+    public House house;
+    public boolean isAdmin = false;
+    public DetailFragment detailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,18 +84,24 @@ public class MainActivity extends AppCompatActivity implements
         switch (id) {
             case R.id.menuItemAdminMode:
                 item.setChecked(!item.isChecked());
+                isAdmin = item.isChecked();
+
+                //refresh the detail view in order to show/hide admin button
+                if(detailFragment != null && detailFragment.isAdded())
+                    detailFragment.refreshFragment();
+                else
+                    Log.d("test","check works");
+
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    //Used to have a public house
-    public House getHouse(){
-        return house;
-    }
-    public void setHouse(House h){
-        house = h;
-    }
+    //Used to have a public house, Get House
+    public House getHouse(){ return house; }
+
+    //set House
+    public void setHouse(House h){ house = h; }
 
 }

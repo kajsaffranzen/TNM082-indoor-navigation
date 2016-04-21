@@ -23,6 +23,9 @@ public class House {
     private String houseName;
     private List<POI> POIs;
 
+    private String DBUrl = "https://test223.firebaseio.com/";
+            //"https://tnm082-indoor.firebaseio.com/";
+
     private Map<String, POI> POIs2;
 
     private OnDataLoaded listener;
@@ -47,7 +50,7 @@ public class House {
 
         //Change this into our database
         //Reference to Database
-        Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/" + this.houseName);
+        Firebase DB = new Firebase(DBUrl + this.houseName);
 
         Query queryRef = DB.orderByChild("floor");
         //Eventlistener to listen if the data is changed.
@@ -96,16 +99,27 @@ public class House {
     }
 
     // Add a new POI to the database
-    public void addPOI(String name, String cat, String desc, int floor, boolean isOfficial){
+    public void addPOI(String name, String cat, String desc, int floor, boolean isOfficial) {
 
-        Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/" + this.houseName);
+        Firebase DB = new Firebase(DBUrl + this.houseName);
 
         Firebase newPOSDBref = DB.child(name);
 
         POI test = new POI(cat, desc, floor, isOfficial);
 
+        Log.d("LOL", "" + test.getDescription() + " " + test.getCategory() + " " + test.getFloor()+ " " + test.getOfficial());
+        Log.d("LOL", "" + test);
+
         newPOSDBref.setValue(test);
 
+    }
+
+    //Edit post
+    public void setOfficial(String POIkey) {
+
+        Firebase DB = new Firebase(DBUrl + this.houseName + "/" + POIkey);
+
+        DB.child("official").setValue("true");
     }
 
     // Returns the name of the house
@@ -118,6 +132,7 @@ public class House {
     public List<POI> getPOIs(){
         return POIs;
     }
+
 
     // Returns one POI that exists in the house correlating to a specific index
     public POI getOnePOI(int index) {

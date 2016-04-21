@@ -23,13 +23,11 @@ import java.io.IOException;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link QRFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link QRFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * This fragment contains a QR-reader and connects to ListAndSearchFragment
+ *
  */
+
+//TODO: om man trycker på tillbaka knappen så kommer en till MainActivity
 public class QRFragment extends Fragment {
 
 
@@ -91,7 +89,7 @@ public class QRFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_qr, container, false);
-
+        
 
         cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
         barcodeInfo = (TextView) view.findViewById(R.id.code_info);
@@ -153,7 +151,6 @@ public class QRFragment extends Fragment {
                 }
             }
         });
-
 
         // Inflate the layout for this fragment
         return view;
