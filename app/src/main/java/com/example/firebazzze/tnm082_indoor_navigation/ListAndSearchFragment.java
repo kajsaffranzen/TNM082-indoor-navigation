@@ -96,6 +96,8 @@ public class ListAndSearchFragment extends Fragment {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //TODO: Call new fragment from here
                 Log.i("testing", "Call On New Fragment");
             }
         });
