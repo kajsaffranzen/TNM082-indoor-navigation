@@ -27,18 +27,7 @@
         android:id="@+id/expList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300px"
-        />
-    <LinearLayout
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <!--<Button
-            android:id="@+id/addPOI"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_text" />-->
-    </LinearLayout>
+        android:layout_marginTop="300px" />
 
     <Button
         android:id="@+id/buttoncreatepoi"
