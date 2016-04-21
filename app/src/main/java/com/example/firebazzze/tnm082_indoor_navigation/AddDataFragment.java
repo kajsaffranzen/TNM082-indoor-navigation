@@ -82,7 +82,8 @@ public class AddDataFragment extends Fragment {
                 if(!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null){
                     House h = ((MainActivity)getActivity()).getHouse();
 
-                    h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1);
+                    //TODO: Check if admin, then change false to true
+                    h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false);
 
                     Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
                     POIname.setText("Name");
