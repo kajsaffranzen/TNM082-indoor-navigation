@@ -96,9 +96,13 @@ public class QRFragment extends Fragment {
         Intent i = new Intent(getActivity(), ListAndSearchView.class);
         i.putExtra("HOUSE_NAME", houseName);
 
-        //FragmentManager fm = getActivity().getSupportFragmentManager();
 
-        //fm.backsta
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+
+        Fragment f2 = new CreatePOIFragment();
+
+        fm.beginTransaction().replace(R.id.fragmentContainer, f2).addToBackStack("CreatePOIFragment").commit();
     }
 
 
