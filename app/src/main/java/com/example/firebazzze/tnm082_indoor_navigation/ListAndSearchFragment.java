@@ -229,14 +229,14 @@ public class ListAndSearchFragment extends Fragment {
                 //Pass the POI object
                 //Maybe use id instead need to be tested
                 //http://developer.android.com/reference/android/widget/ExpandableListView.OnChildClickListener.html
-                goToDetailFragmet(newHouse.getOnePOI(childPosition));
+                goToDetailFragmet(newHouse);
 
                 return false;
             }
         });
     }
 
-    private void goToDetailFragmet(POI onePOI) {
+    private void goToDetailFragmet(House ourHouseName) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
 
         Fragment DetailFragment = new DetailFragment();
@@ -244,7 +244,7 @@ public class ListAndSearchFragment extends Fragment {
 
         Bundle bundle = new Bundle();
         //Change the variable to send, it should be house and POI
-        bundle.putString(KEY, onePOI.toString());
+        bundle.putString(KEY, ourHouseName.getHouseName());
 
         DetailFragment.setArguments(bundle);
 

@@ -32,7 +32,7 @@ public class DetailFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private String poiName;
+    private String houseName;
     TextView txtViewCategory;
 
     private OnFragmentInteractionListener mListener;
@@ -63,8 +63,9 @@ public class DetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            poiName = getArguments().getString(KEY);
+            houseName = getArguments().getString(KEY);
         }
+
     }
 
     @Override
@@ -90,7 +91,7 @@ public class DetailFragment extends Fragment {
         txtViewCategory = (TextView) view.findViewById(R.id.detail_category);
 
         //Set the textview with the variable
-       // txtViewCategory.setText(poi_category);
+        txtViewCategory.setText(houseName);
 
 
         return view;
@@ -109,8 +110,8 @@ public class DetailFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-           /* throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener"); */
+            //throw new RuntimeException(context.toString()
+             //       + " must implement OnFragmentInteractionListener");
         }
     }
 

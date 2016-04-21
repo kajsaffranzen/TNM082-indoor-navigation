@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.DetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <android.gesture.GestureOverlayView
         android:layout_width="fill_parent"
         android:layout_height="400dp"
@@ -21,13 +20,15 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="246dp"
         android:id="@+id/listView"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center_horizontal|bottom"
         android:scrollbars="vertical" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/detail_category"/>
+        android:id="@+id/detail_category"
+        android:layout_gravity="left|bottom" />
 
 </FrameLayout>
