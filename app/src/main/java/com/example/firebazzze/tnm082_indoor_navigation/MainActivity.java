@@ -41,10 +41,7 @@ public class MainActivity extends AppCompatActivity implements
         ListAndSearchFragment.OnFragmentInteractionListener,
         AddDataFragment.OnFragmentInteractionListener {
 
-    //Used to test list and search view
-    Button testListAndSearch;
-
-    House house;
+    public House house;
     public boolean isAdmin = false;
     public DetailFragment detailFragment;
 
@@ -104,4 +101,11 @@ public class MainActivity extends AppCompatActivity implements
 
         return super.onOptionsItemSelected(item);
     }
+
+    //Used to have a public house, Get House
+    public House getHouse(){ return house; }
+
+    //set House
+    public void setHouse(House h){ house = h; }
+
 }

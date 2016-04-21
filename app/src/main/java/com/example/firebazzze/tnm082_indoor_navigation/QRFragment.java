@@ -130,6 +130,7 @@ public class QRFragment extends Fragment {
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
+
             }
 
             @Override
