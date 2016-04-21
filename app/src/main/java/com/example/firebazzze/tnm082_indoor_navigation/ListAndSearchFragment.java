@@ -95,13 +95,11 @@ public class ListAndSearchFragment extends Fragment {
 
         fillListWithData( houseName );
 
-        Button b = (Button)view.findViewById(R.id.buttoncreatepoi);
-        b.setOnClickListener(new View.OnClickListener() {
+        // add button and add listener for add POI
+        Button addPOIBtn = (Button)view.findViewById(R.id.buttoncreatepoi);
+        addPOIBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //TODO: Call new fragment from here
-                Log.i("testing", "Call On New Fragment");
 
                 FragmentManager fm = getActivity().getSupportFragmentManager();
 
