@@ -92,14 +92,13 @@ public class ListAndSearchFragment extends Fragment {
 
         dynamicCategoryList = new ArrayList<List<String>>();
 
-        Button b = (Button)view.findViewById(R.id.buttoncreatepoi);
+        Button addPOIBtn = (Button)view.findViewById(R.id.buttoncreatepoi);
 
-        b.setOnClickListener(new View.OnClickListener() {
+
+        // creates listener for add POI btn
+        addPOIBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //TODO: Call new fragment from here
-                Log.i("testing", "Call On New Fragment");
 
                 FragmentManager fm = getActivity().getSupportFragmentManager();
 
