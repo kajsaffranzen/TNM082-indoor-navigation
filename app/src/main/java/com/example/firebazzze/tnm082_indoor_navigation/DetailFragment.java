@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +37,8 @@ public class DetailFragment extends Fragment {
     TextView txtViewCategory;
 
     private OnFragmentInteractionListener mListener;
+
+    private Button makeOfficialButton;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -92,6 +95,16 @@ public class DetailFragment extends Fragment {
         //Set the textview with the variable
        // txtViewCategory.setText(poi_category);
 
+        //Admin-knapp
+        makeOfficialButton = (Button) view.findViewById(R.id.makeOfficialButton);
+        makeOfficialButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //TODO - updatera databasen med official-Tagg
+
+            }
+        });
 
         return view;
     }
