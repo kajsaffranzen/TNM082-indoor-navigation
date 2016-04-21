@@ -84,9 +84,10 @@ public class MainActivity extends AppCompatActivity implements
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.menuItemAdminMode:
+                item.setChecked(!item.isChecked());
+                break;
         }
 
         return super.onOptionsItemSelected(item);

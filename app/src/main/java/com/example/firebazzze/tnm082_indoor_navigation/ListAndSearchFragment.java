@@ -151,7 +151,11 @@ public class ListAndSearchFragment extends Fragment {
 
             if(!flag)
                 addCategory( newHouse.getPOIs().get(i).getCategory() );
-            addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), newHouse.getPOIs().get(i).getDescription() );
+
+            if(newHouse.getPOIs().get(i).isOfficial())
+                addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), "***" + newHouse.getPOIs().get(i).getDescription() );
+            else
+                addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), newHouse.getPOIs().get(i).getDescription() );
 
             myExpandableListAdapter.notifyDataSetChanged();
         }
