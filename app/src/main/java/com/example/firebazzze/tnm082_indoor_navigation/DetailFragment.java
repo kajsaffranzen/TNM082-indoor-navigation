@@ -6,6 +6,7 @@ import android.gesture.GestureOverlayView;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +75,9 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //pass to main activity
+        ((MainActivity)getActivity()).detailFragment = this;
+
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
 
@@ -106,7 +110,22 @@ public class DetailFragment extends Fragment {
             }
         });
 
+        if( ((MainActivity)getActivity()).isAdmin )
+            makeOfficialButton.setVisibility(View.VISIBLE);
+        else
+            makeOfficialButton.setVisibility(View.INVISIBLE);
+
         return view;
+    }
+
+    public void refreshFragment() {
+
+        Log.d("test", "In refresh function")   ;
+
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(this);
+                ft.attach(this);
+                ft.commit();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
