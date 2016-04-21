@@ -28,7 +28,7 @@ import java.util.List;
 public class ListAndSearchFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String CAT_LIST = "catlist";
     private static final String KEY = "housename";
 
     // TODO: Rename and change types of parameters
@@ -63,8 +63,6 @@ public class ListAndSearchFragment extends Fragment {
     public static ListAndSearchFragment newInstance(String param1, String param2) {
         ListAndSearchFragment fragment = new ListAndSearchFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -111,6 +109,14 @@ public class ListAndSearchFragment extends Fragment {
                 Fragment addDataFragment = new AddDataFragment();
                 Bundle bundle = new Bundle();
 
+                //TODO: Fullösning tillsvidare...
+                ArrayList<String> temp = new ArrayList<String>();
+
+                for(int i = 0; i < categoryList.size(); i++)
+                    temp.add(categoryList.get(i));
+
+                bundle.putStringArrayList(CAT_LIST, temp);
+
                 addDataFragment.setArguments(bundle);
                 fm.beginTransaction().replace(R.id.fragmentContainer, addDataFragment).addToBackStack("AddDataFragment").commit();
             }
@@ -125,6 +131,8 @@ public class ListAndSearchFragment extends Fragment {
 
         //This is only for testing
         newHouse = new House(houseName);
+
+        ((MainActivity)getActivity()).setHouse(newHouse);
 
         //samesame...
         newHouse.setOnDataLoadedListener(new House.OnDataLoaded() {
@@ -151,7 +159,11 @@ public class ListAndSearchFragment extends Fragment {
 
             if(!flag)
                 addCategory( newHouse.getPOIs().get(i).getCategory() );
-            addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), newHouse.getPOIs().get(i).getDescription() );
+
+            if(newHouse.getPOIs().get(i).isOfficial())
+                addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), "***" + newHouse.getPOIs().get(i).getDescription() );
+            else
+                addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), newHouse.getPOIs().get(i).getDescription() );
 
             myExpandableListAdapter.notifyDataSetChanged();
         }
