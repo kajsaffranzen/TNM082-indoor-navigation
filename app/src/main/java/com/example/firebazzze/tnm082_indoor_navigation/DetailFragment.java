@@ -6,21 +6,18 @@ import android.gesture.GestureOverlayView;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DetailFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DetailFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * TODO: add proper description
  */
 public class DetailFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -36,6 +33,8 @@ public class DetailFragment extends Fragment {
     TextView txtViewCategory;
 
     private OnFragmentInteractionListener mListener;
+
+    private Button makeOfficialButton;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -72,6 +71,9 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //pass to main activity
+        ((MainActivity)getActivity()).detailFragment = this;
+
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
 
@@ -93,8 +95,34 @@ public class DetailFragment extends Fragment {
         //Set the textview with the variable
         txtViewCategory.setText(houseName);
 
+        //TODO: funkar ej att komma åt knappen på alla mobiler
+        //Admin-knapp
+        makeOfficialButton = (Button) view.findViewById(R.id.makeOfficialButton);
+        makeOfficialButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //TODO - updatera databasen med official-Tagg
+                ((MainActivity)getActivity()).getHouse().setOfficial();
+            }
+        });
+
+        if( ((MainActivity)getActivity()).isAdmin )
+            makeOfficialButton.setVisibility(View.VISIBLE);
+        else
+            makeOfficialButton.setVisibility(View.INVISIBLE);
 
         return view;
+    }
+
+    public void refreshFragment() {
+
+        Log.d("test", "In refresh function")   ;
+
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(this);
+                ft.attach(this);
+                ft.commit();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -111,7 +139,7 @@ public class DetailFragment extends Fragment {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             //throw new RuntimeException(context.toString()
-             //       + " must implement OnFragmentInteractionListener");
+                    //+ " must implement OnFragmentInteractionListener");
         }
     }
 

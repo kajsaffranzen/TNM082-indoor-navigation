@@ -92,6 +92,10 @@ public class House {
 
     }
 
+    //Edit post
+    public void setOfficial() {
+    }
+
     // Returns the name of the house
     public String getHouseName(){
         return houseName;

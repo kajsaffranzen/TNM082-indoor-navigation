@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 
+import com.firebase.client.Firebase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,6 +97,7 @@ public class ListAndSearchFragment extends Fragment {
         fillListWithData(houseName);
 
         setListeners(newHouse);
+        //getActivity().setTitle(houseName);
 
 
         // add button and add listener for add POI
@@ -240,23 +243,22 @@ public class ListAndSearchFragment extends Fragment {
                 //Pass the POI object
                 //Maybe use id instead need to be tested
                 //http://developer.android.com/reference/android/widget/ExpandableListView.OnChildClickListener.html
-                goToDetailFragmet(newHouse);
+                goToDetailFragmet(newHouse, childPosition+1);
 
                 return false;
             }
         });
     }
 
-    private void goToDetailFragmet(House ourHouseName) {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
+    private void goToDetailFragmet(House ourHouseName, int childPosition) {
 
+        FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment DetailFragment = new DetailFragment();
 
-
         Bundle bundle = new Bundle();
-        //Change the variable to send, it should be house and POI
-        bundle.putString(KEY, ourHouseName.getHouseName());
 
+        //TODO - Change the variable to send, it should be house and POI
+        bundle.putString(KEY, ourHouseName.getHouseName());
         DetailFragment.setArguments(bundle);
 
         fm.beginTransaction().replace(R.id.fragmentContainer, DetailFragment).addToBackStack("DetailFragment").commit();
