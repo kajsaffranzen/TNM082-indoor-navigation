@@ -39,12 +39,8 @@ public class QRFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
     private static final String KEY = "housename";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -53,9 +49,6 @@ public class QRFragment extends Fragment {
     TextView barcodeInfo;
 
     public QRFragment() {
-
-        Log.i("here", "working");
-        // Required empty public constructor
     }
 
 
@@ -71,7 +64,6 @@ public class QRFragment extends Fragment {
     public static QRFragment newInstance(String param1, String param2) {
         QRFragment fragment = new QRFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,12 +72,8 @@ public class QRFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            //IF WE WANT TO PASS ARGUMENTS
         }
-
-        //Log.i("here", "" + getView());
-
-
     }
 
     //go to list and search view

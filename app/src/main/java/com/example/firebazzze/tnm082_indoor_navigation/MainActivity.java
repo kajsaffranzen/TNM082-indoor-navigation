@@ -57,22 +57,13 @@ public class MainActivity extends AppCompatActivity implements QRFragment.OnFrag
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Create new fragment and transaction
-        //fragmentManager = getSupportFragmentManager();
-
         getSupportFragmentManager().popBackStack();
-        //fragmentTransaction = fragmentManager.beginTransaction();
-
 
         QRFragment fragment = new QRFragment();
-        Log.i("hej", "hej");
 
-        //fragmentTransaction.add(R.id.fragmentContainer, fragment);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
 
-        //QR code stuff -> put this in a class instead
-        //setContentView(R.layout.fragment_qr);
 
 
     }

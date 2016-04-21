@@ -27,7 +27,6 @@
         android:layout_height="match_parent"
         android:text="hejksan"/>
 
-    <!--<include layout="@layout/content_main" />-->
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
