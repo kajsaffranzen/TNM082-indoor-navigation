@@ -35,6 +35,7 @@ public class ListAndSearchFragment extends Fragment {
     private String mParam1;
     private String houseName;
 
+    //used to update list when new data is loaded
     private OnFragmentInteractionListener mListener;
 
     private ExpandableListView myExpandableListView;
@@ -46,8 +47,8 @@ public class ListAndSearchFragment extends Fragment {
 
     private House newHouse;
 
+    // Required empty public constructor
     public ListAndSearchFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -79,8 +80,8 @@ public class ListAndSearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_and_search, container, false);
 
         categoryList = new ArrayList<String>();
@@ -92,14 +93,15 @@ public class ListAndSearchFragment extends Fragment {
 
         dynamicCategoryList = new ArrayList<List<String>>();
 
-        Button addPOIBtn = (Button)view.findViewById(R.id.buttoncreatepoi);
 
         fillListWithData(houseName);
 
         setListeners(newHouse);
 
 
-        // creates listener for add POI btn
+
+        // add button and add listener for add POI
+        Button addPOIBtn = (Button)view.findViewById(R.id.buttoncreatepoi);
         addPOIBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,14 +110,11 @@ public class ListAndSearchFragment extends Fragment {
 
                 Fragment addDataFragment = new AddDataFragment();
                 Bundle bundle = new Bundle();
-                //bundle.putString(KEY, houseName);
 
                 addDataFragment.setArguments(bundle);
                 fm.beginTransaction().replace(R.id.fragmentContainer, addDataFragment).addToBackStack("AddDataFragment").commit();
             }
         });
-
-        fillListWithData( houseName );
 
         return view;
     }
@@ -126,19 +125,6 @@ public class ListAndSearchFragment extends Fragment {
 
         //This is only for testing
         newHouse = new House(houseName);
-
-        /*b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: MOVE THIS
-                //Should start new view and/or activity instead
-                //And move this to the new activity/view
-                //TODO: change to different fragment
-                //startActivity(new Intent(ListAndSearchView.this, CreatePOIFragment.class));
-
-                newHouse.addPOI("new", "category", "go left", 156);
-            }
-        });*/
 
         //samesame...
         newHouse.setOnDataLoadedListener(new House.OnDataLoaded() {
@@ -183,11 +169,6 @@ public class ListAndSearchFragment extends Fragment {
         categoryList.add(name);
     }
 
-    //Add an item to a category list
-    private void addItemToCategory(List<String> kList, String name) {
-        kList.add(name);
-    }
-
     //add an item to a category specified by name
     private void addItemToCategoryByName(String categoryName, String itemName) {
         int index = -1;
@@ -212,8 +193,8 @@ public class ListAndSearchFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-           // throw new RuntimeException(context.toString()
-            //        + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
