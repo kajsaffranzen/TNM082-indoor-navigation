@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
@@ -91,11 +92,30 @@ public class ListAndSearchFragment extends Fragment {
 
         dynamicCategoryList = new ArrayList<List<String>>();
 
+        Button addPOIBtn = (Button)view.findViewById(R.id.buttoncreatepoi);
 
         fillListWithData(houseName);
 
         setListeners(newHouse);
 
+
+        // creates listener for add POI btn
+        addPOIBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+
+                Fragment addDataFragment = new AddDataFragment();
+                Bundle bundle = new Bundle();
+                //bundle.putString(KEY, houseName);
+
+                addDataFragment.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.fragmentContainer, addDataFragment).addToBackStack("AddDataFragment").commit();
+            }
+        });
+
+        fillListWithData( houseName );
 
         return view;
     }

@@ -73,11 +73,6 @@ public class DetailFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        Intent intent = super.getActivity().getIntent();
-        String poi_category = intent.getExtras().getString("POI_CATEGORY");
-        String poi_description = intent.getExtras().getString("POI_DESCRIPTION");
-        int poi_floor = intent.getExtras().getInt("POI_FLOOR");
-
 
         // Inflate the layout for this fragment
         GestureOverlayView gov = (GestureOverlayView)view.findViewById(R.id.gestureOverlayView);

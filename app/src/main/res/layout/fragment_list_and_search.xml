@@ -32,12 +32,19 @@
     <LinearLayout
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <!--<Button
             android:id="@+id/addPOI"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_text" />-->
     </LinearLayout>
+
+    <Button
+        android:id="@+id/buttoncreatepoi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skapa Intressepunkt"
+        android:layout_gravity="center_horizontal|bottom" />
 
 </FrameLayout>
