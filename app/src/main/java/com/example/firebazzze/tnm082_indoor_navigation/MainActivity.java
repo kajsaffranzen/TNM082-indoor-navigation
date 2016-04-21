@@ -44,16 +44,15 @@ public class MainActivity extends AppCompatActivity implements QRFragment.OnFrag
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
-    public void onFragmentInteraction(Uri uri){
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Firebase.setAndroidContext(this);
+
         setContentView(R.layout.activity_main);
 
-        Firebase.setAndroidContext(this);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,6 +74,11 @@ public class MainActivity extends AppCompatActivity implements QRFragment.OnFrag
         //QR code stuff -> put this in a class instead
         //setContentView(R.layout.fragment_qr);
 
+
+    }
+
+
+    public void onFragmentInteraction(Uri uri){
 
     }
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.telecom.Call;
 import android.util.Log;
 import android.util.SparseArray;
@@ -86,15 +87,30 @@ public class QRFragment extends Fragment {
 
         //Log.i("here", "" + getView());
 
-        //cameraView = (SurfaceView) getView().findViewById(R.id.camera_view);
 
-        Log.i("here", "" + R.id.camera_view);
+    }
 
-        barcodeInfo = (TextView) getView().findViewById(R.id.code_info);
+    //go to list and search view
+    public void goToListAndSearch(String houseName){
 
-        Log.i("here", "after findviewbyid");
+        Intent i = new Intent(getActivity(), ListAndSearchView.class);
+        i.putExtra("HOUSE_NAME", houseName);
+
+        //FragmentManager fm = getActivity().getSupportFragmentManager();
+
+        //fm.backsta
+    }
 
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_qr, container, false);
+
+        cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
+
+        barcodeInfo = (TextView) view.findViewById(R.id.code_info);
 
         BarcodeDetector barcodeDetector =
                 new BarcodeDetector.Builder(getActivity())
@@ -142,37 +158,23 @@ public class QRFragment extends Fragment {
                     barcodeInfo.post(new Runnable() {    // Use the post method of the TextView
                         public void run() {
 
-                        //This is where all the POIS will be read
-                       // if (house == null) house = new House(barcodes.valueAt(0).displayValue);
+                            //This is where all the POIS will be read
+                            // if (house == null) house = new House(barcodes.valueAt(0).displayValue);
 
-                        barcodeInfo.setText(    // Update the TextView
-                                barcodes.valueAt(0).displayValue
-                        );
+                            barcodeInfo.setText(    // Update the TextView
+                                    barcodes.valueAt(0).displayValue
+                            );
 
-                        goToListAndSearch( barcodes.valueAt(0).displayValue );
+                            goToListAndSearch( barcodes.valueAt(0).displayValue );
                         }
                     });
                 }
             }
         });
 
-    }
 
-    //go to list and search view
-    public void goToListAndSearch(String houseName){
-
-        Intent i = new Intent(getActivity(), ListAndSearchView.class);
-        i.putExtra("HOUSE_NAME", houseName);
-
-        startActivity(i);
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_qr, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
