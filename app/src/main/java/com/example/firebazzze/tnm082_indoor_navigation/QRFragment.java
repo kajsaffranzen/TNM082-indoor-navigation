@@ -93,15 +93,14 @@ public class QRFragment extends Fragment {
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
 
-        Fragment f2 = new CreatePOIFragment();
-        Fragment f3 = new ListAndSearchFragment();
+        Fragment ListAndSearchFragment = new ListAndSearchFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(KEY, houseName);
 
-        f3.setArguments(bundle);
+        ListAndSearchFragment.setArguments(bundle);
 
-        fm.beginTransaction().replace(R.id.fragmentContainer, f3).addToBackStack("ListAndSearchFragment").commit();
+        fm.beginTransaction().replace(R.id.fragmentContainer, ListAndSearchFragment).addToBackStack("ListAndSearchFragment").commit();
     }
 
 
