@@ -40,7 +40,7 @@ public class QRFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String KEY = "housename";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -72,7 +72,6 @@ public class QRFragment extends Fragment {
         QRFragment fragment = new QRFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -82,7 +81,6 @@ public class QRFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
         //Log.i("here", "" + getView());
@@ -96,13 +94,17 @@ public class QRFragment extends Fragment {
         Intent i = new Intent(getActivity(), ListAndSearchView.class);
         i.putExtra("HOUSE_NAME", houseName);
 
-
-
         FragmentManager fm = getActivity().getSupportFragmentManager();
 
         Fragment f2 = new CreatePOIFragment();
+        Fragment f3 = new ListAndSearchFragment();
 
-        fm.beginTransaction().replace(R.id.fragmentContainer, f2).addToBackStack("CreatePOIFragment").commit();
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY, houseName);
+
+        f3.setArguments(bundle);
+
+        fm.beginTransaction().replace(R.id.fragmentContainer, f3).addToBackStack("ListAndSearchFragment").commit();
     }
 
 
