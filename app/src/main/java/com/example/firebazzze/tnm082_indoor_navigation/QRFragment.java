@@ -198,7 +198,6 @@ public class QRFragment extends Fragment {
 
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            Log.i("here", "working3");
             mListener = (OnFragmentInteractionListener) context;
         }
         else {

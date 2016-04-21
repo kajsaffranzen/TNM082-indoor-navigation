@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="100px"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.CreatePOIFragment">
 
     <LinearLayout
@@ -25,7 +26,9 @@
     <ExpandableListView
         android:id="@+id/expList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300px"
+        />
     <LinearLayout
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_width="match_parent"
