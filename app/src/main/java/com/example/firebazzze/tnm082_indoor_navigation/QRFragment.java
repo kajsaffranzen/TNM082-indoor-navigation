@@ -92,7 +92,6 @@ public class QRFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_qr, container, false);
 
-
         cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
         barcodeInfo = (TextView) view.findViewById(R.id.code_info);
 
@@ -153,7 +152,6 @@ public class QRFragment extends Fragment {
                 }
             }
         });
-
 
         // Inflate the layout for this fragment
         return view;

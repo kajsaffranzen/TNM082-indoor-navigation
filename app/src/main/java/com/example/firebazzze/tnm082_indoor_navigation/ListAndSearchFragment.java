@@ -97,7 +97,6 @@ public class ListAndSearchFragment extends Fragment {
         setListeners(newHouse);
 
 
-
         // add button and add listener for add POI
         Button addPOIBtn = (Button)view.findViewById(R.id.buttoncreatepoi);
         addPOIBtn.setOnClickListener(new View.OnClickListener() {

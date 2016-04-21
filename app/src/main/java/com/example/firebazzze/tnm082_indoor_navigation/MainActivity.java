@@ -39,14 +39,7 @@ public class MainActivity extends AppCompatActivity implements
         ListAndSearchFragment.OnFragmentInteractionListener,
         AddDataFragment.OnFragmentInteractionListener {
 
-    //Used to test list and search view
-    Button testListAndSearch;
-
     House house;
-
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
