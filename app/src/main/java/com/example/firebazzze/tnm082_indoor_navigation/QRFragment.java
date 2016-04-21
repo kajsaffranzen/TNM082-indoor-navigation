@@ -83,15 +83,16 @@ public class QRFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        
-        Log.i("here", "" + getView());
 
-        cameraView = (SurfaceView) getView().findViewById(R.id.camera_view);
+        //Log.i("here", "" + getView());
+
+        //cameraView = (SurfaceView) getView().findViewById(R.id.camera_view);
 
         Log.i("here", "" + R.id.camera_view);
 
         barcodeInfo = (TextView) getView().findViewById(R.id.code_info);
 
+        Log.i("here", "after findviewbyid");
 
 
 
