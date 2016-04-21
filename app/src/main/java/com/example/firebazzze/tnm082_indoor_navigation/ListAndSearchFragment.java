@@ -93,7 +93,12 @@ public class ListAndSearchFragment extends Fragment {
 
         dynamicCategoryList = new ArrayList<List<String>>();
 
-        fillListWithData( houseName );
+
+        fillListWithData(houseName);
+
+        setListeners(newHouse);
+
+
 
         // add button and add listener for add POI
         Button addPOIBtn = (Button)view.findViewById(R.id.buttoncreatepoi);
@@ -213,4 +218,37 @@ public class ListAndSearchFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    private void setListeners(final House newHouse){
+        myExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            //Handle on child click event in expandable list
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+                //Go to DetailViewIP
+                //Pass the POI object
+                //Maybe use id instead need to be tested
+                //http://developer.android.com/reference/android/widget/ExpandableListView.OnChildClickListener.html
+                goToDetailFragmet(newHouse.getOnePOI(childPosition));
+
+                return false;
+            }
+        });
+    }
+
+    private void goToDetailFragmet(POI onePOI) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+
+        Fragment DetailFragment = new DetailFragment();
+
+
+        Bundle bundle = new Bundle();
+        //Change the variable to send, it should be house and POI
+        bundle.putString(KEY, onePOI.toString());
+
+        DetailFragment.setArguments(bundle);
+
+        fm.beginTransaction().replace(R.id.fragmentContainer, DetailFragment).addToBackStack("DetailFragment").commit();
+    }
+
 }
