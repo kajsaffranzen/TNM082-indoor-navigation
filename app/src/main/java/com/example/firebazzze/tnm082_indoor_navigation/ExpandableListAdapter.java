@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /*
@@ -96,8 +97,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView textViewItem = (TextView) convertView.findViewById(R.id.expListItem);
+        ImageView imgView = (ImageView) convertView.findViewById(R.id.officialMarkImg);
 
         String text = (String) getChild(groupPosition, childPosition);
+
+        if(text.contains("***")) {
+            text = text.replace("***", "");
+            imgView.setVisibility(View.VISIBLE);
+        }
+        else {
+            imgView.setVisibility(View.INVISIBLE);
+        }
 
         textViewItem.setText(text);
 

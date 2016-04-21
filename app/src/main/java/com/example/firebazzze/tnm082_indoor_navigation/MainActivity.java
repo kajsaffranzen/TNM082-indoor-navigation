@@ -55,23 +55,19 @@ public class MainActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_main);
 
-
-
+        //add the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Navigate to the camera view
         getSupportFragmentManager().popBackStack();
-
         QRFragment fragment = new QRFragment();
-
-
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
-
     }
 
 
+    //to make the fragments work
     public void onFragmentInteraction(Uri uri){
-
     }
 
     @Override
@@ -88,9 +84,10 @@ public class MainActivity extends AppCompatActivity implements
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.menuItemAdminMode:
+                item.setChecked(!item.isChecked());
+                break;
         }
 
         return super.onOptionsItemSelected(item);

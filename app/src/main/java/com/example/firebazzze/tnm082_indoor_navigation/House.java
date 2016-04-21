@@ -80,13 +80,13 @@ public class House {
     }
 
     // Add a new POI to the database
-    public void addPOI(String name, String cat, String desc, int floor){
+    public void addPOI(String name, String cat, String desc, int floor, boolean isOfficial){
 
         Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/" + this.houseName);
 
         Firebase newPOSDBref = DB.child(name);
 
-        POI test = new POI(cat, desc, floor);
+        POI test = new POI(cat, desc, floor, isOfficial);
 
         newPOSDBref.setValue(test);
 

@@ -1,16 +1,12 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.telecom.Call;
 import android.util.Log;
 import android.util.SparseArray;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -39,9 +35,8 @@ public class QRFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String KEY = "housename";
-
-
     private OnFragmentInteractionListener mListener;
 
     CameraSource cameraSource;
@@ -80,15 +75,15 @@ public class QRFragment extends Fragment {
     public void goToListAndSearch(String houseName){
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
-
         Fragment ListAndSearchFragment = new ListAndSearchFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(KEY, houseName);
 
         ListAndSearchFragment.setArguments(bundle);
-
-        fm.beginTransaction().replace(R.id.fragmentContainer, ListAndSearchFragment).addToBackStack("ListAndSearchFragment").commit();
+        fm.beginTransaction().replace(R.id.fragmentContainer, ListAndSearchFragment)
+                .addToBackStack("ListAndSearchFragment")
+                .commit();
     }
 
     @Override
@@ -98,7 +93,6 @@ public class QRFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_qr, container, false);
 
         cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
-
         barcodeInfo = (TextView) view.findViewById(R.id.code_info);
 
         BarcodeDetector barcodeDetector =
@@ -124,7 +118,6 @@ public class QRFragment extends Fragment {
             }
 
             //This is where all the POIS will be read
-            //House house = new House("tappan");
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             }
@@ -147,13 +140,11 @@ public class QRFragment extends Fragment {
                     barcodeInfo.post(new Runnable() {    // Use the post method of the TextView
                         public void run() {
 
-                            //This is where all the POIS will be read
-                            // if (house == null) house = new House(barcodes.valueAt(0).displayValue);
-
                             barcodeInfo.setText(    // Update the TextView
                                     barcodes.valueAt(0).displayValue
                             );
 
+                            //go to next fragment and send text from qr
                             goToListAndSearch( barcodes.valueAt(0).displayValue );
                         }
                     });
@@ -177,8 +168,6 @@ public class QRFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        Log.i("here", "here");
-
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
