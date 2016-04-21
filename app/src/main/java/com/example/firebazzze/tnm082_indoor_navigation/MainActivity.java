@@ -64,8 +64,6 @@ public class MainActivity extends AppCompatActivity implements QRFragment.OnFrag
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
 
-
-
     }
 
 
