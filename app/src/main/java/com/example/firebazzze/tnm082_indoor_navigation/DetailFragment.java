@@ -32,7 +32,7 @@ public class DetailFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private String houseName;
+    private String POIkey;
     TextView txtViewCategory;
 
     private OnFragmentInteractionListener mListener;
@@ -63,7 +63,8 @@ public class DetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            houseName = getArguments().getString(KEY);
+            POIkey = getArguments().getString(KEY);
+            Log.i("TOOBE", POIkey);
         }
 
     }
@@ -90,9 +91,7 @@ public class DetailFragment extends Fragment {
         //Need some new design, ugly as a hairless cat.
         txtViewCategory = (TextView) view.findViewById(R.id.detail_category);
 
-        //Set the textview with the variable
-        txtViewCategory.setText(houseName);
-
+        
 
         return view;
     }

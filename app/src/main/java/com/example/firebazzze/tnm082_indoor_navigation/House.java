@@ -9,7 +9,9 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class represents a house object. A house object has a name and a list of interest points.
@@ -20,6 +22,9 @@ public class House {
 
     private String houseName;
     private List<POI> POIs;
+
+    private Map<String, POI> POIs2;
+
     private OnDataLoaded listener;
 
     // Creates an object for the house with the name of the house and the listof POI
@@ -32,6 +37,7 @@ public class House {
     public House(String houseName){
         this.houseName = houseName;
         POIs = new ArrayList<POI>();
+        POIs2 = new HashMap<String, POI>();
         getData();
         POIs = new ArrayList<POI>();
     }
@@ -53,7 +59,13 @@ public class House {
             public void onChildAdded(DataSnapshot snapshot, String s) {
 
                 POI newPOI = snapshot.getValue(POI.class);
+
+                //Log.i("rille", snapshot.getKey());
+
+                POIs2.put(snapshot.getKey(), newPOI);
+
                 POIs.add(newPOI);
+
 
                 if(listener != null)
                     listener.onLoaded();
@@ -79,6 +91,10 @@ public class House {
 
     }
 
+    public Map<String, POI> getPOIs2(){
+        return this.POIs2;
+    }
+
     // Add a new POI to the database
     public void addPOI(String name, String cat, String desc, int floor, boolean isOfficial){
 
@@ -94,6 +110,7 @@ public class House {
 
     // Returns the name of the house
     public String getHouseName(){
+
         return houseName;
     }
 

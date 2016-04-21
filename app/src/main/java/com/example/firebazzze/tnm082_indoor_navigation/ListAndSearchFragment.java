@@ -139,9 +139,48 @@ public class ListAndSearchFragment extends Fragment {
             @Override
             public void onLoaded() {
                 Log.d("data", "Data is loaded");
-                addData(newHouse);
+                //addData(newHouse);
+                addData2(newHouse);
             }
         });
+    }
+
+    private void addData2(House newHouse){
+
+        for(int i = 0; i < dynamicCategoryList.size(); i++)
+            dynamicCategoryList.get(i).clear();
+
+        int i = 0;
+
+        for(String key : newHouse.getPOIs2().keySet()) {
+
+            boolean flag = false;
+
+            for(int k = 0; k < categoryList.size(); k++) {
+                if(categoryList.get(k).equals( newHouse.getPOIs().get(i).getCategory() ))
+                    flag = true;
+            }
+
+            if(!flag)
+                addCategory( newHouse.getPOIs().get(i).getCategory() );
+
+            Log.i("hejsan", newHouse.getPOIs().get(i).getCategory() +  "======================" + key);
+
+            if(newHouse.getPOIs().get(i).isOfficial())
+                addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), "***" + key );
+            else
+                addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), key );
+
+            myExpandableListAdapter.notifyDataSetChanged();
+
+            i++;
+        }
+
+        for(int k=0; k<dynamicCategoryList.size(); k++){
+
+            interestPointsList.put(categoryList.get(k), dynamicCategoryList.get(k));
+
+        }
     }
 
     private void addData(House newHouse) {
@@ -160,16 +199,23 @@ public class ListAndSearchFragment extends Fragment {
             if(!flag)
                 addCategory( newHouse.getPOIs().get(i).getCategory() );
 
+
             if(newHouse.getPOIs().get(i).isOfficial())
                 addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), "***" + newHouse.getPOIs().get(i).getDescription() );
             else
                 addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), newHouse.getPOIs().get(i).getDescription() );
 
             myExpandableListAdapter.notifyDataSetChanged();
+
+            Log.i("rickards", "" + i);
         }
 
-        for(int k=0; k<dynamicCategoryList.size(); k++)
+        for(int k=0; k<dynamicCategoryList.size(); k++){
+
+
             interestPointsList.put(categoryList.get(k), dynamicCategoryList.get(k));
+
+        }
     }
 
     //add a category to the categoryList and creating a list for the category's interest points
@@ -241,14 +287,20 @@ public class ListAndSearchFragment extends Fragment {
                 //Pass the POI object
                 //Maybe use id instead need to be tested
                 //http://developer.android.com/reference/android/widget/ExpandableListView.OnChildClickListener.html
-                goToDetailFragmet(newHouse);
+                Log.i("transform", "crash");
+
+                String POIkey = dynamicCategoryList.get(groupPosition).get(childPosition);
+
+                POIkey = POIkey.replace("***", "");
+
+                goToDetailFragmet(POIkey);
 
                 return false;
             }
         });
     }
 
-    private void goToDetailFragmet(House ourHouseName) {
+    private void goToDetailFragmet(String POIkey) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
 
         Fragment DetailFragment = new DetailFragment();
@@ -256,7 +308,7 @@ public class ListAndSearchFragment extends Fragment {
 
         Bundle bundle = new Bundle();
         //Change the variable to send, it should be house and POI
-        bundle.putString(KEY, ourHouseName.getHouseName());
+        bundle.putString(KEY, POIkey);
 
         DetailFragment.setArguments(bundle);
 
