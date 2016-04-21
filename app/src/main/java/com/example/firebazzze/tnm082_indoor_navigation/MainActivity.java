@@ -96,7 +96,12 @@ public class MainActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-//    public void onFragmentInteraction(Uri uri) {
-//        //...
-//    }
+    //Used to have a public house
+    public House getHouse(){
+        return house;
+    }
+    public void setHouse(House h){
+        house = h;
+    }
+
 }

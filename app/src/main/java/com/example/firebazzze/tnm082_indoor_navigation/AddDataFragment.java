@@ -4,10 +4,23 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.FocusFinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /*
 * Fragment to create new POI uses House to add a new POI to the House
@@ -15,6 +28,18 @@ import android.view.ViewGroup;
 public class AddDataFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+
+    private ArrayList<String> categoryList;
+
+    private final String CAT_LIST = "catlist";
+
+    private View view;
+
+    private Button createPOI;
+    private EditText POIname, POIdesc;
+
+
+    private String chosenCat;
 
     public AddDataFragment() {
         // Required empty public constructor
@@ -31,14 +56,69 @@ public class AddDataFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             //get bundle here
+            categoryList = getArguments().getStringArrayList(CAT_LIST);
+
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_data, container, false);
+
+        view = inflater.inflate(R.layout.fragment_add_data, container, false);
+
+        fillScroller();
+
+        POIdesc = (EditText) view.findViewById(R.id.POIdesc);
+        POIname = (EditText) view.findViewById(R.id.POIname);
+
+
+        createPOI = (Button) view.findViewById(R.id.createPOI);
+
+        createPOI.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null){
+                    House h = ((MainActivity)getActivity()).getHouse();
+
+                    h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1);
+
+                    Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
+                    POIname.setText("Name");
+                    POIdesc.setText("Description");
+                    chosenCat = null;
+                }
+
+                else
+                    Toast.makeText(getActivity(), "FYLL I ALLA FALT", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+        return view;
+    }
+
+
+
+    public void fillScroller(){
+
+        ListView scroller = (ListView) view.findViewById(R.id.catScroller);
+
+        scroller.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, categoryList));
+
+
+        scroller.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3)
+            {
+                chosenCat = categoryList.get(arg2);
+                Log.i("tester3", chosenCat);
+            }
+        });
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
