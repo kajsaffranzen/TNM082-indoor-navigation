@@ -91,7 +91,6 @@ public class QRFragment extends Fragment {
         fm.beginTransaction().replace(R.id.fragmentContainer, ListAndSearchFragment).addToBackStack("ListAndSearchFragment").commit();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
