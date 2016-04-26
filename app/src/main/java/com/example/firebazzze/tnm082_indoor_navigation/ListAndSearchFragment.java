@@ -12,10 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
@@ -55,9 +57,13 @@ public class ListAndSearchFragment extends Fragment {
     private House newHouse;
 
     private EditText searchField;
-    private ListView listSearch;
     private Button searchInflaterB;
     private Button addPOIBtn;
+
+    private ListView listSearch;
+    private ArrayAdapter<String> searchListAdapter;
+    private List<String> searchResults;
+    private final int maxSearchResults = 10;
 
     // Required empty public constructor
     public ListAndSearchFragment() {
@@ -105,8 +111,17 @@ public class ListAndSearchFragment extends Fragment {
 
         //search field in toolbar
         searchField = (EditText) getActivity().findViewById(R.id.toolbarSearchField);
-
         searchField.setVisibility(View.GONE);
+
+        //List for search results
+        searchResults = new ArrayList<String>();
+        listSearch = (ListView) view.findViewById(R.id.listSearch);
+        searchListAdapter = new ArrayAdapter<String>(getContext(),R.layout.item_layout_search,searchResults);
+        listSearch.setAdapter(searchListAdapter);
+
+        searchResults.add("TEST");
+        searchResults.add("TEST");
+        searchResults.add("TEST");
 
         //search inflater button
         searchInflaterB = (Button) getActivity().findViewById(R.id.searchInflaterButton);
@@ -266,19 +281,27 @@ public class ListAndSearchFragment extends Fragment {
                     return;
                 }
 
+                //searchResults = new ArrayList<String>();
+                searchResults.clear();
+
                 //Loop throught the POIs to find search matches
                 for (String key : newHouse.getPOIs2().keySet()) {
 
                     //compare name
                     if (key.contains(s.toString())) {
                         Log.d("search", "Name match: " + key);
+                        searchResults.add(key.toString());
                     }
 
                     //compare category (else: don't match twice)
                     else if (newHouse.getPOIs2().get(key).getCategory().contains(s.toString())) {
                         Log.d("search", "Cat. match: " + newHouse.getPOIs2().get(key).getCategory());
+                        searchResults.add(key.toString());
                     }
                 }
+
+                listSearch.setVisibility(View.VISIBLE);
+                searchListAdapter.notifyDataSetChanged();
             }
 
             @Override
