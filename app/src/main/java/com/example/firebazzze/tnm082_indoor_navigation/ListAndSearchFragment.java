@@ -103,10 +103,11 @@ public class ListAndSearchFragment extends Fragment {
 
         //search field in toolbar
         searchField = (EditText) getActivity().findViewById(R.id.toolbarSearchField);
-        //searchField.setVisibility(View.VISIBLE);
+        searchField.setVisibility(View.GONE);
 
         //search inflater button
         searchInflaterB = (Button) getActivity().findViewById(R.id.searchInflaterButton);
+        searchInflaterB.setVisibility(View.VISIBLE);
 
         //add poi button
         addPOIBtn = (Button)view.findViewById(R.id.buttoncreatepoi);
@@ -304,9 +305,22 @@ public class ListAndSearchFragment extends Fragment {
                 fm.beginTransaction().replace(R.id.fragmentContainer, addDataFragment).addToBackStack("AddDataFragment").commit();
             }
         });
+
+        //Handle the toolbar search button
+        searchInflaterB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchField.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void goToDetailFragmet(String POIkey) {
+
+        //hide search field and button
+        searchField.setVisibility(View.GONE);
+        searchInflaterB.setVisibility(View.GONE);
+
         FragmentManager fm = getActivity().getSupportFragmentManager();
 
         Fragment DetailFragment = new DetailFragment();
