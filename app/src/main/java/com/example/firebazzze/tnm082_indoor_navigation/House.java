@@ -37,11 +37,13 @@ public class House {
 
     // Creates an object for the house and then gets the data for it
     public House(String houseName){
+
         this.houseName = houseName;
         POIs = new ArrayList<POI>();
         POIs2 = new HashMap<String, POI>();
         getData();
         POIs = new ArrayList<POI>();
+
     }
 
     // Gets the data from the firebase database
@@ -111,11 +113,11 @@ public class House {
 
     }
 
-    //Edit post official value
+    //Edit official value of POI
     public void setOfficial(String POIkey) {
         Firebase DB = new Firebase(DBUrl + this.houseName + "/" + POIkey);
 
-        DB.child("official").setValue("true");
+        DB.child("official").setValue(!POIs2.get(POIkey).getOfficial());
     }
 
     // Returns the name of the house
