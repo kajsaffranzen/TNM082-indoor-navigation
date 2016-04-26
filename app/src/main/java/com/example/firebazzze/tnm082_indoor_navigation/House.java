@@ -9,7 +9,9 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class represents a house object. A house object has a name and a list of interest points.
@@ -20,6 +22,12 @@ public class House {
 
     private String houseName;
     private List<POI> POIs;
+
+    private String DBUrl = "https://test223.firebaseio.com/";
+            //"https://tnm082-indoor.firebaseio.com/";
+
+    private Map<String, POI> POIs2;
+
     private OnDataLoaded listener;
 
     // Creates an object for the house with the name of the house and the listof POI
@@ -32,6 +40,7 @@ public class House {
     public House(String houseName){
         this.houseName = houseName;
         POIs = new ArrayList<POI>();
+        POIs2 = new HashMap<String, POI>();
         getData();
         POIs = new ArrayList<POI>();
     }
@@ -41,7 +50,7 @@ public class House {
 
         //Change this into our database
         //Reference to Database
-        Firebase DB = new Firebase("https://tnm082-indoor.firebaseio.com/" + this.houseName);
+        Firebase DB = new Firebase(DBUrl + this.houseName);
 
         Query queryRef = DB.orderByChild("floor");
         //Eventlistener to listen if the data is changed.
@@ -53,7 +62,11 @@ public class House {
             public void onChildAdded(DataSnapshot snapshot, String s) {
 
                 POI newPOI = snapshot.getValue(POI.class);
+
+                POIs2.put(snapshot.getKey(), newPOI);
+
                 POIs.add(newPOI);
+
 
                 if(listener != null)
                     listener.onLoaded();
@@ -79,6 +92,31 @@ public class House {
 
     }
 
+    //Return the list of POIs
+    public Map<String, POI> getPOIs2(){
+        return this.POIs2;
+    }
+
+    // Add a new POI to the database
+    public void addPOI(String name, String cat, String desc, int floor, boolean official) {
+
+        Firebase DB = new Firebase(DBUrl + this.houseName);
+
+        Firebase newPOSDBref = DB.child(name);
+
+        POI test = new POI(cat, desc, floor, official);
+
+        newPOSDBref.setValue(test);
+
+    }
+
+    //Edit post official value
+    public void setOfficial(String POIkey) {
+        Firebase DB = new Firebase(DBUrl + this.houseName + "/" + POIkey);
+
+        DB.child("official").setValue("true");
+    }
+
     // Returns the name of the house
     public String getHouseName(){
         return houseName;
@@ -87,11 +125,6 @@ public class House {
     // Returns an array of all the POI that exists in the house
     public List<POI> getPOIs(){
         return POIs;
-    }
-
-    // Returns one POI that exists in the house correlating to a specific index
-    public POI getOnePOI(int index) {
-        return POIs.get(index);
     }
 
     //Listener interface if data is loaded

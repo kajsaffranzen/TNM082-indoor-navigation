@@ -1,9 +1,14 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
+
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,6 +18,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -30,101 +36,35 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        QRFragment.OnFragmentInteractionListener,
+        ListAndSearchFragment.OnFragmentInteractionListener,
+        AddDataFragment.OnFragmentInteractionListener {
 
-    //Used to test list and search view
-    Button testListAndSearch;
-
-    CameraSource cameraSource;
-    SurfaceView cameraView;
-    TextView barcodeInfo;
-
-    House house;
+    public House house;
+    public boolean isAdmin = false;
+    public DetailFragment detailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Firebase.setAndroidContext(this);
+
         setContentView(R.layout.activity_main);
 
+        //add the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //QR code stuff -> put this in a class instead
-        setContentView(R.layout.activity_main);
-
-        cameraView = (SurfaceView)findViewById(R.id.camera_view);
-        barcodeInfo = (TextView)findViewById(R.id.code_info);
-
-        BarcodeDetector barcodeDetector =
-                new BarcodeDetector.Builder(this)
-                        .setBarcodeFormats(Barcode.QR_CODE)
-                        .build();
-
-        // TODO: cameraView.getHeight() & cameraView.getWidth()
-        cameraSource = new CameraSource
-                .Builder(this, barcodeDetector)
-                .setRequestedPreviewSize(540, 540)  // get the size from the SurfaceView
-                .build();
-
-        //callback to the surface holder
-        cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                try {
-                    cameraSource.start(cameraView.getHolder());
-                } catch (IOException ie) {
-                    Log.e("CAMERA SOURCE", ie.getMessage());
-                }
-            }
-
-            //This is where all the POIS will be read
-            //House house = new House("tappan");
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            }
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                cameraSource.stop();
-            }
-        });
-
-        barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
-            @Override
-            public void release() {
-            }
-
-            @Override
-            public void receiveDetections(Detector.Detections<Barcode> detections) {
-                final SparseArray<Barcode> barcodes = detections.getDetectedItems();
-
-                if (barcodes.size() != 0) {
-                    barcodeInfo.post(new Runnable() {    // Use the post method of the TextView
-                        public void run() {
-
-                        //This is where all the POIS will be read
-                       // if (house == null) house = new House(barcodes.valueAt(0).displayValue);
-
-                        barcodeInfo.setText(    // Update the TextView
-                                barcodes.valueAt(0).displayValue
-                        );
-
-                        goToListAndSearch( barcodes.valueAt(0).displayValue );
-                        }
-                    });
-                }
-            }
-        });
+        //Navigate to the camera view
+        getSupportFragmentManager().popBackStack();
+        QRFragment fragment = new QRFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
     }
 
-    //go to list and search view
-    public void goToListAndSearch(String houseName){
 
-        Intent i = new Intent(MainActivity.this, ListAndSearchView.class);
-        i.putExtra("HOUSE_NAME", houseName);
-
-        startActivity(i);
+    //to make the fragments work
+    public void onFragmentInteraction(Uri uri){
     }
 
     @Override
@@ -141,11 +81,27 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.menuItemAdminMode:
+                item.setChecked(!item.isChecked());
+                isAdmin = item.isChecked();
+
+                //refresh the detail view in order to show/hide admin button
+                if(detailFragment != null && detailFragment.isAdded())
+                    detailFragment.refreshFragment();
+                else
+                    Log.d("test","check works");
+
+                break;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    //Used to have a public house, Get House
+    public House getHouse(){ return house; }
+
+    //set House
+    public void setHouse(House h){ house = h; }
+
 }

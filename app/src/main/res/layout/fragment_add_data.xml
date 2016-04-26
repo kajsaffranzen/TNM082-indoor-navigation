@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.firebazzze.tnm082_indoor_navigation.AddDataFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <EditText
+        android:id="@+id/POIname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Namn"
+        android:textSize="15pt"
+        android:layout_marginTop="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/POIdesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Beskrivning"
+        android:textSize="15pt"
+        android:layout_marginTop="20px"
+        android:layout_below="@+id/POIname" />
+
+    <TextView
+        android:id="@+id/cat_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Välj kategori"
+        android:textSize="12pt"
+        android:layout_marginTop="30px"
+        android:layout_below="@+id/POIdesc" />
+
+    <ListView
+        android:id="@+id/catScroller"
+        android:scrollbars="vertical"
+        android:divider="@color/dividerColor"
+        android:dividerHeight="10px"
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        android:layout_marginTop="20px"
+        android:textSize="15pt"
+        android:layout_below="@+id/cat_info"></ListView>
+
+    <Button
+        android:id="@+id/createPOI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skapa"
+        android:layout_marginBottom="100px"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>
