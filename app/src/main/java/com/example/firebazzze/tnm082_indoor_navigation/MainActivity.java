@@ -63,9 +63,16 @@ public class MainActivity extends AppCompatActivity implements
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
     }
 
+    //Override the back button when on qr fragment
     @Override
     public void onBackPressed() {
-        moveTaskToBack(true);
+
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+        if (f instanceof ListAndSearchFragment) {//the fragment on which you want to handle your back press
+            super.onBackPressed();
+        }else{
+            moveTaskToBack(true);
+        }
     }
 
     //to make the fragments work
