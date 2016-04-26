@@ -86,8 +86,13 @@ public class AddDataFragment extends Fragment {
                     h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false);
 
                     Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
-                    POIname.setText("Namn");
-                    POIdesc.setText("Beskrivning");
+
+                    //Reset text field
+                    POIname.setText("");
+                    POIdesc.setText("");
+
+                    POIname.setHint("Namn");
+                    POIdesc.setHint("Beskrivning");
                     chosenCat = null;
                 }
 
