@@ -1,5 +1,8 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *  Class for interest points
  */
@@ -9,18 +12,21 @@ public class POI {
     public String description;
     public int floor;
     public boolean official;
+    public List<String> path;
 
     //Default constructor, needed for firebase
     public POI(){
     }
 
     //Constructor for POI
-    public POI(String category, String description, int floor, boolean isOfficial){
+    public POI(String category, String description, int floor, boolean isOfficial, List<String> path){
 
+        this.path = new ArrayList<String>();
         this.category = category;
         this.description = description;
         this.floor = floor;
         this.official = isOfficial;
+        this.path = path;
 
     }
 
@@ -41,5 +47,9 @@ public class POI {
 
     //returns true if POI is official
     public boolean getOfficial() { return official; }
+
+    public List<String> getPath(){
+        return path;
+    }
 
 }

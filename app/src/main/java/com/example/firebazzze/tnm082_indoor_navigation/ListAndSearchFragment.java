@@ -5,12 +5,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.KeyEventCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.Toolbar;
 
 import com.firebase.client.Firebase;
 
@@ -28,13 +31,9 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class ListAndSearchFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String CAT_LIST = "catlist";
     private static final String KEY = "housename";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
     private String houseName;
 
     //used to update list when new data is loaded
@@ -43,7 +42,7 @@ public class ListAndSearchFragment extends Fragment {
     private ExpandableListView myExpandableListView;
     private ExpandableListAdapter myExpandableListAdapter;
 
-    private List<String> categoryList;
+    private ArrayList<String> categoryList;
     private HashMap<String, List<String>> interestPointsList;
     private List<List<String>> dynamicCategoryList;
 
@@ -83,6 +82,11 @@ public class ListAndSearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_and_search, container, false);
 
+
+        //Change the toolbar title to housename
+        ((MainActivity)getActivity()).setToolbarTitle(houseName);
+
+
         categoryList = new ArrayList<String>();
         interestPointsList = new HashMap<String, List<String>>();
 
@@ -91,7 +95,6 @@ public class ListAndSearchFragment extends Fragment {
         myExpandableListView.setAdapter(myExpandableListAdapter);
 
         dynamicCategoryList = new ArrayList<List<String>>();
-
 
         fillListWithData(houseName);
 
@@ -108,13 +111,7 @@ public class ListAndSearchFragment extends Fragment {
                 Fragment addDataFragment = new AddDataFragment();
                 Bundle bundle = new Bundle();
 
-                //TODO: Fullösning tillsvidare...
-                ArrayList<String> temp = new ArrayList<String>();
-
-                for(int i = 0; i < categoryList.size(); i++)
-                    temp.add(categoryList.get(i));
-
-                bundle.putStringArrayList(CAT_LIST, temp);
+                bundle.putStringArrayList(CAT_LIST, categoryList);
 
                 addDataFragment.setArguments(bundle);
                 fm.beginTransaction().replace(R.id.fragmentContainer, addDataFragment).addToBackStack("AddDataFragment").commit();
@@ -168,9 +165,7 @@ public class ListAndSearchFragment extends Fragment {
         }
 
         for(int k=0; k<dynamicCategoryList.size(); k++){
-
             interestPointsList.put(categoryList.get(k), dynamicCategoryList.get(k));
-
         }
     }
 
@@ -265,7 +260,6 @@ public class ListAndSearchFragment extends Fragment {
         //Change the variable to send, it should be house and POI
         bundle.putString(KEY, POIkey);
 
-        //TODO - Change the variable to send, it should be house and POI
         DetailFragment.setArguments(bundle);
 
         fm.beginTransaction().replace(R.id.fragmentContainer, DetailFragment).addToBackStack("DetailFragment").commit();

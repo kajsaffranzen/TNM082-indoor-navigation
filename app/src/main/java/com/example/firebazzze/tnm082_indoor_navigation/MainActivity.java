@@ -63,6 +63,17 @@ public class MainActivity extends AppCompatActivity implements
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
     }
 
+    //Override the back button when on qr fragment
+    @Override
+    public void onBackPressed() {
+
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+        if (!(f instanceof QRFragment)) {//the fragment on which you want to handle your back press
+            super.onBackPressed();
+        }else{
+            moveTaskToBack(true);
+        }
+    }
 
     //to make the fragments work
     public void onFragmentInteraction(Uri uri){
@@ -104,5 +115,10 @@ public class MainActivity extends AppCompatActivity implements
 
     //set House
     public void setHouse(House h){ house = h; }
+
+    public void setToolbarTitle(String s){
+        Toolbar mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        mToolbar.setTitle(s);
+    }
 
 }

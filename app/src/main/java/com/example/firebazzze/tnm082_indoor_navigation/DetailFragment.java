@@ -2,6 +2,7 @@ package com.example.firebazzze.tnm082_indoor_navigation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.gesture.GestureOverlayView;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,9 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -63,7 +70,6 @@ public class DetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             POIkey = getArguments().getString(KEY);
-            Log.i("TOOBE", POIkey);
         }
 
     }
@@ -77,6 +83,18 @@ public class DetailFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
+        //Get the listview
+        ListView lv = (ListView)view.findViewById(R.id.listView);
+
+        //Add the path description from the POI in question and add to the adapter
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                getActivity(),
+                android.R.layout.simple_list_item_1,
+                ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getPath()
+        );
+
+        //Add the adapter with the path to the listview
+        lv.setAdapter(arrayAdapter);
 
         //Need some new design, ugly as a hairless cat.
         txtViewCategory = (TextView) view.findViewById(R.id.detail_category);
