@@ -119,10 +119,6 @@ public class ListAndSearchFragment extends Fragment {
         searchListAdapter = new ArrayAdapter<String>(getContext(),R.layout.item_layout_search,searchResults);
         listSearch.setAdapter(searchListAdapter);
 
-        searchResults.add("TEST");
-        searchResults.add("TEST");
-        searchResults.add("TEST");
-
         //search inflater button
         searchInflaterB = (Button) getActivity().findViewById(R.id.searchInflaterButton);
         searchInflaterB.setVisibility(View.VISIBLE);
@@ -278,35 +274,34 @@ public class ListAndSearchFragment extends Fragment {
                 //string empty, dont search
                 if (s.toString().equals("")) {
                     searchField.setHint("Sök intressepunkt");
+                    listSearch.setVisibility(View.GONE);
+                    myExpandableListView.setVisibility(View.VISIBLE);
                     return;
                 }
 
-                //searchResults = new ArrayList<String>();
                 searchResults.clear();
 
                 //Loop throught the POIs to find search matches
                 for (String key : newHouse.getPOIs2().keySet()) {
 
                     //compare name
-                    if (key.contains(s.toString())) {
-                        Log.d("search", "Name match: " + key);
+                    if (key.toLowerCase().contains(s.toString().toLowerCase())) {
                         searchResults.add(key.toString());
                     }
 
                     //compare category (else: don't match twice)
-                    else if (newHouse.getPOIs2().get(key).getCategory().contains(s.toString())) {
-                        Log.d("search", "Cat. match: " + newHouse.getPOIs2().get(key).getCategory());
+                    else if (newHouse.getPOIs2().get(key).getCategory().toLowerCase().contains(s.toString().toLowerCase())) {
                         searchResults.add(key.toString());
                     }
                 }
 
                 listSearch.setVisibility(View.VISIBLE);
+                myExpandableListView.setVisibility(View.GONE);
                 searchListAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
@@ -338,6 +333,8 @@ public class ListAndSearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 searchField.setVisibility(View.VISIBLE);
+                searchField.setText("");
+
             }
         });
     }
