@@ -96,6 +96,12 @@ public class DetailFragment extends Fragment {
         //TODO: funkar ej att komma åt knappen på alla mobiler
         //Admin-knapp
         makeOfficialButton = (Button) view.findViewById(R.id.makeOfficialButton);
+
+        //Change the text on the button depending on if the POI is official or not
+        if(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getOfficial())
+            makeOfficialButton.setText("Gör inofficiell");
+        else makeOfficialButton.setText("Gör officiell");
+
         makeOfficialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

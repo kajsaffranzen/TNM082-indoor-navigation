@@ -23,8 +23,7 @@ public class House {
     private String houseName;
     private List<POI> POIs;
 
-    private String DBUrl = "https://test223.firebaseio.com/";
-            //"https://tnm082-indoor.firebaseio.com/";
+    private String DBUrl = "https://tnm082-indoor.firebaseio.com/";
 
     private Map<String, POI> POIs2;
 
@@ -38,11 +37,13 @@ public class House {
 
     // Creates an object for the house and then gets the data for it
     public House(String houseName){
+
         this.houseName = houseName;
         POIs = new ArrayList<POI>();
         POIs2 = new HashMap<String, POI>();
         getData();
         POIs = new ArrayList<POI>();
+
     }
 
     // Gets the data from the firebase database
@@ -110,11 +111,11 @@ public class House {
 
     }
 
-    //Edit post official value
+    //Edit official value of POI
     public void setOfficial(String POIkey) {
         Firebase DB = new Firebase(DBUrl + this.houseName + "/" + POIkey);
 
-        DB.child("official").setValue("true");
+        DB.child("official").setValue(!POIs2.get(POIkey).getOfficial());
     }
 
     // Returns the name of the house
