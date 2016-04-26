@@ -23,8 +23,7 @@ public class House {
     private String houseName;
     private List<POI> POIs;
 
-    private String DBUrl = "https://test223.firebaseio.com/";
-            //"https://tnm082-indoor.firebaseio.com/";
+    private String DBUrl = "https://tnm082-indoor.firebaseio.com/";
 
     private Map<String, POI> POIs2;
 
