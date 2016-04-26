@@ -78,22 +78,9 @@ public class DetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
 
-        // Inflate the layout for this fragment
-        GestureOverlayView gov = (GestureOverlayView)view.findViewById(R.id.gestureOverlayView);
-
-        if (gov != null) {
-            gov.setGestureVisible(false);
-        }
-
-        ImageView iv = (ImageView)view.findViewById(R.id.imageView);
-        if (iv != null) {
-            iv.setImageResource(R.drawable.tp5);
-        }
-
         //Need some new design, ugly as a hairless cat.
         txtViewCategory = (TextView) view.findViewById(R.id.detail_category);
 
-        //TODO: funkar ej att komma åt knappen på alla mobiler
         //Admin-knapp
         makeOfficialButton = (Button) view.findViewById(R.id.makeOfficialButton);
 
@@ -140,8 +127,8 @@ public class DetailFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            //throw new RuntimeException(context.toString()
-                    //+ " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
