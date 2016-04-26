@@ -39,7 +39,7 @@ public class ListAndSearchFragment extends Fragment {
     private ExpandableListView myExpandableListView;
     private ExpandableListAdapter myExpandableListAdapter;
 
-    private List<String> categoryList;
+    private ArrayList<String> categoryList;
     private HashMap<String, List<String>> interestPointsList;
     private List<List<String>> dynamicCategoryList;
 
@@ -104,13 +104,7 @@ public class ListAndSearchFragment extends Fragment {
                 Fragment addDataFragment = new AddDataFragment();
                 Bundle bundle = new Bundle();
 
-                //TODO: Fullösning tillsvidare...
-                ArrayList<String> temp = new ArrayList<String>();
-
-                for(int i = 0; i < categoryList.size(); i++)
-                    temp.add(categoryList.get(i));
-
-                bundle.putStringArrayList(CAT_LIST, temp);
+                bundle.putStringArrayList(CAT_LIST, categoryList);
 
                 addDataFragment.setArguments(bundle);
                 fm.beginTransaction().replace(R.id.fragmentContainer, addDataFragment).addToBackStack("AddDataFragment").commit();
