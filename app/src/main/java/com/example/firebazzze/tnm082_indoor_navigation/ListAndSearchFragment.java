@@ -5,11 +5,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 
 import com.firebase.client.Firebase;
@@ -49,6 +52,8 @@ public class ListAndSearchFragment extends Fragment {
 
     private House newHouse;
 
+    private EditText searchField;
+
     // Required empty public constructor
     public ListAndSearchFragment() {
     }
@@ -85,12 +90,13 @@ public class ListAndSearchFragment extends Fragment {
 
         categoryList = new ArrayList<String>();
         interestPointsList = new HashMap<String, List<String>>();
+        dynamicCategoryList = new ArrayList<List<String>>();
 
         myExpandableListView = (ExpandableListView) view.findViewById(R.id.expList);
         myExpandableListAdapter = new ExpandableListAdapter(getActivity(), categoryList, interestPointsList);
         myExpandableListView.setAdapter(myExpandableListAdapter);
 
-        dynamicCategoryList = new ArrayList<List<String>>();
+        searchField = (EditText) view.findViewById(R.id.searchField);
 
 
         fillListWithData(houseName);
@@ -111,7 +117,7 @@ public class ListAndSearchFragment extends Fragment {
                 //TODO: Fullösning tillsvidare...
                 ArrayList<String> temp = new ArrayList<String>();
 
-                for(int i = 0; i < categoryList.size(); i++)
+                for (int i = 0; i < categoryList.size(); i++)
                     temp.add(categoryList.get(i));
 
                 bundle.putStringArrayList(CAT_LIST, temp);
@@ -234,17 +240,14 @@ public class ListAndSearchFragment extends Fragment {
     }
 
     private void setListeners(final House newHouse){
+
+        //Handle onClick for list item
         myExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             //Handle on child click event in expandable list
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
                 //Go to DetailViewIP
-                //Pass the POI object
-                //Maybe use id instead need to be tested
-                //http://developer.android.com/reference/android/widget/ExpandableListView.OnChildClickListener.html
-
-
                 String POIkey = dynamicCategoryList.get(groupPosition).get(childPosition);
 
                 POIkey = POIkey.replace("***", "");
@@ -252,6 +255,33 @@ public class ListAndSearchFragment extends Fragment {
                 goToDetailFragmet(POIkey);
 
                 return false;
+            }
+        });
+
+        //Handle searches
+        searchField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().equals("")){
+                    searchField.setHint("Sök intressepunkt");
+                    return;
+                }
+                
+                for(int i = 0; i < dynamicCategoryList.size(); i++){
+                    for (int k = 0; k < dynamicCategoryList.get(i).size(); k++){
+                        if (dynamicCategoryList.get(i).get(k).contains(s.toString())){
+                            Log.d("sök", "match found" + dynamicCategoryList.get(i).get(k));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
