@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -256,7 +257,7 @@ public class ListAndSearchFragment extends Fragment {
                 //Go to DetailViewIP
                 String POIkey = dynamicCategoryList.get(groupPosition).get(childPosition);
                 POIkey = POIkey.replace("***", "");
-                goToDetailFragmet(POIkey);
+                goToDetailFragment(POIkey);
 
                 return false;
             }
@@ -305,6 +306,16 @@ public class ListAndSearchFragment extends Fragment {
             }
         });
 
+        //Handle onClick for searchList items
+        listSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                //Go to DetailViewIP pass the POI key
+                goToDetailFragment(searchResults.get(position));
+            }
+        });
+
         //Handle add-button clicks
         addPOIBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -339,7 +350,7 @@ public class ListAndSearchFragment extends Fragment {
         });
     }
 
-    private void goToDetailFragmet(String POIkey) {
+    private void goToDetailFragment(String POIkey) {
 
         //hide search field and button
         searchField.setVisibility(View.GONE);
