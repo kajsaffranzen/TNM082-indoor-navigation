@@ -5,7 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.KeyEventCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +82,27 @@ public class ListAndSearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_and_search, container, false);
 
+
+        //Change the toolbar title to housename
         ((MainActivity)getActivity()).setToolbarTitle(houseName);
+
+        //Ignore backpress for this fragment
+        /*ListAndSearchFragment.getView().setOnKeyListener(new View.OnKeyListener(){
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event){
+                Log.i("here", "test");
+                if(event.getAction() == KeyEvent.ACTION_DOWN){
+                    if(keyCode == KeyEvent.KEYCODE_BACK){
+                        Log.i("here", "return true");
+                        return true;
+                    }
+                    Log.i("here", "return false");
+
+                }
+                return false;
+            }
+        });*/
+
 
         categoryList = new ArrayList<String>();
         interestPointsList = new HashMap<String, List<String>>();
@@ -160,9 +182,7 @@ public class ListAndSearchFragment extends Fragment {
         }
 
         for(int k=0; k<dynamicCategoryList.size(); k++){
-
             interestPointsList.put(categoryList.get(k), dynamicCategoryList.get(k));
-
         }
     }
 

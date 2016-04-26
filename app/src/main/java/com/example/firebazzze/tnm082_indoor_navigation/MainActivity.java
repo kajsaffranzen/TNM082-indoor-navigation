@@ -63,6 +63,10 @@ public class MainActivity extends AppCompatActivity implements
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
 
     //to make the fragments work
     public void onFragmentInteraction(Uri uri){
