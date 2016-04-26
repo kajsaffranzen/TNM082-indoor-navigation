@@ -63,8 +63,6 @@ public class House {
 
                 POI newPOI = snapshot.getValue(POI.class);
 
-                //Log.i("rille", snapshot.getKey());
-
                 POIs2.put(snapshot.getKey(), newPOI);
 
                 POIs.add(newPOI);
@@ -94,6 +92,7 @@ public class House {
 
     }
 
+    //Return the list of POIs
     public Map<String, POI> getPOIs2(){
         return this.POIs2;
     }
@@ -111,9 +110,8 @@ public class House {
 
     }
 
-    //Edit post
+    //Edit post official value
     public void setOfficial(String POIkey) {
-
         Firebase DB = new Firebase(DBUrl + this.houseName + "/" + POIkey);
 
         DB.child("official").setValue("true");
@@ -121,19 +119,12 @@ public class House {
 
     // Returns the name of the house
     public String getHouseName(){
-
         return houseName;
     }
 
     // Returns an array of all the POI that exists in the house
     public List<POI> getPOIs(){
         return POIs;
-    }
-
-
-    // Returns one POI that exists in the house correlating to a specific index
-    public POI getOnePOI(int index) {
-        return POIs.get(index);
     }
 
     //Listener interface if data is loaded

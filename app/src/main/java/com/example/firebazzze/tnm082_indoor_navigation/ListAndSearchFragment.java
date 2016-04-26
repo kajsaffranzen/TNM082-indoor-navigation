@@ -73,7 +73,6 @@ public class ListAndSearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             houseName = getArguments().getString(KEY);
-           // mParam1 = getArguments().getString(ARG_PARAM1);
         }
     }
 
@@ -97,8 +96,6 @@ public class ListAndSearchFragment extends Fragment {
         fillListWithData(houseName);
 
         setListeners(newHouse);
-        //getActivity().setTitle(houseName);
-
 
         // add button and add listener for add POI
         Button addPOIBtn = (Button)view.findViewById(R.id.buttoncreatepoi);
@@ -128,26 +125,20 @@ public class ListAndSearchFragment extends Fragment {
     }
 
     private void fillListWithData(String houseName){
-
-        Log.d("test", "string " + houseName + " came through!");
-
         //This is only for testing
         newHouse = new House(houseName);
 
         ((MainActivity)getActivity()).setHouse(newHouse);
 
-        //samesame...
         newHouse.setOnDataLoadedListener(new House.OnDataLoaded() {
             @Override
             public void onLoaded() {
-                Log.d("data", "Data is loaded");
-                //addData(newHouse);
-                addData2(newHouse);
+                addData(newHouse);
             }
         });
     }
 
-    private void addData2(House newHouse){
+    private void addData(House newHouse){
 
         for(int i = 0; i < dynamicCategoryList.size(); i++)
             dynamicCategoryList.get(i).clear();
@@ -177,41 +168,6 @@ public class ListAndSearchFragment extends Fragment {
         }
 
         for(int k=0; k<dynamicCategoryList.size(); k++){
-
-            interestPointsList.put(categoryList.get(k), dynamicCategoryList.get(k));
-
-        }
-    }
-
-    private void addData(House newHouse) {
-
-        for(int i = 0; i < dynamicCategoryList.size(); i++)
-            dynamicCategoryList.get(i).clear();
-
-        for(int i = 0; i < newHouse.getPOIs().size(); i++) {
-            boolean flag = false;
-
-            for(int k = 0; k < categoryList.size(); k++) {
-                if(categoryList.get(k).equals( newHouse.getPOIs().get(i).getCategory() ))
-                    flag = true;
-            }
-
-            if(!flag)
-                addCategory( newHouse.getPOIs().get(i).getCategory() );
-
-
-            if(newHouse.getPOIs().get(i).getOfficial())
-                addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), "***" + newHouse.getPOIs().get(i).getDescription() );
-            else
-                addItemToCategoryByName( newHouse.getPOIs().get(i).getCategory(), newHouse.getPOIs().get(i).getDescription() );
-
-            myExpandableListAdapter.notifyDataSetChanged();
-
-            Log.i("rickards", "" + i);
-        }
-
-        for(int k=0; k<dynamicCategoryList.size(); k++){
-
 
             interestPointsList.put(categoryList.get(k), dynamicCategoryList.get(k));
 
