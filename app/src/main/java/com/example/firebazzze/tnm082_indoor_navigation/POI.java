@@ -1,7 +1,7 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
 /**
- *
+ *  Class for interest points
  */
 public class POI {
 
@@ -10,10 +10,11 @@ public class POI {
     public int floor;
     public boolean official;
 
-
+    //Default constructor, needed for firebase
     public POI(){
     }
 
+    //Constructor for POI
     public POI(String category, String description, int floor, boolean isOfficial){
 
         this.category = category;

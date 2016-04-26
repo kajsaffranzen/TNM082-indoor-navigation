@@ -94,6 +94,7 @@ public class House {
 
     }
 
+    //Return the list of POIs
     public Map<String, POI> getPOIs2(){
         return this.POIs2;
     }
@@ -107,16 +108,12 @@ public class House {
 
         POI test = new POI(cat, desc, floor, isOfficial);
 
-        Log.d("LOL", "" + test.getDescription() + " " + test.getCategory() + " " + test.getFloor()+ " " + test.getOfficial());
-        Log.d("LOL", "" + test);
-
         newPOSDBref.setValue(test);
 
     }
 
-    //Edit post
+    //Edit post official value
     public void setOfficial(String POIkey) {
-
         Firebase DB = new Firebase(DBUrl + this.houseName + "/" + POIkey);
 
         DB.child("official").setValue("true");
@@ -124,19 +121,12 @@ public class House {
 
     // Returns the name of the house
     public String getHouseName(){
-
         return houseName;
     }
 
     // Returns an array of all the POI that exists in the house
     public List<POI> getPOIs(){
         return POIs;
-    }
-
-
-    // Returns one POI that exists in the house correlating to a specific index
-    public POI getOnePOI(int index) {
-        return POIs.get(index);
     }
 
     //Listener interface if data is loaded
