@@ -2,24 +2,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="100px"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.CreatePOIFragment">
 
-    <LinearLayout
-        android:paddingTop="100px"
+    <ListView
+        android:id="@+id/listSearch"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="50dp">
-
-        <!--Todo - remoev this?-->
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_marginTop="100px"></ListView>
 
     <ExpandableListView
         android:id="@+id/expList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="300px" />
+        android:layout_marginTop="100px"
+        android:layout_height="524dp"/>
 
     <Button
         android:id="@+id/buttoncreatepoi"
