@@ -86,23 +86,6 @@ public class ListAndSearchFragment extends Fragment {
         //Change the toolbar title to housename
         ((MainActivity)getActivity()).setToolbarTitle(houseName);
 
-        //Ignore backpress for this fragment
-        /*ListAndSearchFragment.getView().setOnKeyListener(new View.OnKeyListener(){
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event){
-                Log.i("here", "test");
-                if(event.getAction() == KeyEvent.ACTION_DOWN){
-                    if(keyCode == KeyEvent.KEYCODE_BACK){
-                        Log.i("here", "return true");
-                        return true;
-                    }
-                    Log.i("here", "return false");
-
-                }
-                return false;
-            }
-        });*/
-
 
         categoryList = new ArrayList<String>();
         interestPointsList = new HashMap<String, List<String>>();
