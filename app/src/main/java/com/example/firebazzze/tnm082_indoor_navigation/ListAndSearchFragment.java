@@ -28,13 +28,9 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class ListAndSearchFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String CAT_LIST = "catlist";
     private static final String KEY = "housename";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
     private String houseName;
 
     //used to update list when new data is loaded
@@ -265,7 +261,6 @@ public class ListAndSearchFragment extends Fragment {
         //Change the variable to send, it should be house and POI
         bundle.putString(KEY, POIkey);
 
-        //TODO - Change the variable to send, it should be house and POI
         DetailFragment.setArguments(bundle);
 
         fm.beginTransaction().replace(R.id.fragmentContainer, DetailFragment).addToBackStack("DetailFragment").commit();

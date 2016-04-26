@@ -64,6 +64,10 @@ public class House {
 
                 POI newPOI = snapshot.getValue(POI.class);
 
+                //Needed since firebase expects that we add the key
+                //"path" to the first element of the array, really stupid
+                newPOI.getPath().remove(0);
+
                 POIs2.put(snapshot.getKey(), newPOI);
 
                 POIs.add(newPOI);
@@ -105,7 +109,14 @@ public class House {
 
         Firebase newPOSDBref = DB.child(name);
 
-        POI test = new POI(cat, desc, floor, official);
+        //TODO: ugly solution for now
+
+        List<String> tester = new ArrayList<String>();
+
+        tester.add("hej");
+        tester.add("hej2");
+
+        POI test = new POI(cat, desc, floor, official, tester);
 
         newPOSDBref.setValue(test);
 

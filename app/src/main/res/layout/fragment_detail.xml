@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/listView"
             android:layout_gravity="center_horizontal"
+
             android:scrollbars="vertical" />
         <TextView
             android:layout_width="match_parent"
