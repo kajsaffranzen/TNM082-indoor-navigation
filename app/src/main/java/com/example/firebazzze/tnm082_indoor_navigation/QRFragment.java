@@ -88,7 +88,7 @@ public class QRFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_qr, container, false);
-        
+
 
         cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
         barcodeInfo = (TextView) view.findViewById(R.id.code_info);

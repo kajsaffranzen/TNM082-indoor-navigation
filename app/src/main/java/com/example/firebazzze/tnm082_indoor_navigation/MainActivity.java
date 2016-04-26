@@ -39,7 +39,8 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity implements
         QRFragment.OnFragmentInteractionListener,
         ListAndSearchFragment.OnFragmentInteractionListener,
-        AddDataFragment.OnFragmentInteractionListener {
+        AddDataFragment.OnFragmentInteractionListener,
+        DetailFragment.OnFragmentInteractionListener{
 
     public House house;
     public boolean isAdmin = false;
