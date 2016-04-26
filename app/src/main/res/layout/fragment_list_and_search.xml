@@ -12,13 +12,9 @@
         android:orientation="vertical"
         android:padding="50dp">
 
-        <EditText
-            android:id="@+id/searchField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="sök intressepunkt"/>
-
+        <!--Todo - remoev this?-->
     </LinearLayout>
+
     <ExpandableListView
         android:id="@+id/expList"
         android:layout_width="match_parent"
@@ -31,5 +27,6 @@
         android:layout_height="wrap_content"
         android:text="Skapa Intressepunkt"
         android:layout_gravity="center_horizontal|bottom" />
+
 
 </FrameLayout>

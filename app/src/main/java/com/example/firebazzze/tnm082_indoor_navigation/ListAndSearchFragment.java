@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -53,6 +54,8 @@ public class ListAndSearchFragment extends Fragment {
     private House newHouse;
 
     private EditText searchField;
+    private Button searchInflaterB;
+    private Button addPOIBtn;
 
     // Required empty public constructor
     public ListAndSearchFragment() {
@@ -88,44 +91,29 @@ public class ListAndSearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_and_search, container, false);
 
+        //lists for handling names/categories
         categoryList = new ArrayList<String>();
         interestPointsList = new HashMap<String, List<String>>();
         dynamicCategoryList = new ArrayList<List<String>>();
 
+        //Expandable list
         myExpandableListView = (ExpandableListView) view.findViewById(R.id.expList);
         myExpandableListAdapter = new ExpandableListAdapter(getActivity(), categoryList, interestPointsList);
         myExpandableListView.setAdapter(myExpandableListAdapter);
 
-        searchField = (EditText) view.findViewById(R.id.searchField);
+        //search field in toolbar
+        searchField = (EditText) getActivity().findViewById(R.id.toolbarSearchField);
+        //searchField.setVisibility(View.VISIBLE);
 
+        //search inflater button
+        searchInflaterB = (Button) getActivity().findViewById(R.id.searchInflaterButton);
+
+        //add poi button
+        addPOIBtn = (Button)view.findViewById(R.id.buttoncreatepoi);
 
         fillListWithData(houseName);
-
         setListeners(newHouse);
 
-        // add button and add listener for add POI
-        Button addPOIBtn = (Button)view.findViewById(R.id.buttoncreatepoi);
-        addPOIBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-
-                Fragment addDataFragment = new AddDataFragment();
-                Bundle bundle = new Bundle();
-
-                //TODO: Fullösning tillsvidare...
-                ArrayList<String> temp = new ArrayList<String>();
-
-                for (int i = 0; i < categoryList.size(); i++)
-                    temp.add(categoryList.get(i));
-
-                bundle.putStringArrayList(CAT_LIST, temp);
-
-                addDataFragment.setArguments(bundle);
-                fm.beginTransaction().replace(R.id.fragmentContainer, addDataFragment).addToBackStack("AddDataFragment").commit();
-            }
-        });
 
         return view;
     }
@@ -247,11 +235,12 @@ public class ListAndSearchFragment extends Fragment {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
+                //hide search field
+                searchField.setVisibility(View.GONE);
+
                 //Go to DetailViewIP
                 String POIkey = dynamicCategoryList.get(groupPosition).get(childPosition);
-
                 POIkey = POIkey.replace("***", "");
-
                 goToDetailFragmet(POIkey);
 
                 return false;
@@ -265,16 +254,24 @@ public class ListAndSearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                //string empty, dont search
                 if(s.toString().equals("")){
                     searchField.setHint("Sök intressepunkt");
                     return;
                 }
-                
-                for(int i = 0; i < dynamicCategoryList.size(); i++){
-                    for (int k = 0; k < dynamicCategoryList.get(i).size(); k++){
-                        if (dynamicCategoryList.get(i).get(k).contains(s.toString())){
-                            Log.d("sök", "match found" + dynamicCategoryList.get(i).get(k));
-                        }
+
+                //Loop throught the POIs to find search matches
+                for(String key : newHouse.getPOIs2().keySet()) {
+
+                    //compare name
+                    if(key.contains(s.toString())) {
+                        Log.d("search", "Name match: " + key);
+                    }
+
+                    //compare category (else: don't match twice)
+                    else if(newHouse.getPOIs2().get(key).getCategory().contains(s.toString())) {
+                        Log.d("search", "Cat. match: " + newHouse.getPOIs2().get(key).getCategory());
                     }
                 }
             }
@@ -282,6 +279,29 @@ public class ListAndSearchFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        //Handle add-button clicks
+        addPOIBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+
+                Fragment addDataFragment = new AddDataFragment();
+                Bundle bundle = new Bundle();
+
+                //TODO: Fullösning tillsvidare...
+                ArrayList<String> temp = new ArrayList<String>();
+
+                for (int i = 0; i < categoryList.size(); i++)
+                    temp.add(categoryList.get(i));
+
+                bundle.putStringArrayList(CAT_LIST, temp);
+
+                addDataFragment.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.fragmentContainer, addDataFragment).addToBackStack("AddDataFragment").commit();
             }
         });
     }
