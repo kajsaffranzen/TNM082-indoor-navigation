@@ -105,4 +105,9 @@ public class MainActivity extends AppCompatActivity implements
     //set House
     public void setHouse(House h){ house = h; }
 
+    public void setToolbarTitle(String s){
+        Toolbar mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        mToolbar.setTitle(s);
+    }
+
 }
