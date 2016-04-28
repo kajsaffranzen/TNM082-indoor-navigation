@@ -12,16 +12,43 @@
         android:layout_marginRight="30dp"
         android:visibility="gone"></ListView>
 
-    <ExpandableListView
-        android:id="@+id/expList"
+    <ProgressBar
+        android:id="@+id/loadingPanel"
+        android:layout_width="92dp"
+        android:layout_height="92dp"
+        android:layout_gravity="center"
+        android:indeterminate="true" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Intressepunkter"
+            android:textSize="12pt"
+            android:textColor="@color/infoTxt"
+            android:gravity="center"
+            android:id="@+id/infoText"/>
+
+        <ExpandableListView
+            android:id="@+id/expList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dp"
+            android:childDivider="#EDEDED"/>
+    </LinearLayout>
 
     <Button
         android:id="@+id/buttoncreatepoi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Skapa Intressepunkt"
-        android:layout_gravity="center_horizontal|bottom" />
-
+        android:layout_width="@dimen/btn_size_big"
+        android:layout_height="@dimen/btn_size_big"
+        android:background="@drawable/addpoiimg"
+        android:width="@dimen/btn_size_big"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="15dp"/>
 </FrameLayout>

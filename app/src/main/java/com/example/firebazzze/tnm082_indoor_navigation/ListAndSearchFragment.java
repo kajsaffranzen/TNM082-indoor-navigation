@@ -5,11 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.KeyEventCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+
 import android.widget.ProgressBar;
 import android.widget.ListView;
-import android.widget.Toolbar;
-
-import com.firebase.client.Firebase;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +40,7 @@ public class ListAndSearchFragment extends Fragment {
 
     private String houseName;
 
-    ProgressBar loadingPanel;
+    private ProgressBar loadingPanel;
 
     //used to update list when new data is loaded
     private OnFragmentInteractionListener mListener;
@@ -63,6 +59,7 @@ public class ListAndSearchFragment extends Fragment {
     private Button addPOIBtn;
 
     private ListView listSearch;
+    private TextView infoText;
     private ArrayAdapter<String> searchListAdapter;
     private List<String> searchResults;
     private final int maxSearchResults = 10;
@@ -101,6 +98,7 @@ public class ListAndSearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_and_search, container, false);
 
+        loadingPanel = (ProgressBar)view.findViewById(R.id.loadingPanel);
 
         //Change the toolbar title to housename
         ((MainActivity)getActivity()).setToolbarTitle(houseName);
@@ -123,6 +121,9 @@ public class ListAndSearchFragment extends Fragment {
         listSearch = (ListView) view.findViewById(R.id.listSearch);
         searchListAdapter = new ArrayAdapter<String>(getContext(),R.layout.item_layout_search,searchResults);
         listSearch.setAdapter(searchListAdapter);
+
+        // textview with infotext
+        infoText = (TextView) view.findViewById(R.id.infoText);
 
         //search inflater button
         searchInflaterB = (Button) getActivity().findViewById(R.id.searchInflaterButton);
@@ -147,8 +148,10 @@ public class ListAndSearchFragment extends Fragment {
             @Override
             public void onLoaded() {
                 addData(newHouse);
+                loadingPanel.setVisibility(View.GONE);
             }
         });
+
     }
 
     private void addData(House newHouse){
@@ -269,6 +272,7 @@ public class ListAndSearchFragment extends Fragment {
                 if (s.toString().equals("")) {
                     searchField.setHint("Sök intressepunkt");
                     listSearch.setVisibility(View.GONE);
+                    infoText.setVisibility(View.GONE);
                     myExpandableListView.setVisibility(View.VISIBLE);
                     return;
                 }

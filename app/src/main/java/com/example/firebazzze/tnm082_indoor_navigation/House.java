@@ -100,7 +100,7 @@ public class House {
     }
 
     // Add a new POI to the database
-    public void addPOI(String name, String cat, String desc, int floor, boolean official) {
+    public void addPOI(String name, String cat, String desc, int floor, boolean official, List<String> path) {
 
         Firebase DB = new Firebase(DBUrl + this.houseName);
 
@@ -108,12 +108,7 @@ public class House {
 
         //TODO: ugly solution for now
 
-        List<String> tester = new ArrayList<String>();
-
-        tester.add("hej");
-        tester.add("hej2");
-
-        POI test = new POI(cat, desc, floor, official, tester);
+        POI test = new POI(cat, desc, floor, official, path);
 
         newPOSDBref.setValue(test);
 
