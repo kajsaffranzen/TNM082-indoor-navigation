@@ -79,17 +79,14 @@ public class House {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override public void onCancelled(FirebaseError error) { }
@@ -147,4 +144,7 @@ public class House {
     public void setOnDataLoadedListener(OnDataLoaded listener){
         this.listener = listener;
     }
+
+    //get house name
+    public String getName() { return this.houseName; }
 }

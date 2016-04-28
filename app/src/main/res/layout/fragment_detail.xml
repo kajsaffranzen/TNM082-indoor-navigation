@@ -7,28 +7,86 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="40dp">
 
-        <!--admin button-->
-        <Button
-            android:id="@+id/makeOfficialButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Gör officiell"/>
-
-        <ListView
+        <RelativeLayout
+            android:id="@+id/detailOfficialButtonLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/listView"
-            android:layout_gravity="center_horizontal"
+            android:paddingBottom="20dp">
 
-            android:scrollbars="vertical" />
-        <TextView
+            <Button
+                android:id="@+id/makeOfficialButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gör officiell"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_category"/>
+            android:orientation="vertical"
+            android:paddingBottom="30dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hitta till"
+                android:id="@+id/detailFindText"
+                android:layout_gravity="center_horizontal"
+                android:textSize="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/detailPoiNameText"
+                android:layout_gravity="center_horizontal"
+                android:textSize="50dp"
+                android:textColor="#000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/detailPoiDescriptionText"
+                android:layout_gravity="center_horizontal"
+                android:textSize="20dp"
+                android:textColor="#000000"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#e6e6e6">
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="15dp">
+
+                <ImageButton
+                    android:id="@+id/detailDoneButton"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/path_done_button"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>

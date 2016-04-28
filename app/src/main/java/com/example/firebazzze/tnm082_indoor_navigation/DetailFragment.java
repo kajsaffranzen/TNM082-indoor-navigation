@@ -14,13 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -37,11 +40,16 @@ public class DetailFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private String POIkey;
-    TextView txtViewCategory;
 
     private OnFragmentInteractionListener mListener;
 
+    //GUI Elements
     private Button makeOfficialButton;
+    private ImageButton doneButton;
+    private TextView poiName;
+    private TextView poiDescription;
+    private TextView poiFindText;
+    private RelativeLayout offRelLay;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -77,51 +85,89 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        //pass to main activity
-        ((MainActivity)getActivity()).detailFragment = this;
-
+        //inflate view
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        //Get the listview
+        //pass fragment to main activity
+        ((MainActivity)getActivity()).detailFragment = this;
+
+        //set toolbar title
+        try {
+            ((MainActivity) getActivity()).setToolbarTitle(((MainActivity) getActivity()).getHouse().getHouseName());
+        } catch (Exception err) {
+            Log.d("error", "OnCreateView get stuff from main activity" + err.getMessage());
+        }
+
+        //GUI Elements
+        poiName = (TextView)view.findViewById(R.id.detailPoiNameText);
+        poiDescription = (TextView)view.findViewById(R.id.detailPoiDescriptionText);
+        poiFindText = (TextView)view.findViewById(R.id.detailFindText);
+
+        makeOfficialButton = (Button) view.findViewById(R.id.makeOfficialButton);
+        doneButton = (ImageButton) view.findViewById(R.id.detailDoneButton);
+
         ListView lv = (ListView)view.findViewById(R.id.listView);
+
+        offRelLay = (RelativeLayout)view.findViewById(R.id.detailOfficialButtonLayout);
+
+        //get properties from the poiList and set text
+        try {
+            poiFindText.setText("Hitta till " + ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getCategory());
+            poiName.setText(POIkey);
+            poiDescription.setText(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getDescription());
+        } catch(Exception err) {
+            Log.d("error", "OnCreateView get poi stuff " + err.getMessage());
+        }
+
 
         //Add the path description from the POI in question and add to the adapter
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 getActivity(),
-                android.R.layout.simple_list_item_1,
+                //android.R.layout.simple_list_item_1,
+                R.layout.path_list_item_layout,
                 ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getPath()
         );
-
-        //Add the adapter with the path to the listview
         lv.setAdapter(arrayAdapter);
-
-        //Need some new design, ugly as a hairless cat.
-        txtViewCategory = (TextView) view.findViewById(R.id.detail_category);
-
-        //Admin-knapp
-        makeOfficialButton = (Button) view.findViewById(R.id.makeOfficialButton);
 
         //Change the text on the button depending on if the POI is official or not
         if(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getOfficial())
             makeOfficialButton.setText("Gör inofficiell");
         else makeOfficialButton.setText("Gör officiell");
 
+        //show "make official button visible if user is admin
+        if( ((MainActivity)getActivity()).isAdmin ) {
+            offRelLay.setVisibility(View.VISIBLE);
+            makeOfficialButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            offRelLay.setVisibility(View.GONE);
+            makeOfficialButton.setVisibility(View.GONE);
+        }
+
+        //add listeners to buttons ect
+        setListeners();
+
+        return view;
+    }
+
+    private void setListeners() {
+
+        //update official in database whn button is clicked
         makeOfficialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //TODO - updatera databasen med official-Tagg
                 ((MainActivity)getActivity()).getHouse().setOfficial(POIkey);
             }
         });
 
-        if( ((MainActivity)getActivity()).isAdmin )
-            makeOfficialButton.setVisibility(View.VISIBLE);
-        else
-            makeOfficialButton.setVisibility(View.INVISIBLE);
+        //Done button
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Todo - Define what happens when done button is clicked
+            }
+        });
 
-        return view;
     }
 
     public void refreshFragment() {

@@ -4,28 +4,18 @@
     android:layout_height="match_parent"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.CreatePOIFragment">
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/listSearch"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="50dp">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:visibility="gone"></ListView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sök"
-            android:gravity="center"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
     <ExpandableListView
         android:id="@+id/expList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="300px" />
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/buttoncreatepoi"
