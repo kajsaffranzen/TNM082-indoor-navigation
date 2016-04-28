@@ -90,8 +90,11 @@ public class QRFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_qr, container, false);
 
         ((MainActivity)getActivity()).setToolbarTitle("TNM082-indoor-navigation");
+
+        String hus = "test";
+        goToListAndSearch(hus);
         
-        cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
+        /*cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
         barcodeInfo = (TextView) view.findViewById(R.id.code_info);
 
         BarcodeDetector barcodeDetector =
@@ -150,7 +153,7 @@ public class QRFragment extends Fragment {
                     });
                 }
             }
-        });
+        });*/
 
         // Inflate the layout for this fragment
         return view;
