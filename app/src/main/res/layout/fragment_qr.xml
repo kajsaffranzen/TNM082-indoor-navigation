@@ -17,33 +17,33 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="20dp"
-        android:id="@+id/focusImage"
-        android:src="@drawable/focus_square"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="20dp"
+            android:id="@+id/focusImage"
+            android:src="@drawable/focus_square"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/camera_view"
-        android:layout_gravity="center_horizontal"
-        android:textColor="#8C8C8C"
-        android:textSize="35sp"
-        android:text="Skanna din QR-kod"
-        android:id="@+id/infoTxt"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/camera_view"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#8C8C8C"
+            android:textSize="35sp"
+            android:text="Skanna din QR-kod"
+            android:id="@+id/infoTxt"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/infoTxt"
-        android:layout_gravity="center_horizontal"
-        android:textColor="#8C8C8C"
-        android:textSize="20sp"
-        android:text="Nothing to read."
-        android:id="@+id/code_info" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/infoTxt"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#8C8C8C"
+            android:textSize="20sp"
+            android:text="Nothing to read."
+            android:id="@+id/code_info" />
     </LinearLayout>
 
 </FrameLayout>

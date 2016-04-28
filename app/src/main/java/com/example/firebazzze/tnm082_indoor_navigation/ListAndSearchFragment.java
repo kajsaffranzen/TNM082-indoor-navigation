@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ProgressBar;
 import android.widget.Toolbar;
 
 import com.firebase.client.Firebase;
@@ -35,6 +36,8 @@ public class ListAndSearchFragment extends Fragment {
     private static final String KEY = "housename";
 
     private String houseName;
+
+    ProgressBar loadingPanel;
 
     //used to update list when new data is loaded
     private OnFragmentInteractionListener mListener;
