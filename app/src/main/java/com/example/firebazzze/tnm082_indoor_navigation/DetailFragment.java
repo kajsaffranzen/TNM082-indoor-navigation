@@ -108,8 +108,6 @@ public class DetailFragment extends Fragment {
             makeOfficialButton.setText("Gör inofficiell");
         else makeOfficialButton.setText("Gör officiell");
 
-        Log.i("test2", "here i come4");
-
         makeOfficialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

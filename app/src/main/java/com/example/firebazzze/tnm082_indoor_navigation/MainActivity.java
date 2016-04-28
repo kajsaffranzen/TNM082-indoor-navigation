@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
-        if (f instanceof ListAndSearchFragment) {//the fragment on which you want to handle your back press
+        if (!(f instanceof QRFragment)) {//the fragment on which you want to handle your back press
             super.onBackPressed();
         }else{
             moveTaskToBack(true);
