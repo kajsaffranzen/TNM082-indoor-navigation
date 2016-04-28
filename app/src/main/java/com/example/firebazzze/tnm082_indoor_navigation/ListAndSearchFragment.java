@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -338,8 +339,18 @@ public class ListAndSearchFragment extends Fragment {
                 searchField.setVisibility(View.VISIBLE);
                 searchField.setText("");
 
+                //set focus in search field and pop up keyboard
+                showSoftKeyboard( searchField );
             }
         });
+    }
+
+    //Show keyboard
+    private void showSoftKeyboard(View view){
+        if(view.requestFocus()){
+            InputMethodManager imm =(InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view,InputMethodManager.SHOW_IMPLICIT);
+        }
     }
 
     //Go to Detail view and send stuff
