@@ -2,39 +2,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="200px"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.QRFragment">
 
     <!-- TODO: Update blank fragment layout -->
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
     <SurfaceView
-        android:layout_width="540px"
-        android:layout_height="540px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/camera_view"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true" />
 
-
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/camera_view"
-        android:layout_marginTop="15px"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/colorQRText"
-        android:textSize="35sp"
-        android:text="Skanna din QR-kod"
-        android:id="@+id/infoTxt"/>
+        android:orientation="vertical"
+        android:layout_gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="20dp"
+            android:id="@+id/focusImage"
+            android:src="@drawable/focus_square"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/infoTxt"
-        android:layout_centerHorizontal="true"
-        android:textSize="20sp"
-        android:text="Nothing to read."
-        android:id="@+id/code_info" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/camera_view"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#8C8C8C"
+            android:textSize="35sp"
+            android:text="Skanna din QR-kod"
+            android:id="@+id/infoTxt"/>
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/infoTxt"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#8C8C8C"
+            android:textSize="20sp"
+            android:text="Nothing to read."
+            android:id="@+id/code_info" />
+    </LinearLayout>
+
 </FrameLayout>
