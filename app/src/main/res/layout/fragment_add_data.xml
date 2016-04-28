@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/detail_margin"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.AddDataFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -9,37 +10,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lägg till ny intressepunkt"
-        android:textSize="13pt"
+        android:textSize="11pt"
         android:textColor="@color/infoTxt"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40px"/>
+        android:layout_centerHorizontal="true" />
 
-    <RelativeLayout
+    <EditText
+        android:id="@+id/POIname"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/detail_margin">
-
-        <EditText
-            android:id="@+id/POIname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Namn"
-            android:textSize="12pt"
-            android:backgroundTint="@color/editTxtLine"
-            android:textColor="@color/colorQRText"
-            android:layout_marginTop="60dp"
-            android:layout_alignParentLeft="true" />
-
-        <EditText
-            android:id="@+id/POIdesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Beskrivning"
-            android:textSize="12pt"
-            android:backgroundTint="@color/editTxtLine"
-            android:textColor="@color/colorQRText"
-            android:layout_marginTop="30px"
-            android:layout_below="@+id/POIname" />
+        android:layout_height="wrap_content"
+        android:hint="Namn"
+        android:textSize="12pt"
+        android:backgroundTint="@color/editTxtLine"
+        android:textColorLink="@color/editTxtLine"
+        android:textColor="@color/colorQRText"
+        android:layout_marginTop="60dp"
+        android:layout_alignParentLeft="true"
+        />
 
         <TextView
             android:id="@+id/cat_info"
@@ -50,17 +36,7 @@
             android:backgroundTint="@color/editTxtLine"
             android:textColor="@color/colorQRText"
             android:layout_marginTop="30px"
-            android:layout_below="@+id/POIdesc" />
-        <!--<ListView
-            android:id="@+id/catScroller"
-            android:scrollbars="vertical"
-            android:divider="@color/dividerColor"
-            android:dividerHeight="10px"
-            android:layout_width="match_parent"
-            android:layout_height="100px"
-            android:layout_marginTop="20px"
-            android:textSize="15pt"
-            android:layout_below="@+id/cat_info"/>-->
+            android:layout_below="@+id/POIname" />
 
         <Spinner
             android:id="@+id/catSpinner"
@@ -73,23 +49,44 @@
             android:drawSelectorOnTop="false"
             ></Spinner>
 
-    </RelativeLayout>
+    <EditText
+        android:id="@+id/POIpath"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Vägbeskrivning"
+        android:textSize="12pt"
+        android:backgroundTint="@color/editTxtLine"
+        android:textColor="@color/colorQRText"
+        android:layout_marginTop="30px"
+        android:layout_below="@+id/catSpinner" />
 
+    <Button
+        android:id="@+id/addPath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:layout_below="@+id/catSpinner"
+        android:layout_alignRight="@+id/POIpath"/>
 
+    <EditText
+        android:id="@+id/POIdesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Beskrivning"
+        android:textSize="12pt"
+        android:backgroundTint="@color/editTxtLine"
+        android:textColor="@color/colorQRText"
+        android:layout_marginTop="30px"
+        android:layout_below="@+id/POIpath" />
 
-
-
-
-
-
-
-    <!--Button
+    <Button
         android:id="@+id/createPOI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Skapa"
         android:layout_marginBottom="100px"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/-->
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/POIdesc"/>
 
 </RelativeLayout>

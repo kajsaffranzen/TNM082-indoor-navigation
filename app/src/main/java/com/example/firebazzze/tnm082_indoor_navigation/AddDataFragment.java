@@ -39,8 +39,10 @@ public class AddDataFragment extends Fragment {
 
     private View view;
 
-    private Button createPOI;
-    private EditText POIname, POIdesc;
+    private Button createPOI, addPath;
+    private EditText POIname, POIdesc, POIpath;
+
+    private int pathCounter;
 
 
     private String chosenCat;
@@ -71,11 +73,19 @@ public class AddDataFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add_data, container, false);
 
+        //((MainActivity)getActivity()).setToolbarTitle("Täppan");
+
         fillScroller();
 
         POIdesc = (EditText) view.findViewById(R.id.POIdesc);
         POIname = (EditText) view.findViewById(R.id.POIname);
+
         //createPOI = (Button) view.findViewById(R.id.createPOI);
+        POIpath = (EditText) view.findViewById(R.id.POIpath);
+        addPath = (Button) view.findViewById(R.id.addPath);
+        createPOI = (Button) view.findViewById(R.id.createPOI);
+
+
 
         //add a new POI to firebase, checks if the user has done it right or not
         /*createPOI.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +129,8 @@ public class AddDataFragment extends Fragment {
         //getString from category
         //scroller.getSelectedItem().toString();
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
