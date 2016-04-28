@@ -12,6 +12,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.vision.CameraSource;
@@ -88,6 +90,12 @@ public class QRFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_qr, container, false);
+
+        //Hide search field and button in toolbar
+        EditText tBarSearchField = (EditText) getActivity().findViewById(R.id.toolbarSearchField);
+        Button tBarSearchButton = (Button) getActivity().findViewById(R.id.searchInflaterButton);
+        tBarSearchField.setVisibility(View.GONE);
+        tBarSearchButton.setVisibility(View.GONE);
 
         ((MainActivity)getActivity()).setToolbarTitle("TNM082-indoor-navigation");
         

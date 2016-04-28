@@ -6,13 +6,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.KeyEventCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.Toolbar;
 
 import com.firebase.client.Firebase;
@@ -47,6 +53,15 @@ public class ListAndSearchFragment extends Fragment {
     private List<List<String>> dynamicCategoryList;
 
     private House newHouse;
+
+    private EditText searchField;
+    private Button searchInflaterB;
+    private Button addPOIBtn;
+
+    private ListView listSearch;
+    private ArrayAdapter<String> searchListAdapter;
+    private List<String> searchResults;
+    private final int maxSearchResults = 10;
 
     // Required empty public constructor
     public ListAndSearchFragment() {
@@ -89,34 +104,31 @@ public class ListAndSearchFragment extends Fragment {
 
         categoryList = new ArrayList<String>();
         interestPointsList = new HashMap<String, List<String>>();
+        dynamicCategoryList = new ArrayList<List<String>>();
 
         myExpandableListView = (ExpandableListView) view.findViewById(R.id.expList);
         myExpandableListAdapter = new ExpandableListAdapter(getActivity(), categoryList, interestPointsList);
         myExpandableListView.setAdapter(myExpandableListAdapter);
 
-        dynamicCategoryList = new ArrayList<List<String>>();
+        //search field in toolbar
+        searchField = (EditText) getActivity().findViewById(R.id.toolbarSearchField);
+        searchField.setVisibility(View.GONE);
+
+        //List for search results
+        searchResults = new ArrayList<String>();
+        listSearch = (ListView) view.findViewById(R.id.listSearch);
+        searchListAdapter = new ArrayAdapter<String>(getContext(),R.layout.item_layout_search,searchResults);
+        listSearch.setAdapter(searchListAdapter);
+
+        //search inflater button
+        searchInflaterB = (Button) getActivity().findViewById(R.id.searchInflaterButton);
+        searchInflaterB.setVisibility(View.VISIBLE);
+
+        //add poi button
+        addPOIBtn = (Button)view.findViewById(R.id.buttoncreatepoi);
 
         fillListWithData(houseName);
-
         setListeners(newHouse);
-
-        // add button and add listener for add POI
-        Button addPOIBtn = (Button)view.findViewById(R.id.buttoncreatepoi);
-        addPOIBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-
-                Fragment addDataFragment = new AddDataFragment();
-                Bundle bundle = new Bundle();
-
-                bundle.putStringArrayList(CAT_LIST, categoryList);
-
-                addDataFragment.setArguments(bundle);
-                fm.beginTransaction().replace(R.id.fragmentContainer, addDataFragment).addToBackStack("AddDataFragment").commit();
-            }
-        });
 
         return view;
     }
@@ -233,35 +245,114 @@ public class ListAndSearchFragment extends Fragment {
             //Handle on child click event in expandable list
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-
-                //Go to DetailViewIP
-                //Pass the POI object
-                //Maybe use id instead need to be tested
-                //http://developer.android.com/reference/android/widget/ExpandableListView.OnChildClickListener.html
-
-
                 String POIkey = dynamicCategoryList.get(groupPosition).get(childPosition);
-
                 POIkey = POIkey.replace("***", "");
-
-                goToDetailFragmet(POIkey);
-
+                goToDetailFragment(POIkey);
                 return false;
+            }
+        });
+
+        //Handle searches
+        searchField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                //string empty, dont search
+                if (s.toString().equals("")) {
+                    searchField.setHint("Sök intressepunkt");
+                    listSearch.setVisibility(View.GONE);
+                    myExpandableListView.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                searchResults.clear();
+
+                //Loop throught the POIs to find search matches
+                for (String key : newHouse.getPOIs2().keySet()) {
+
+                    //compare name
+                    if (key.toLowerCase().contains(s.toString().toLowerCase())) {
+                        searchResults.add(key.toString());
+                    }
+
+                    //compare category (else: don't match twice)
+                    else if (newHouse.getPOIs2().get(key).getCategory().toLowerCase().contains(s.toString().toLowerCase())) {
+                        searchResults.add(key.toString());
+                    }
+                }
+
+                listSearch.setVisibility(View.VISIBLE);
+                myExpandableListView.setVisibility(View.GONE);
+                searchListAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        //Handle onClick for searchList items
+        listSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                //Go to DetailViewIP pass the POI key
+                goToDetailFragment(searchResults.get(position));
+            }
+        });
+
+        //Handle add-button clicks
+        addPOIBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+
+                Fragment addDataFragment = new AddDataFragment();
+                Bundle bundle = new Bundle();
+
+                //TODO: Fullösning tillsvidare...
+                ArrayList<String> temp = new ArrayList<String>();
+
+                for (int i = 0; i < categoryList.size(); i++)
+                    temp.add(categoryList.get(i));
+
+                bundle.putStringArrayList(CAT_LIST, temp);
+
+                addDataFragment.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.fragmentContainer, addDataFragment).addToBackStack("AddDataFragment").commit();
+            }
+        });
+
+        //Handle the toolbar search button
+        searchInflaterB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchField.setVisibility(View.VISIBLE);
+                searchField.setText("");
+
             }
         });
     }
 
-    private void goToDetailFragmet(String POIkey) {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
+    //Go to Detail view and send stuff
+    private void goToDetailFragment(String POIkey) {
 
+        //hide search field and button
+        searchField.setVisibility(View.GONE);
+        searchInflaterB.setVisibility(View.GONE);
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment DetailFragment = new DetailFragment();
 
         Bundle bundle = new Bundle();
-        //Change the variable to send, it should be house and POI
         bundle.putString(KEY, POIkey);
 
         DetailFragment.setArguments(bundle);
-
         fm.beginTransaction().replace(R.id.fragmentContainer, DetailFragment).addToBackStack("DetailFragment").commit();
     }
 
