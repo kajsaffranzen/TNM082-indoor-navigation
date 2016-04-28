@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/detail_margin"
+    android:paddingLeft="30dp"
+    android:paddingRight="35dp"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.AddDataFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -54,15 +55,17 @@
         android:hint="Vägbeskrivning"
         android:textSize="12pt"
         android:backgroundTint="@color/editTxtLine"
+        android:textColorLink="@color/editTxtLine"
         android:textColor="@color/colorQRText"
         android:layout_marginTop="30px"
         android:layout_below="@+id/catSpinner" />
 
     <Button
         android:id="@+id/addPath"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="+"
+        android:layout_width="@dimen/btn_size"
+        android:layout_height="@dimen/btn_size"
+        android:background="@drawable/addpoiimg"
+        android:width="@dimen/btn_size"
         android:layout_below="@+id/catSpinner"
         android:layout_alignRight="@+id/POIpath"/>
 
