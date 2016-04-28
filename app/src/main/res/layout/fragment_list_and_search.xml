@@ -2,48 +2,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="100px"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.CreatePOIFragment">
 
     <LinearLayout
-        android:paddingTop="100px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="50dp">
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sök"
+            android:text="Intressepunkter"
+            android:textSize="12pt"
+            android:textColor="@color/infoTxt"
             android:gravity="center"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="50dp"
-        android:padding="30dp">
 
         <ExpandableListView
             android:id="@+id/expList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="300px"
-            android:childDivider="#EBEBEB" />
-
-        <Button
-            android:id="@+id/buttoncreatepoi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Skapa Intressepunkt"
-            android:layout_gravity="center_horizontal|bottom"/>
-
+            android:paddingTop="30dp"
+            android:childDivider="#EDEDED"/>
     </LinearLayout>
-
+    <Button
+        android:id="@+id/buttoncreatepoi"
+        android:layout_width="@dimen/btn_size_big"
+        android:layout_height="@dimen/btn_size_big"
+        android:background="@drawable/addpoiimg"
+        android:width="@dimen/btn_size_big"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="15dp"/>
 </FrameLayout>

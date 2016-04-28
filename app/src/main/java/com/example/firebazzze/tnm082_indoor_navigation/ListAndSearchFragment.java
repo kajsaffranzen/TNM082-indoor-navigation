@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.firebase.client.Firebase;
@@ -81,7 +82,6 @@ public class ListAndSearchFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_and_search, container, false);
-
 
         //Change the toolbar title to housename
         ((MainActivity)getActivity()).setToolbarTitle(houseName);
