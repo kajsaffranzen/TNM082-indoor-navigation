@@ -12,6 +12,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.vision.CameraSource;
@@ -40,6 +41,7 @@ public class QRFragment extends Fragment {
     CameraSource cameraSource;
     SurfaceView cameraView;
     TextView barcodeInfo;
+    ImageView focusImage;
 
     public QRFragment() {
     }
@@ -93,6 +95,7 @@ public class QRFragment extends Fragment {
         
         cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
         barcodeInfo = (TextView) view.findViewById(R.id.code_info);
+        focusImage = (ImageView) view.findViewById(R.id.focusImage);
 
         BarcodeDetector barcodeDetector =
                 new BarcodeDetector.Builder(getActivity())
@@ -103,6 +106,8 @@ public class QRFragment extends Fragment {
         cameraSource = new CameraSource
                 .Builder(getActivity(), barcodeDetector)
                 .setRequestedPreviewSize(540, 540)  // get the size from the SurfaceView
+                                                    //Update: can be unecessary now that
+                                                    //camera matches QR-fragment
                 .build();
 
         //callback to the surface holder
