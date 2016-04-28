@@ -33,7 +33,7 @@
         <!-- The navigation drawer -->
         <ListView android:id="@+id/left_drawer"
             android:layout_width="240dp"
-            android:layout_height="500dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:choiceMode="singleChoice"
             android:divider="#666699"
