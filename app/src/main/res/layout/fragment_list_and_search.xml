@@ -12,6 +12,13 @@
         android:layout_marginRight="30dp"
         android:visibility="gone"></ListView>
 
+    <ProgressBar
+        android:id="@+id/loadingPanel"
+        android:layout_width="92dp"
+        android:layout_height="92dp"
+        android:layout_gravity="center"
+        android:indeterminate="true" />
+
     <ExpandableListView
         android:id="@+id/expList"
         android:layout_width="match_parent"

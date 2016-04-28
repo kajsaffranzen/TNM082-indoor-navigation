@@ -110,9 +110,6 @@ public class House {
 
         List<String> tester = new ArrayList<String>();
 
-        tester.add("hej");
-        tester.add("hej2");
-
         POI test = new POI(cat, desc, floor, official, tester);
 
         newPOSDBref.setValue(test);

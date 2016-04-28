@@ -43,7 +43,7 @@ public class ListAndSearchFragment extends Fragment {
 
     private String houseName;
 
-    ProgressBar loadingPanel;
+    private ProgressBar loadingPanel;
 
     //used to update list when new data is loaded
     private OnFragmentInteractionListener mListener;
@@ -100,6 +100,7 @@ public class ListAndSearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_and_search, container, false);
 
+        loadingPanel = (ProgressBar)view.findViewById(R.id.loadingPanel);
 
         //Change the toolbar title to housename
         ((MainActivity)getActivity()).setToolbarTitle(houseName);
@@ -146,8 +147,10 @@ public class ListAndSearchFragment extends Fragment {
             @Override
             public void onLoaded() {
                 addData(newHouse);
+                loadingPanel.setVisibility(View.GONE);
             }
         });
+
     }
 
     private void addData(House newHouse){
