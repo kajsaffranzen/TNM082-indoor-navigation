@@ -21,6 +21,7 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /*
 * Fragment to create new POI
@@ -37,8 +38,8 @@ public class AddDataFragment extends Fragment {
 
     private View view;
 
-    private Button createPOI;
-    private EditText POIname, POIdesc;
+    private Button createPOI, nextBtn, doneBtn;
+    private EditText POIname, POIdesc, POIpath;
 
 
     private String chosenCat;
@@ -69,11 +70,18 @@ public class AddDataFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add_data, container, false);
 
+        final List<String> listOfPath = new ArrayList<String>();
+        int i = 1;
+
         fillScroller();
 
         POIdesc = (EditText) view.findViewById(R.id.POIdesc);
         POIname = (EditText) view.findViewById(R.id.POIname);
         createPOI = (Button) view.findViewById(R.id.createPOI);
+        nextBtn = (Button) view.findViewById(R.id.nextBtn);
+        doneBtn = (Button) view.findViewById(R.id.doneBtn);
+        POIpath = (EditText) view.findViewById(R.id.POIpath);
+        createPOI.setVisibility(View.INVISIBLE);
 
         //add a new POI to firebase, checks if the user has done it right or not
         createPOI.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +91,7 @@ public class AddDataFragment extends Fragment {
                     House h = ((MainActivity)getActivity()).getHouse();
 
                     //TODO: Check if admin, then change false to true
-                    h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false);
+                    h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
 
                     Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
 
@@ -101,6 +109,53 @@ public class AddDataFragment extends Fragment {
 
             }
         });
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!POIpath.getText().toString().equals("")){
+
+                    listOfPath.add(POIpath.getText().toString());
+                    Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
+
+                    //Reset text field
+                    POIpath.setText("");
+
+                    POIpath.setHint("Nästa Punkt");
+
+                }
+
+                else
+                    Toast.makeText(getActivity(), "FYLL I ALLA FÄLT DÅE", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        doneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!POIpath.getText().toString().equals("")){
+
+                    listOfPath.add(POIpath.getText().toString());
+                    Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
+
+
+                }
+
+                //Reset text field
+                POIpath.setText("");
+
+                POIpath.setHint("Vägbeskrivning");
+
+                doneBtn.setVisibility(View.INVISIBLE);
+                nextBtn.setVisibility(View.INVISIBLE);
+                createPOI.setVisibility(View.VISIBLE);
+
+
+            }
+        });
+
+
 
         return view;
     }
