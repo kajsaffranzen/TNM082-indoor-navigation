@@ -20,20 +20,30 @@
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
-    <ExpandableListView
-        android:id="@+id/expList"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="300px" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="50dp"
+        android:padding="30dp">
 
-    <Button
-        android:id="@+id/buttoncreatepoi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Skapa Intressepunkt"
-        android:layout_gravity="center_horizontal|bottom" />
+        <ExpandableListView
+            android:id="@+id/expList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="300px"
+            android:childDivider="#EBEBEB" />
+
+        <Button
+            android:id="@+id/buttoncreatepoi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Skapa Intressepunkt"
+            android:layout_gravity="center_horizontal|bottom"/>
+
+    </LinearLayout>
 
 </FrameLayout>
