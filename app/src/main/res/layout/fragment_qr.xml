@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="200px"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.QRFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -10,10 +9,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <SurfaceView
-        android:layout_width="540px"
-        android:layout_height="540px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/camera_view"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true" />
 
 
     <TextView
