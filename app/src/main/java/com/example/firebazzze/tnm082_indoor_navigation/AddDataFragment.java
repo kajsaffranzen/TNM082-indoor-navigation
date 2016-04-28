@@ -18,9 +18,11 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /*
 * Fragment to create new POI
@@ -73,10 +75,10 @@ public class AddDataFragment extends Fragment {
 
         POIdesc = (EditText) view.findViewById(R.id.POIdesc);
         POIname = (EditText) view.findViewById(R.id.POIname);
-        createPOI = (Button) view.findViewById(R.id.createPOI);
+        //createPOI = (Button) view.findViewById(R.id.createPOI);
 
         //add a new POI to firebase, checks if the user has done it right or not
-        createPOI.setOnClickListener(new View.OnClickListener() {
+        /*createPOI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null){
@@ -101,29 +103,21 @@ public class AddDataFragment extends Fragment {
 
             }
         });
-
+        */
         return view;
     }
 
 
 
     public void fillScroller(){
+        Spinner scroller = (Spinner) view.findViewById(R.id.catSpinner);
 
-        ListView scroller = (ListView) view.findViewById(R.id.catScroller);
+        if(!categoryList.contains("Övrigt")) categoryList.add("Övrigt");
 
-        scroller.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, categoryList));
+        scroller.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList));
 
-
-        scroller.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3)
-            {
-                chosenCat = categoryList.get(arg2);
-                Log.i("tester3", chosenCat);
-            }
-        });
-
+        //getString from category
+        //scroller.getSelectedItem().toString();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

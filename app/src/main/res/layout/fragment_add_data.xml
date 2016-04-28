@@ -51,7 +51,7 @@
             android:textColor="@color/colorQRText"
             android:layout_marginTop="30px"
             android:layout_below="@+id/POIdesc" />
-        <ListView
+        <!--<ListView
             android:id="@+id/catScroller"
             android:scrollbars="vertical"
             android:divider="@color/dividerColor"
@@ -60,7 +60,18 @@
             android:layout_height="100px"
             android:layout_marginTop="20px"
             android:textSize="15pt"
-            android:layout_below="@+id/cat_info"/>
+            android:layout_below="@+id/cat_info"/>-->
+
+        <Spinner
+            android:id="@+id/catSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
+            android:overScrollMode="ifContentScrolls"
+            android:layout_below="@+id/cat_info"
+            android:layout_alignParentRight="true"
+            android:drawSelectorOnTop="false"
+            ></Spinner>
 
     </RelativeLayout>
 
