@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lägg till ny intressepunkt"
-        android:textSize="11pt"
+        android:textSize="12pt"
         android:textColor="@color/infoTxt"
         android:layout_centerHorizontal="true" />
 
@@ -34,7 +34,7 @@
             android:textSize="12pt"
             android:backgroundTint="@color/editTxtLine"
             android:textColor="@color/colorQRText"
-            android:layout_marginTop="30px"
+            android:layout_marginTop="20dp"
             android:layout_below="@+id/POIname" />
 
         <Spinner
@@ -43,6 +43,7 @@
             android:layout_height="wrap_content"
             android:spinnerMode="dialog"
             android:overScrollMode="ifContentScrolls"
+
             android:layout_below="@+id/cat_info"
             android:layout_alignParentRight="true"
             android:drawSelectorOnTop="false"
@@ -57,7 +58,7 @@
         android:backgroundTint="@color/editTxtLine"
         android:textColorLink="@color/editTxtLine"
         android:textColor="@color/colorQRText"
-        android:layout_marginTop="30px"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/catSpinner" />
 
     <Button
@@ -77,8 +78,18 @@
         android:textSize="12pt"
         android:backgroundTint="@color/editTxtLine"
         android:textColor="@color/colorQRText"
-        android:layout_marginTop="30px"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/POIpath" />
+
+    <CheckBox
+        android:id="@+id/officalBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Officiell intressepunkt"
+        android:textSize="10pt"
+        android:textColor="@color/colorQRText"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/POIdesc"/>
 
     <Button
         android:id="@+id/createPOI"
@@ -88,7 +99,7 @@
         android:layout_marginBottom="100px"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/POIdesc"/>
+        android:layout_below="@+id/officalBox"/>
 
 
 </RelativeLayout>

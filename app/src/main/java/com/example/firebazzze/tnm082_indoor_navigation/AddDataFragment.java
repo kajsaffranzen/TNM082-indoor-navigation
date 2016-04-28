@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -43,6 +45,7 @@ public class AddDataFragment extends Fragment {
 
     private Button createPOI, addPathBtn;
     private EditText POIname, POIdesc, POIpath;
+    private CheckBox officalCheckBox;
 
 
 
@@ -89,38 +92,16 @@ public class AddDataFragment extends Fragment {
 
         createPOI = (Button) view.findViewById(R.id.createPOI);
         addPathBtn = (Button) view.findViewById(R.id.addPath);
+        officalCheckBox = (CheckBox) view.findViewById(R.id.officalBox);
 
+        //TODO: set addPathBtn to ej clickable om POIpath är tom
 
+        //TODO: implementera en admin knapp
+        if( ((MainActivity)getActivity()).isAdmin )
+            officalCheckBox.setVisibility(View.VISIBLE);
+        else
+            officalCheckBox.setVisibility(View.INVISIBLE);
 
-        //add a new POI to firebase, checks if the user has done it right or not
-        createPOI.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: kolla om POIpath är tom - om den ej är det så är det ännu en beskrivning som behövs läggas till
-
-                if(!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null){
-                    House h = ((MainActivity)getActivity()).getHouse();
-
-                    //TODO: Check if admin, then change false to true
-                    h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
-
-                    Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
-
-                    //Reset text field
-                    POIname.setText("");
-                    POIdesc.setText("");
-
-                    POIname.setHint("Namn");
-                    POIdesc.setHint("Beskrivning");
-                    chosenCat = null;
-                }
-
-                //TODO: felmarkera vilket fält som ej är korrekt ifyllt genom en röd bakgrundsfärg
-                else
-                    Toast.makeText(getActivity(), "FYLL I ALLA FÄLT DÅE", Toast.LENGTH_SHORT).show();
-
-            }
-        });
 
         //add new path to the POI
         addPathBtn.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +123,6 @@ public class AddDataFragment extends Fragment {
         return view;
     }
 
-
     //fill the scroller with categories
     public void fillScroller(){
         Spinner scroller = (Spinner) view.findViewById(R.id.catSpinner);
@@ -151,6 +131,8 @@ public class AddDataFragment extends Fragment {
             categoryList.add("Övrigt");
 
         scroller.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList));
+
+
 
         //getString from category
         //scroller.getSelectedItem().toString();
