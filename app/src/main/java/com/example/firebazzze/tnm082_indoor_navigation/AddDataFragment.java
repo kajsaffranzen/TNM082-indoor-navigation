@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -38,8 +39,11 @@ public class AddDataFragment extends Fragment {
 
     private View view;
 
+    private int counter;
+
     private Button createPOI, nextBtn, doneBtn;
     private EditText POIname, POIdesc, POIpath;
+    private ListView lv;
 
 
     private String chosenCat;
@@ -71,7 +75,14 @@ public class AddDataFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_add_data, container, false);
 
         final List<String> listOfPath = new ArrayList<String>();
-        int i = 1;
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>( getActivity(), android.R.layout.simple_list_item_1, listOfPath);
+
+        lv = (ListView) view.findViewById(R.id.poi_info);
+
+        counter = 0;
+
+        lv.setAdapter(adapter);
+
 
         fillScroller();
 
@@ -116,12 +127,13 @@ public class AddDataFragment extends Fragment {
                 if(!POIpath.getText().toString().equals("")){
 
                     listOfPath.add(POIpath.getText().toString());
+                    counter++;
                     Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
 
                     //Reset text field
                     POIpath.setText("");
 
-                    POIpath.setHint("Nästa Punkt");
+                    POIpath.setHint("Lägg till punkt nr " + (counter + 1));
 
                 }
 
@@ -155,30 +167,37 @@ public class AddDataFragment extends Fragment {
             }
         });
 
+        //TODO Implementera så man inte kan klicka bort objekten från listan med ett vanligt klick
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
+
+                listOfPath.remove(position);
+                adapter.notifyDataSetChanged(); //denna måste finnas med när man ändrar listOfPath, för annars blir det error
+                counter--;
+                POIpath.setHint("Lägg till punkt nr " + (counter + 1));
+
+            }
+
+        });
+        
         return view;
     }
 
 
 
     public void fillScroller(){
+        Spinner scroller = (Spinner) view.findViewById(R.id.catSpinner);
 
-        ListView scroller = (ListView) view.findViewById(R.id.catScroller);
+        if(!categoryList.contains("Övrigt"))
+            categoryList.add("Övrigt");
 
-        scroller.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, categoryList));
+        scroller.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList));
 
-
-        scroller.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3)
-            {
-                chosenCat = categoryList.get(arg2);
-                Log.i("tester3", chosenCat);
-            }
-        });
-
+        //getString from category
+        //scroller.getSelectedItem().toString();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:hint="Namn"
         android:textSize="15pt"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -34,16 +34,16 @@
         android:layout_marginTop="30px"
         android:layout_below="@+id/POIdesc" />
 
-    <ListView
-        android:id="@+id/catScroller"
-        android:scrollbars="vertical"
-        android:divider="@color/dividerColor"
-        android:dividerHeight="10px"
+    <Spinner
+        android:id="@+id/catSpinner"
         android:layout_width="match_parent"
-        android:layout_height="100px"
-        android:layout_marginTop="20px"
-        android:textSize="15pt"
-        android:layout_below="@+id/cat_info"></ListView>
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:overScrollMode="ifContentScrolls"
+        android:layout_below="@+id/cat_info"
+        android:layout_alignParentRight="true"
+        android:drawSelectorOnTop="false"
+        ></Spinner>
 
     <Button
         android:id="@+id/createPOI"
@@ -59,10 +59,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15pt"
-        android:layout_below="@+id/catScroller"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:hint="Vägbeskrivning" />
+        android:hint="Vägbeskrivning"
+        android:layout_below="@+id/catSpinner"
+        android:layout_alignRight="@+id/nextBtn"
+        android:layout_alignEnd="@+id/nextBtn" />
 
     <Button
         android:id="@+id/doneBtn"
@@ -81,5 +81,12 @@
         android:layout_alignTop="@+id/createPOI"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/poi_info"
+        android:layout_below="@+id/POIpath"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

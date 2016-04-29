@@ -12,8 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -89,7 +91,7 @@ public class DetailFragment extends Fragment {
         //Add the path description from the POI in question and add to the adapter
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 getActivity(),
-                android.R.layout.simple_list_item_1,
+                android.R.layout.simple_list_item_checked,
                 ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getPath()
         );
 
@@ -115,6 +117,24 @@ public class DetailFragment extends Fragment {
                 ((MainActivity)getActivity()).getHouse().setOfficial(POIkey);
             }
         });
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                CheckedTextView ctv = (CheckedTextView) view;
+
+                if(!ctv.isChecked()){
+
+                    ctv.setChecked(true);
+
+                }
+
+
+                }
+
+        });
+
 
         if( ((MainActivity)getActivity()).isAdmin )
             makeOfficialButton.setVisibility(View.VISIBLE);
