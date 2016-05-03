@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Button addPOIBtn;
+    private static final String KEY = "housename";
 
     private Map<String, House> houseMap;
     private List<String> houseNameList;
@@ -109,46 +112,37 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         setListeners();
 
-        //Add markers for existing POIs
-        addMarkers();
-
         // Inflate the layout for this fragment
         return view;
     }
 
     private void addMarkers() {
-        //String DBUrl = "https://tnm082-indoor.firebaseio.com/";
-        String DBUrl = "https://coord-test.firebaseio.com/";
+        String DBUrl = "https://tnm082-indoor.firebaseio.com/";
+        //String DBUrl = "https://coord-test.firebaseio.com/"; //dummy
         Firebase DB = new Firebase(DBUrl);
 
         DB.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                //House newHouse = new House(s);
-                //houseMap.put(s, newHouse);
-                houseNameList.add(s);
+                //TODO - remove this when all Houses/Cars has latLng
+                if(dataSnapshot.child("latlng").getValue() == null)
+                    return;
 
-                Log.d("house", "########################################################");
-                for(int i = 0; i < houseNameList.size(); i++) {
+                List<String> coordList = Arrays.asList(dataSnapshot.child("latlng").getValue().toString().split(","));
 
-                    Log.d("house", "houseName = " + houseNameList.get(i));
-                    Log.d("latlng", "latlng = " + dataSnapshot.child("latlng").getValue());
-
-                    List<String> coordList = Arrays.asList(dataSnapshot.child("latlng").getValue().toString().split(","));
-
-                    Log.d("latlng", "LAT  = " + coordList.get(0));
-                    Log.d("latlng", "LONG = " + coordList.get(1));
+                Log.d("latlng", "Name = " + dataSnapshot.getKey());
+                Log.d("latlng", "LAT  = " + coordList.get(0));
+                Log.d("latlng", "LONG = " + coordList.get(1));
 
 
-                    LatLng newMarkerCoords = new LatLng( Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
+                LatLng newMarkerCoords = new LatLng( Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
 
-                    //Set marker on map
-                    mMap.addMarker(new MarkerOptions()
-                            .title(s)
-                            .snippet("dummy")
-                            .position(newMarkerCoords));
-                }
+                //Set marker on map
+                mMap.addMarker(new MarkerOptions()
+                        .title(dataSnapshot.getKey())
+                        .snippet("dummy")
+                        .position(newMarkerCoords));
             }
 
             @Override
@@ -160,12 +154,6 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onCancelled(FirebaseError firebaseError) {}
         });
-
-
-//            mMap.addMarker(new MarkerOptions()
-//                    .title( houseMap.get(key).getHouseName())
-//                    .snippet(inputDesc.getText().toString())
-//                    .position(latLng));
     }
 
     //Set Listeners
@@ -234,9 +222,10 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         LatLng nkpg = new LatLng(58, 16);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(nkpg));
 
-
-
         setMapListeners();
+
+        //Add markers for existing POIs
+        addMarkers();
     }
 
     //Add listeners to the map
@@ -253,6 +242,25 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                 else
                     mustBeAdminPopup();
                 Log.d("latlng", ""+latLng.toString());
+            }
+        });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                Fragment ListAndSearchFragment = new ListAndSearchFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putString(KEY, marker.getTitle());
+
+                ListAndSearchFragment.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.fragmentContainer, ListAndSearchFragment)
+                        .addToBackStack("ListAndSearchFragment")
+                        .commit();
+
+                return false;
             }
         });
     }

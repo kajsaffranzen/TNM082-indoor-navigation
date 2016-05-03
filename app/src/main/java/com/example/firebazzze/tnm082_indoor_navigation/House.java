@@ -27,8 +27,8 @@ public class House {
 
     private List<POI> POIs;
 
-    //private String DBUrl = "https://tnm082-indoor.firebaseio.com/";
-    private String DBUrl = "https://coord-test.firebaseio.com/";
+    private String DBUrl = "https://tnm082-indoor.firebaseio.com/";
+    //private String DBUrl = "https://coord-test.firebaseio.com/";
 
     private Map<String, POI> POIs2;
 
@@ -94,6 +94,10 @@ public class House {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String s) {
 
+                //TODO - should not need this, replace with try catch
+                if(snapshot.getKey().equals("latlng"))
+                    return;
+
                 POI newPOI = snapshot.getValue(POI.class);
 
                 //Needed since firebase expects that we add the key
@@ -101,9 +105,7 @@ public class House {
                 newPOI.getPath().remove(0);
 
                 POIs2.put(snapshot.getKey(), newPOI);
-
-                POIs.add(newPOI);
-
+                POIs.add(newPOI); //NOT USING THIS //TODO- remove
 
                 if(listener != null)
                     listener.onLoaded();
