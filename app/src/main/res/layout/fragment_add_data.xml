@@ -101,7 +101,7 @@
 
 
 
-    <Button
+    <!--Button
         android:id="@+id/createPOI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,7 +109,19 @@
         android:layout_marginBottom="100px"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/POIdesc"/>
+        android:layout_alignParentBottom="true"
+        /-->
+
+    <ImageButton
+        android:id="@+id/createPOI"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/path_done_button"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/POIdesc"
+        android:paddingBottom="10dp"
+        />
+
 
 
 

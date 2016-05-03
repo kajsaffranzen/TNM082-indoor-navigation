@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -47,7 +48,8 @@ public class AddDataFragment extends Fragment {
 
     private int counter;
 
-    private Button createPOI, addPathBtn;
+    private Button addPathBtn;
+    private ImageButton createPOI;
     private EditText POIname, POIdesc, POIpath;
     private ListView lv;
     private Spinner spinner;
@@ -94,7 +96,7 @@ public class AddDataFragment extends Fragment {
         POIpath = (EditText) view.findViewById(R.id.POIpath);
         POIdesc = (EditText) view.findViewById(R.id.POIdesc);
         addPathBtn = (Button) view.findViewById(R.id.addPath);
-        createPOI = (Button) view.findViewById(R.id.createPOI);
+        createPOI = (ImageButton) view.findViewById(R.id.createPOI);
         spinner = (Spinner) view.findViewById(R.id.catSpinner);
 
         fillScroller();
@@ -106,7 +108,9 @@ public class AddDataFragment extends Fragment {
             public void onClick(View v) {
                 chosenCat = spinner.getSelectedItem().toString();
 
-                if(!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null){
+                //TODO: kolla så att vägbeskrivningen ej är tom
+                if(!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null
+                        && !listOfPath.isEmpty()){
 
                     House h = ((MainActivity)getActivity()).getHouse();
 
@@ -186,9 +190,9 @@ public class AddDataFragment extends Fragment {
 
         spinner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList));
 
-        //chosenCat = scroller.getSelectedItem().toString();
-
     }
+
+    public void checkAdmin(){}
 
 
 
