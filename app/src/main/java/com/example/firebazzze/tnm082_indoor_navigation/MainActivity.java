@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity implements
         QRFragment.OnFragmentInteractionListener,
         ListAndSearchFragment.OnFragmentInteractionListener,
         AddDataFragment.OnFragmentInteractionListener,
-        DetailFragment.OnFragmentInteractionListener{
+        DetailFragment.OnFragmentInteractionListener,
+        AddHouseFragment.OnFragmentInteractionListener{
 
     public House house;
     public boolean isAdmin = false;
