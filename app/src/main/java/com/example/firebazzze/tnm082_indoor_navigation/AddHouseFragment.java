@@ -6,10 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.view.menu.ListMenuItemView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,8 +20,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +36,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     private static final String ARG_PARAM2 = "param2";
 
     private GoogleMap mMap;
+    private Button addPOIBtn;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -86,8 +85,23 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //Add POI button
+        addPOIBtn = (Button) view.findViewById(R.id.addPoiBtn);
+
+        setListeners();
+
         // Inflate the layout for this fragment
         return view;
+    }
+
+    //Set Listeners
+    private void setListeners() {
+        addPOIBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPoiPopup();
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -143,32 +157,32 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng nkpg = new LatLng(58, 16);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(nkpg));
 
         setMapListeners();
     }
 
+    //Add listeners to the map
     private void setMapListeners() {
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-
-                showPopupWindow(latLng);
+                if( ((MainActivity)getActivity()).isAdmin )
+                    addPoiPopup(latLng);
+                else
+                    mustBeAdminPopup();
             }
         });
     }
 
-    private void showPopupWindow(final LatLng latLng) {
+    //Shows a popup dialogue where user can enter input for the new POI
+    private void addPoiPopup(final LatLng latLng) {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-
         alert.setTitle("Add new point of interest");
-//        alert.setMessage("Message");
 
-        // Set an EditText view to get user input
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
@@ -200,7 +214,34 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
+            }
+        });
+
+        alert.show();
+    }
+
+    //Shows a popup dialogue when user tries to add point without being admin
+    private void mustBeAdminPopup() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+
+        alert.setTitle("Add new point of interest");
+        alert.setMessage("You must be admin to add new points");
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        });
+
+        alert.show();
+    }
+
+    //
+    private void addPoiPopup() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+
+        alert.setTitle("");
+        alert.setMessage("Hold on map to create a point of interest at that location");
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
             }
         });
 
