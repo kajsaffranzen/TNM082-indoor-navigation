@@ -58,14 +58,15 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Test map activity
-        Intent mapsIntent = new Intent(this, MapsActivity.class);
-        startActivity(mapsIntent);
-
         //Navigate to the camera view
         getSupportFragmentManager().popBackStack();
-        QRFragment fragment = new QRFragment();
+        AddHouseFragment fragment = new AddHouseFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+
+        //Navigate to the camera view
+//        getSupportFragmentManager().popBackStack();
+//        QRFragment fragment = new QRFragment();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
     }
 
     //Override the back button when on qr fragment
