@@ -58,6 +58,10 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Test map activity
+        Intent mapsIntent = new Intent(this, MapsActivity.class);
+        startActivity(mapsIntent);
+
         //Navigate to the camera view
         getSupportFragmentManager().popBackStack();
         QRFragment fragment = new QRFragment();
