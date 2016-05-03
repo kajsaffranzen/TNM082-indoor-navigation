@@ -106,11 +106,8 @@
         android:layout_height="80dp"
         android:background="@drawable/path_done_button"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/POIdesc"
-        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
         />
-
-
 
 
 </RelativeLayout>

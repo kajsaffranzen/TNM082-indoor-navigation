@@ -43,6 +43,7 @@ public class AddDataFragment extends Fragment {
 
     private ArrayList<String> categoryList;
     private List<String> listOfPath;
+    private ArrayAdapter<String> adapter;
     private final String CAT_LIST = "catlist";
 
     private View view;
@@ -84,8 +85,9 @@ public class AddDataFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add_data, container, false);
 
-        final List<String> listOfPath = new ArrayList<String>();
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listOfPath);
+        listOfPath = new ArrayList<>();
+        adapter = new ArrayAdapter<String>(getActivity(), R.layout.item_layout_add, R.id.Itemname, listOfPath);
+
 
         lv = (ListView) view.findViewById(R.id.poi_info);
 
@@ -140,16 +142,15 @@ public class AddDataFragment extends Fragment {
         });
 
         //add new path to the POI
-        //TODO: uppdatera fragmentet direkt när det har lagts till, annars måste användaren
-        //själv trycka någonstans vilket är störigt
         addPathBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!POIpath.getText().toString().equals("")){
 
                     listOfPath.add(POIpath.getText().toString());
-                    Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
                     counter++;
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
 
                     //Reset text field
                     POIpath.setText("");
@@ -178,9 +179,6 @@ public class AddDataFragment extends Fragment {
             }
 
         });
-
-
-
 
         return view;
     }
