@@ -56,25 +56,20 @@ public class House {
     }
 
     private void getCars() {
+
         String test = "";
+
         if(this.houseName.contains("/")){
             test = this.houseName.split("/")[0];
         }else test = this.houseName;
 
-        Log.i("cars", "housename: " + test);
         Firebase DB = new Firebase(DBUrl + test);
 
         DB.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.i("cars","here:" + dataSnapshot.getValue());
-                Log.i("cars","here:" + dataSnapshot.getKey());
-                Log.i("cars", "there are " + dataSnapshot.getChildrenCount()+ " childs");
-
                 Car newCar = dataSnapshot.getValue(Car.class);
-                Log.i("cars", newCar.getCoords());
                 Cars.put(dataSnapshot.getKey(), newCar);
-
             }
 
             @Override
