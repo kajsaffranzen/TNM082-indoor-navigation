@@ -160,8 +160,17 @@ public class QRFragment extends Fragment {
                                     barcodes.valueAt(0).displayValue
                             );
 
-                            //go to next fragment and send text from qr
-                            goToListAndSearch( barcodes.valueAt(0).displayValue );
+                            if(barcodes.valueAt(0).displayValue.contains("/")){
+                                //for cars
+                                House garage = new House(barcodes.valueAt(0).displayValue);
+
+                            }else{
+                                //go to next fragment and send text from qr
+                                goToListAndSearch( barcodes.valueAt(0).displayValue );
+                            }
+
+
+
                         }
                     });
                 }

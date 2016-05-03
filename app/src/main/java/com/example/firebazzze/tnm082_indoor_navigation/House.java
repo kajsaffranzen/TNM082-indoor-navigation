@@ -7,6 +7,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +26,9 @@ public class House {
 
     private String DBUrl = "https://tnm082-indoor.firebaseio.com/";
 
+
     private Map<String, POI> POIs2;
+    private Map<String, Car> Cars;
 
     private OnDataLoaded listener;
 
@@ -41,9 +44,59 @@ public class House {
         this.houseName = houseName;
         POIs = new ArrayList<POI>();
         POIs2 = new HashMap<String, POI>();
-        getData();
+        Cars = new HashMap<String, Car>();
+
+        if(houseName.contains("/"))
+            getCars();
+        else
+            getData();
+
         POIs = new ArrayList<POI>();
 
+    }
+
+    private void getCars() {
+        String test = "";
+        if(this.houseName.contains("/")){
+            test = this.houseName.split("/")[0];
+        }else test = this.houseName;
+
+        Log.i("cars", "housename: " + test);
+        Firebase DB = new Firebase(DBUrl + test);
+
+        DB.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.i("cars","here:" + dataSnapshot.getValue());
+                Log.i("cars","here:" + dataSnapshot.getKey());
+                Log.i("cars", "there are " + dataSnapshot.getChildrenCount()+ " childs");
+
+                Car newCar = dataSnapshot.getValue(Car.class);
+                Log.i("cars", newCar.getCoords());
+                Cars.put(dataSnapshot.getKey(), newCar);
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     // Gets the data from the firebase database
@@ -64,6 +117,8 @@ public class House {
 
                 POI newPOI = snapshot.getValue(POI.class);
 
+                Log.i("cars", "here" + snapshot.getValue());
+
                 //Needed since firebase expects that we add the key
                 //"path" to the first element of the array, really stupid
                 newPOI.getPath().remove(0);
@@ -71,7 +126,6 @@ public class House {
                 POIs2.put(snapshot.getKey(), newPOI);
 
                 POIs.add(newPOI);
-
 
                 if(listener != null)
                     listener.onLoaded();
@@ -91,6 +145,11 @@ public class House {
 
             @Override public void onCancelled(FirebaseError error) { }
         });
+
+    }
+
+    //Add new Car to the garage
+    public void addCar(String carName, String coords){
 
     }
 
