@@ -1,12 +1,18 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.view.menu.ListMenuItemView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,6 +20,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,11 +83,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_house, container, false);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-//        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
-
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-
         mapFragment.getMapAsync(this);
 
         // Inflate the layout for this fragment
@@ -142,5 +146,64 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        setMapListeners();
+    }
+
+    private void setMapListeners() {
+
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+
+                showPopupWindow(latLng);
+            }
+        });
+    }
+
+    private void showPopupWindow(final LatLng latLng) {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+
+        alert.setTitle("Add new point of interest");
+//        alert.setMessage("Message");
+
+        // Set an EditText view to get user input
+        LinearLayout linearLayout = new LinearLayout(getContext());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+        TextView textName = new TextView(getContext());
+        TextView textDesc = new TextView(getContext());
+
+        textName.setText("Name");
+        textDesc.setText("Description");
+
+        final EditText inputName = new EditText(getContext());
+        final EditText inputDesc = new EditText(getContext());
+
+        linearLayout.addView(textName);
+        linearLayout.addView(inputName);
+        linearLayout.addView(textDesc);
+        linearLayout.addView(inputDesc);
+
+        alert.setView(linearLayout);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                mMap.addMarker(new MarkerOptions()
+                        .title(inputName.getText().toString())
+                        .snippet(inputDesc.getText().toString())
+                        .position(latLng));
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();
     }
 }
