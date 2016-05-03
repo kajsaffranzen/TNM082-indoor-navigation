@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -102,13 +103,13 @@ public class AddDataFragment extends Fragment {
         fillScroller();
 
 
+        //TODO: kolla ifall POIpath har text om true - kolla om användaren fill lägga till den
         //add a new POI to firebase, checks if the user has done it right or not
         createPOI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chosenCat = spinner.getSelectedItem().toString();
 
-                //TODO: kolla så att vägbeskrivningen ej är tom
                 if(!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null
                         && !listOfPath.isEmpty()){
 
@@ -126,6 +127,10 @@ public class AddDataFragment extends Fragment {
                     POIname.setHint("Namn");
                     POIdesc.setHint("Beskrivning");
                     chosenCat = null;
+
+                    //go back to ListAndSearchView
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    fm.popBackStack();
                 }
 
                 else
@@ -183,13 +188,10 @@ public class AddDataFragment extends Fragment {
 
     //fill the scroller with categories
     public void fillScroller(){
-        //Spinner scroller = (Spinner) view.findViewById(R.id.catSpinner);
-
         if(!categoryList.contains("Övrigt"))
             categoryList.add("Övrigt");
 
         spinner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList));
-
     }
 
     public void checkAdmin(){}

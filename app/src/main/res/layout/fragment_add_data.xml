@@ -100,18 +100,6 @@
         android:layout_below="@id/POIdesc"/-->
 
 
-
-    <!--Button
-        android:id="@+id/createPOI"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Skapa"
-        android:layout_marginBottom="100px"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        /-->
-
     <ImageButton
         android:id="@+id/createPOI"
         android:layout_width="80dp"
@@ -119,7 +107,7 @@
         android:background="@drawable/path_done_button"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/POIdesc"
-        android:paddingBottom="10dp"
+        android:layout_marginBottom="20dp"
         />
 
 
