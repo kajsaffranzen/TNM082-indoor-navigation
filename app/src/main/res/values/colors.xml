@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary1">#3F51B5</color>
+    <color name="colorPrimaryDark1">#303F9F</color>
+    <!--Toolbar-->
+    <color name="colorPrimary">#EC6F6C</color>
+    <color name="colorPrimaryDark">#EC6F6C</color>
+    <color name="colorAccent">#3C3C3C</color>
+    <!--Text-->
     <color name="colorQRText">#3C3C3C</color>
     <color name="dividerColor">#3C3C3C</color>
+    <color name="infoTxt">#000000</color>
+    <color name="editTxtLine">#3C3C3C</color>
 </resources>
+

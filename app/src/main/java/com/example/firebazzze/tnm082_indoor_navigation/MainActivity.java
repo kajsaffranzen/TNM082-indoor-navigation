@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements
                 //refresh the detail view in order to show/hide admin button
                 if(detailFragment != null && detailFragment.isAdded())
                     detailFragment.refreshFragment();
+
                 else
                     Log.d("test","check works");
 
