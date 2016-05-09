@@ -1,12 +1,14 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -105,38 +107,14 @@ public class AddDataFragment extends Fragment {
         fillScroller();
 
 
-        //TODO: kolla ifall POIpath har text om true - kolla om användaren fill lägga till den
         //add a new POI to firebase, checks if the user has done it right or not
         createPOI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chosenCat = spinner.getSelectedItem().toString();
-
-                if(!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null
-                        && !listOfPath.isEmpty()){
-
-                    House h = ((MainActivity)getActivity()).getHouse();
-
-                    //TODO: Check if admin, then change false to true
-                    h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
-
-                    Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
-
-                    //Reset text field
-                    POIname.setText("");
-                    POIdesc.setText("");
-
-                    POIname.setHint("Namn");
-                    POIdesc.setHint("Beskrivning");
-                    chosenCat = null;
-
-                    //go back to ListAndSearchView
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
-                    fm.popBackStack();
-                }
-
+                if(!POIpath.getText().toString().equals(""))
+                    checkPathField();
                 else
-                    Toast.makeText(getActivity(), "FYLL I ALLA FÄLT DÅE", Toast.LENGTH_SHORT).show();
+                    addNewPOI();
 
             }
         });
@@ -145,17 +123,9 @@ public class AddDataFragment extends Fragment {
         addPathBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!POIpath.getText().toString().equals("")){
+                if(!POIpath.getText().toString().equals(""))
+                    addPath();
 
-                    listOfPath.add(POIpath.getText().toString());
-                    counter++;
-                    adapter.notifyDataSetChanged();
-                    Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
-
-                    //Reset text field
-                    POIpath.setText("");
-                    POIpath.setHint("Lägg till punkt nr " + (counter + 1));
-                }
                 else{
                     //TODO: ändra bakgrundsfärg på textfältet & att det blir vitt igen när en fixar att
                     Toast.makeText(getActivity(), "Fyll i fältet korrekt din ko", Toast.LENGTH_SHORT).show();
@@ -167,7 +137,6 @@ public class AddDataFragment extends Fragment {
             }
         });
 
-        //TODO Implementera så man inte kan klicka bort objekten från listan med ett vanligt klick
         //removes the chosen item from the list and updates it
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -192,8 +161,78 @@ public class AddDataFragment extends Fragment {
         spinner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList));
     }
 
-    public void checkAdmin(){}
+    public void addPath(){
+        listOfPath.add(POIpath.getText().toString());
+        counter++;
+        adapter.notifyDataSetChanged();
+        //Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
 
+        //Reset text field
+        POIpath.setText("");
+        POIpath.setHint("Lägg till punkt nr " + (counter + 1));
+
+    }
+
+    public void checkPathField(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setMessage("Vill du lägga till den sista vägbeskrivningen?");
+
+        alertDialogBuilder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                addPath();
+                Toast.makeText(getActivity(),"Vägbeskrivningen har lagts till!",Toast.LENGTH_LONG).show();
+                addNewPOI();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Nej",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //finish();
+                POIpath.setText("");
+                POIpath.setHint("Lägg till punkt nr " + (counter));
+                addNewPOI();
+            }
+        });
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
+    public void addNewPOI(){
+        chosenCat = spinner.getSelectedItem().toString();
+
+        if(!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null
+                && !listOfPath.isEmpty()){
+
+
+            House h = ((MainActivity)getActivity()).getHouse();
+
+
+            h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
+
+            Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
+
+            //Reset text field
+            POIname.setText("");
+            POIdesc.setText("");
+
+            POIname.setHint("Namn");
+            POIdesc.setHint("Beskrivning");
+            chosenCat = null;
+
+            //go back to ListAndSearchView
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            fm.popBackStack();
+        }
+
+        else
+            Toast.makeText(getActivity(), "FYLL I ALLA FÄLT DÅE", Toast.LENGTH_SHORT).show();
+
+    }
 
 
     // TODO: Rename method, update argument and hook method into UI event
