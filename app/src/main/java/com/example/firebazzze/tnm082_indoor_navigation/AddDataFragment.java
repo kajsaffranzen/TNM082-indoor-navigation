@@ -38,7 +38,6 @@ import java.util.List;
  * uses House to add a new POI to the House
 */
 
-//TODO: fixa så att skapa knappen först kan tryckas på när fälten är ifyllda
 public class AddDataFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
@@ -47,19 +46,15 @@ public class AddDataFragment extends Fragment {
     private List<String> listOfPath;
     private ArrayAdapter<String> adapter;
     private final String CAT_LIST = "catlist";
-
     private View view;
-
     private int counter;
-
+    private String chosenCat;
     private Button addPathBtn;
     private ImageButton createPOI;
     private EditText POIname, POIdesc, POIpath;
     private ListView lv;
     private Spinner spinner;
 
-
-    private String chosenCat;
 
     public AddDataFragment() {
         // Required empty public constructor
@@ -107,7 +102,6 @@ public class AddDataFragment extends Fragment {
         fillScroller();
 
 
-        //add a new POI to firebase, checks if the user has done it right or not
         createPOI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,25 +109,17 @@ public class AddDataFragment extends Fragment {
                     checkPathField();
                 else
                     addNewPOI();
-
             }
         });
 
-        //add new path to the POI
         addPathBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!POIpath.getText().toString().equals(""))
                     addPath();
 
-                else{
-                    //TODO: ändra bakgrundsfärg på textfältet & att det blir vitt igen när en fixar att
-                    Toast.makeText(getActivity(), "Fyll i fältet korrekt din ko", Toast.LENGTH_SHORT).show();
-                    POIpath.setHint("Fyll i korrekt");
-                    //POIpath.setBackgroundResource(Color.RED);
-                    //POIpath.setBackgroundColor(Color.RED);
-                }
-
+                else
+                    Toast.makeText(getActivity(), "Fyll i fältet", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -161,11 +147,11 @@ public class AddDataFragment extends Fragment {
         spinner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList));
     }
 
+    //adds the path to the list
     public void addPath(){
         listOfPath.add(POIpath.getText().toString());
         counter++;
         adapter.notifyDataSetChanged();
-        //Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
 
         //Reset text field
         POIpath.setText("");
@@ -173,6 +159,7 @@ public class AddDataFragment extends Fragment {
 
     }
 
+    //checks if the the last PathDescription should be added to the path or not
     public void checkPathField(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setMessage("Vill du lägga till den sista vägbeskrivningen?");
@@ -189,29 +176,24 @@ public class AddDataFragment extends Fragment {
         alertDialogBuilder.setNegativeButton("Nej",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //finish();
                 POIpath.setText("");
                 POIpath.setHint("Lägg till punkt nr " + (counter));
                 addNewPOI();
             }
         });
 
-
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
 
 
+    //adds the new POI to firebazzze
     public void addNewPOI(){
         chosenCat = spinner.getSelectedItem().toString();
 
-        if(!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null
-                && !listOfPath.isEmpty()){
-
+        if(!POIname.getText().toString().equals("") && chosenCat != null && !listOfPath.isEmpty()){
 
             House h = ((MainActivity)getActivity()).getHouse();
-
-
             h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
 
             Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
@@ -229,10 +211,40 @@ public class AddDataFragment extends Fragment {
             fm.popBackStack();
         }
 
-        else
-            Toast.makeText(getActivity(), "FYLL I ALLA FÄLT DÅE", Toast.LENGTH_SHORT).show();
+        else{
+            if(POIname.getText().toString().equals("")){
+                POIname.setBackgroundColor(Color.RED);
+                POIname.addTextChangedListener(POInameWatcher);
+            }
+            if (listOfPath.isEmpty()){
+                POIpath.setBackgroundColor(Color.RED);
+                POIpath.addTextChangedListener(POIpathWatcher);
+            }
+
+            Toast.makeText(getActivity(), "Fyll i alla fält!", Toast.LENGTH_SHORT).show();
+        }
 
     }
+
+    private final TextWatcher POInameWatcher = new TextWatcher() {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            POIname.setBackgroundColor(Color.WHITE);
+        }
+
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private final TextWatcher POIpathWatcher = new TextWatcher() {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            POIpath.setBackgroundColor(Color.WHITE);
+        }
+
+        public void afterTextChanged(Editable s) {}
+    };
 
 
     // TODO: Rename method, update argument and hook method into UI event
