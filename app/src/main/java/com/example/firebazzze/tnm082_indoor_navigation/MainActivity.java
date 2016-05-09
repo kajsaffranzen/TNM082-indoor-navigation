@@ -53,10 +53,14 @@ public class MainActivity extends AppCompatActivity implements
     public boolean isAdmin = false;
     public DetailFragment detailFragment;
 
+
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private String mActivityTitle;
     private CharSequence mTitle;
+
+    private ArrayAdapter<String> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,47 +73,15 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mActivityTitle = getTitle().toString();
+
         //This is for the drawerMenu
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mDrawerList = (ListView)findViewById(R.id.left_drawer);
         ArrayList<String> tester = new ArrayList<String>();
 
-        tester.add("Option 1");
-        tester.add("Option 2");
-        tester.add("Option 3");
-        tester.add("Option 4");
-        tester.add("Option 5");
-        tester.add("Option 6");
-        tester.add("Option 7");
-        tester.add("Option 8");
-
-        mDrawerList.setAdapter(new ArrayAdapter<String>(
-                this,
-                R.layout.drawer_list_item,
-                tester
-        ));
-
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                 R.string.drawer_open, R.string.drawer_close) {
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                //getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        // Set the drawer toggle as the DrawerListener
-        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        addDrawerItems();
+        setUpDrawer();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -146,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
+        Log.d("TAG", "ICON CLICK");
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -201,6 +174,43 @@ public class MainActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }*/
 
+    private void addDrawerItems() {
+        String[] osArray = { "Android", "iOS", "Windows", "OS X", "Linux" };
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList.setAdapter(mAdapter);
+    }
+
+    private void setUpDrawer(){
+
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this, /* host Activity */
+                mDrawerLayout, /* DrawerLayout object */
+                R.string.drawer_open,
+                R.string.drawer_close
+        ) {
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle("Navigation!");
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(mActivityTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        // Set the drawer toggle as the DrawerListener
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+    }
+
     //Used to have a public house, Get House
     public House getHouse(){ return house; }
 
@@ -215,6 +225,10 @@ public class MainActivity extends AppCompatActivity implements
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
+            Log.d("TAG", "Parent: " + parent);
+            Log.d("TAG", "Position: " + position);
+            Log.d("TAG", "View: " + view);
+            Log.d("TAG", "ID: " + id);
             selectItem(position);
         }
     }
@@ -225,13 +239,6 @@ public class MainActivity extends AppCompatActivity implements
         Bundle args = new Bundle();
         args.putInt("hej", position);
         fragment.setArguments(args);
-
-        // Insert the fragment by replacing any existing fragment
-        //FragmentManager fragmentManager = getFragmentManager();
-        //fragmentManager.beginTransaction()
-        //        .replace(R.id.fragmentContainer, fragment)
-        //        .commit();
-
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
         //setTitle(mPlanetTitles[position]);

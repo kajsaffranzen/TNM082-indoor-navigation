@@ -43,8 +43,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!-- The main content view -->
-
-        
         <FrameLayout
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
@@ -53,12 +51,13 @@
         <!-- The navigation drawer -->
         <ListView android:id="@+id/left_drawer"
             android:layout_width="240dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="start"
             android:choiceMode="singleChoice"
-            android:divider="#666699"
-            android:dividerHeight="1dp"
-            android:background="#1f1f2e"/>
+            android:divider="@android:color/black"
+            android:dividerHeight="0.5dp"
+            android:background="#ffeeeeee"
+            android:layout_marginTop="?attr/actionBarSize"/>
     </android.support.v4.widget.DrawerLayout>
 </android.support.design.widget.CoordinatorLayout>
 
