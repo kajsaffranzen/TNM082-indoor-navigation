@@ -55,6 +55,8 @@ public class House {
 
     }
 
+
+    //Function to get Cars, this should probably move
     private void getCars() {
 
         String test = "";
@@ -111,12 +113,10 @@ public class House {
             public void onChildAdded(DataSnapshot snapshot, String s) {
 
                 POI newPOI = snapshot.getValue(POI.class);
-
-                Log.i("cars", "here" + snapshot.getValue());
-
+                Log.i("test2", "testing");
                 //Needed since firebase expects that we add the key
                 //"path" to the first element of the array, really stupid
-                newPOI.getPath().remove(0);
+                //newPOI.getPath().remove(0);
 
                 POIs2.put(snapshot.getKey(), newPOI);
 
