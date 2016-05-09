@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F2F2F2">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -11,13 +12,14 @@
         android:layout_gravity="center"
         android:background="@drawable/chkimg"
         android:visibility="invisible"
-        android:layout_marginLeft="70dp"/>
+        android:layout_marginLeft="40dp"/>
 
     <TextView
         android:id="@+id/expListItem"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:textSize="20dp"
+        android:textSize="10pt"
         android:gravity="center_vertical"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/editTxtLine"/>
 </LinearLayout>

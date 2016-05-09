@@ -64,10 +64,6 @@ public class House {
 
                 POI newPOI = snapshot.getValue(POI.class);
 
-                //Needed since firebase expects that we add the key
-                //"path" to the first element of the array, really stupid
-                newPOI.getPath().remove(0);
-
                 POIs2.put(snapshot.getKey(), newPOI);
 
                 POIs.add(newPOI);
@@ -79,17 +75,14 @@ public class House {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override public void onCancelled(FirebaseError error) { }
@@ -103,7 +96,7 @@ public class House {
     }
 
     // Add a new POI to the database
-    public void addPOI(String name, String cat, String desc, int floor, boolean official) {
+    public void addPOI(String name, String cat, String desc, int floor, boolean official, List<String> path) {
 
         Firebase DB = new Firebase(DBUrl + this.houseName);
 
@@ -111,12 +104,7 @@ public class House {
 
         //TODO: ugly solution for now
 
-        List<String> tester = new ArrayList<String>();
-
-        tester.add("hej");
-        tester.add("hej2");
-
-        POI test = new POI(cat, desc, floor, official, tester);
+        POI test = new POI(cat, desc, floor, official, path);
 
         newPOSDBref.setValue(test);
 
@@ -147,4 +135,7 @@ public class House {
     public void setOnDataLoadedListener(OnDataLoaded listener){
         this.listener = listener;
     }
+
+    //get house name
+    public String getName() { return this.houseName; }
 }

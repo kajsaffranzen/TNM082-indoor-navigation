@@ -7,8 +7,9 @@
         android:id="@+id/expListGroup"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
-        android:textSize="30dp"
+        android:textSize="12pt"
         android:gravity="center_vertical"
-        android:layout_marginLeft="50dp"/>
+        android:layout_marginLeft="50dp"
+        android:textColor="@color/colorQRText"/>
 
 </LinearLayout>
