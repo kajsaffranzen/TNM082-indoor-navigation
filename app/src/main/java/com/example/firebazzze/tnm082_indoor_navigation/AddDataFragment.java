@@ -55,6 +55,7 @@ public class AddDataFragment extends Fragment {
     private EditText POIname, POIdesc, POIpath;
     private ListView lv;
     private Spinner spinner;
+    private boolean officialPOI = false;
 
 
     private String chosenCat;
@@ -104,7 +105,6 @@ public class AddDataFragment extends Fragment {
 
         fillScroller();
 
-
         //TODO: kolla ifall POIpath har text om true - kolla om användaren fill lägga till den
         //add a new POI to firebase, checks if the user has done it right or not
         createPOI.setOnClickListener(new View.OnClickListener() {
@@ -117,8 +117,16 @@ public class AddDataFragment extends Fragment {
 
                     House h = ((MainActivity)getActivity()).getHouse();
 
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+
+                    //get AddDataChildFragment and its functions
+                    AddDataChildFragment addDataChildFragment = (AddDataChildFragment) fm.findFragmentById(R.id.isOfficialCheckBox);
+
+                    officialPOI = addDataChildFragment.getOfficial();
+                    Log.i("official", ""+officialPOI);
+
                     //TODO: Check if admin, then change false to true
-                    h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
+                    h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, officialPOI, listOfPath);
 
                     Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
 
@@ -131,7 +139,6 @@ public class AddDataFragment extends Fragment {
                     chosenCat = null;
 
                     //go back to ListAndSearchView
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
                     fm.popBackStack();
                 }
 
@@ -193,8 +200,6 @@ public class AddDataFragment extends Fragment {
     }
 
     public void checkAdmin(){}
-
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
