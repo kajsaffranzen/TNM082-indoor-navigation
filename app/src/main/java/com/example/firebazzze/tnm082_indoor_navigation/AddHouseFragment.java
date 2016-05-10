@@ -53,6 +53,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Button addPOIBtn;
+    private Button goToQRBtn;
     private static final String KEY = "housename";
     private String currentMarkerName = null;
 
@@ -112,6 +113,9 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         //Add POI button
         addPOIBtn = (Button) view.findViewById(R.id.addPoiBtn);
+
+        //Add qr view button
+        goToQRBtn = (Button) view.findViewById(R.id.qrViewBtn);
 
         setListeners();
 
@@ -183,6 +187,13 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 addPoiPopup();
+            }
+        });
+
+        goToQRBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotToQrView();
             }
         });
     }
@@ -308,6 +319,20 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                 .commit();
     }
 
+    //Navigate to QR view
+    private void gotToQrView() {
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        Fragment QRFragment = new QRFragment();
+
+        Bundle bundle = new Bundle();
+
+        QRFragment.setArguments(bundle);
+        fm.beginTransaction().replace(R.id.fragmentContainer, QRFragment)
+                .addToBackStack("ListAndSearchFragment")
+                .commit();
+    }
+
     //Shows a popup dialogue where user can enter input for the new POI
     private void addPoiPopup(final LatLng latLng) {
 
@@ -375,7 +400,10 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
 
         alert.setTitle("");
-        alert.setMessage("Hold on map to create a point of interest at that location");
+        if( !((MainActivity)getActivity()).isAdmin )
+            alert.setMessage("Must be admin to add points of interest");
+        else
+            alert.setMessage("Hold on map to create a point of interest at that location");
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }

@@ -27,6 +27,16 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"/>
 
+        <Button
+            android:id="@+id/qrViewBtn"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/qr_img"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"/>
+
     </RelativeLayout>
 
 
