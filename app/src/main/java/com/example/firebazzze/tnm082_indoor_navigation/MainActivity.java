@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements
     private String mActivityTitle;
     private CharSequence mTitle;
 
-    private ArrayAdapter<String> mAdapter;
+    private DrawerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +116,14 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
         Log.d("TAG", "ICON CLICK");
@@ -176,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void addDrawerItems() {
         String[] osArray = { "Android", "iOS", "Windows", "OS X", "Linux" };
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mAdapter = new DrawerAdapter(this, new String[] { "data1", "data2" });
         mDrawerList.setAdapter(mAdapter);
     }
 
