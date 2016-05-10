@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,13 +15,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -51,10 +52,14 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Button addPOIBtn;
+    private Button goToQRBtn;
     private static final String KEY = "housename";
+    private String currentMarkerName = null;
 
     private Map<String, House> houseMap;
     private List<String> houseNameList;
+
+    private ProgressBar mapsLoadingPanel;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -100,6 +105,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_house, container, false);
 
+        //Get Map component
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -110,10 +116,34 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         //Add POI button
         addPOIBtn = (Button) view.findViewById(R.id.addPoiBtn);
 
+        //Add qr view button
+        goToQRBtn = (Button) view.findViewById(R.id.qrViewBtn);
+
+        //Add progressbar
+        mapsLoadingPanel = (ProgressBar) view.findViewById(R.id.mapsLoadingPanel);
+
         setListeners();
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        // TODO Auto-generated method stub
+        super.onDestroyView();
+
+        try {
+            SupportMapFragment fragment = (SupportMapFragment) getChildFragmentManager()
+                    .findFragmentById(R.id.map);
+
+            FragmentTransaction ft = getActivity().getSupportFragmentManager()
+                    .beginTransaction();
+            ft.remove(fragment);
+            ft.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void addMarkers() {
@@ -130,19 +160,16 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                     return;
 
                 List<String> coordList = Arrays.asList(dataSnapshot.child("latlng").getValue().toString().split(","));
-
-                Log.d("latlng", "Name = " + dataSnapshot.getKey());
-                Log.d("latlng", "LAT  = " + coordList.get(0));
-                Log.d("latlng", "LONG = " + coordList.get(1));
-
-
                 LatLng newMarkerCoords = new LatLng( Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
 
                 //Set marker on map
                 mMap.addMarker(new MarkerOptions()
                         .title(dataSnapshot.getKey())
-                        .snippet("dummy")
+                        .snippet("Click to see more")
                         .position(newMarkerCoords));
+
+                //Remove progress bar as data is loaded
+                mapsLoadingPanel.setVisibility(View.GONE);
             }
 
             @Override
@@ -162,6 +189,13 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 addPoiPopup();
+            }
+        });
+
+        goToQRBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotToQrView();
             }
         });
     }
@@ -249,20 +283,56 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                Fragment ListAndSearchFragment = new ListAndSearchFragment();
-
-                Bundle bundle = new Bundle();
-                bundle.putString(KEY, marker.getTitle());
-
-                ListAndSearchFragment.setArguments(bundle);
-                fm.beginTransaction().replace(R.id.fragmentContainer, ListAndSearchFragment)
-                        .addToBackStack("ListAndSearchFragment")
-                        .commit();
-
+                currentMarkerName = marker.getTitle();
                 return false;
             }
         });
+
+        //The user clicks the map to deselect a marker, and goToMarker option is hidden
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                currentMarkerName = null;
+            }
+        });
+
+        //The user clicks on the infoWindow and navigates to ListAndSearch
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                if(currentMarkerName != null)
+                    goToListAndSearch(currentMarkerName);
+            }
+        });
+    }
+
+    //Navigate to listAndSearch view
+    private void goToListAndSearch(String title) {
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        Fragment ListAndSearchFragment = new ListAndSearchFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY, title);
+
+        ListAndSearchFragment.setArguments(bundle);
+        fm.beginTransaction().replace(R.id.fragmentContainer, ListAndSearchFragment)
+                .addToBackStack("ListAndSearchFragment")
+                .commit();
+    }
+
+    //Navigate to QR view
+    private void gotToQrView() {
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        Fragment QRFragment = new QRFragment();
+
+        Bundle bundle = new Bundle();
+
+        QRFragment.setArguments(bundle);
+        fm.beginTransaction().replace(R.id.fragmentContainer, QRFragment)
+                .addToBackStack("ListAndSearchFragment")
+                .commit();
     }
 
     //Shows a popup dialogue where user can enter input for the new POI
@@ -278,15 +348,15 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         TextView textDesc = new TextView(getContext());
 
         textName.setText("Name");
-        textDesc.setText("Description");
+        //textDesc.setText("Description");
 
         final EditText inputName = new EditText(getContext());
-        final EditText inputDesc = new EditText(getContext());
+        //final EditText inputDesc = new EditText(getContext());
 
         linearLayout.addView(textName);
         linearLayout.addView(inputName);
         linearLayout.addView(textDesc);
-        linearLayout.addView(inputDesc);
+        //linearLayout.addView(inputDesc);
 
         alert.setView(linearLayout);
 
@@ -299,7 +369,8 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                 House newHouse = new House(inputName.getText().toString(), coords);
                 mMap.addMarker(new MarkerOptions()
                         .title(inputName.getText().toString())
-                        .snippet(inputDesc.getText().toString())
+                        //.snippet(inputDesc.getText().toString())
+                        .snippet("Click to see more")
                         .position(latLng));
             }
         });
@@ -331,7 +402,10 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
 
         alert.setTitle("");
-        alert.setMessage("Hold on map to create a point of interest at that location");
+        if( !((MainActivity)getActivity()).isAdmin )
+            alert.setMessage("Must be admin to add points of interest");
+        else
+            alert.setMessage("Hold on map to create a point of interest at that location");
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }

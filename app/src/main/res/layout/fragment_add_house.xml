@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.firebazzze.tnm082_indoor_navigation.AddHouseFragment">
+    tools:context="com.example.firebazzze.tnm082_indoor_navigation.AddHouseFragment"
+    android:id="@+id/addHouseFragmentLayout">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,6 +26,23 @@
             android:background="@drawable/addpoiimg"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"/>
+
+        <Button
+            android:id="@+id/qrViewBtn"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/qr_img"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"/>
+
+        <ProgressBar
+            android:id="@+id/mapsLoadingPanel"
+            android:layout_width="92dp"
+            android:layout_height="92dp"
+            android:layout_centerInParent="true"
+            android:indeterminate="true" />
 
     </RelativeLayout>
 
