@@ -22,9 +22,13 @@ import java.util.Map;
 public class House {
 
     private String houseName;
+
+    private String latLng;
+
     private List<POI> POIs;
 
     private String DBUrl = "https://tnm082-indoor.firebaseio.com/";
+    //private String DBUrl = "https://coord-test.firebaseio.com/";
 
 
     private Map<String, POI> POIs2;
@@ -40,8 +44,17 @@ public class House {
 
     // Creates an object for the house and then gets the data for it
     public House(String houseName){
-
         this.houseName = houseName;
+        POIs = new ArrayList<POI>();
+        POIs2 = new HashMap<String, POI>();
+        POIs = new ArrayList<POI>();
+        houseExists();
+    }
+
+    // Creates a house object with coodinates, called from map view
+    public House(String houseName, String latLng){
+        this.houseName = houseName;
+        this.latLng = latLng;
         POIs = new ArrayList<POI>();
         POIs2 = new HashMap<String, POI>();
         Cars = new HashMap<String, Car>();
@@ -52,7 +65,26 @@ public class House {
             getData();
 
         POIs = new ArrayList<POI>();
+        addData();
+    }
 
+    private void houseExists() {
+        Firebase DB = new Firebase(DBUrl + this.houseName);
+
+        DB.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                    getData();
+                else
+                    addData();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
 
@@ -112,6 +144,10 @@ public class House {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String s) {
 
+                //TODO - should not need this, replace with try catch
+                if(snapshot.getKey().equals("latlng"))
+                    return;
+
                 POI newPOI = snapshot.getValue(POI.class);
                 Log.i("test2", "testing");
                 //Needed since firebase expects that we add the key
@@ -120,7 +156,6 @@ public class House {
 
                 POIs2.put(snapshot.getKey(), newPOI);
 
-                POIs.add(newPOI);
 
                 if(listener != null)
                     listener.onLoaded();
@@ -140,7 +175,14 @@ public class House {
 
             @Override public void onCancelled(FirebaseError error) { }
         });
+    }
 
+    //Add the new house to DB
+    private void addData() {
+        Firebase DB = new Firebase(DBUrl);
+        Firebase newPoiRef = DB.child(this.houseName);
+        Firebase newLatLng = newPoiRef.child("latlng");
+        newLatLng.setValue(this.latLng);
     }
 
     //Add new Car to the garage

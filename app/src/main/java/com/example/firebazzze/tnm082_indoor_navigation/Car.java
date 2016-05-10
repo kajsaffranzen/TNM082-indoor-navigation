@@ -4,7 +4,7 @@ package com.example.firebazzze.tnm082_indoor_navigation;
  * Created by ricka on 2016-05-03.
  */
 public class Car {
-    private String coords;
+    private String latlng;
     private boolean used;
 
 
@@ -12,12 +12,11 @@ public class Car {
     public Car(){
     }
 
-    public Car(boolean used, String coords){
-        this.used = used;
-        this.coords = coords;
-    }
+    /*public Car(int latlng){
+        this.latlng = latlng;
+    }*/
 
-    public String getCoords(){ return this.coords; }
+    public String getLatlng(){ return this.latlng; }
 
     public boolean getUsed() {return this.used; }
 

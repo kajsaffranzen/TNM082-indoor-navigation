@@ -35,16 +35,24 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements
         QRFragment.OnFragmentInteractionListener,
         ListAndSearchFragment.OnFragmentInteractionListener,
         AddDataFragment.OnFragmentInteractionListener,
-        DetailFragment.OnFragmentInteractionListener{
+        DetailFragment.OnFragmentInteractionListener,
+        AddHouseFragment.OnFragmentInteractionListener{
 
     public House house;
     public boolean isAdmin = false;
     public DetailFragment detailFragment;
+
+    public House garage;
+
+    public Map<String, Car> Cars = new HashMap<String, Car>();
+    public Map<String, House> Houses = new HashMap<String, House>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +67,13 @@ public class MainActivity extends AppCompatActivity implements
 
         //Navigate to the camera view
         getSupportFragmentManager().popBackStack();
-        QRFragment fragment = new QRFragment();
+        AddHouseFragment fragment = new AddHouseFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+
+        //Navigate to the camera view
+//        getSupportFragmentManager().popBackStack();
+//        QRFragment fragment = new QRFragment();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
     }
 
     //Override the back button when on qr fragment
@@ -115,6 +128,10 @@ public class MainActivity extends AppCompatActivity implements
 
     //set House
     public void setHouse(House h){ house = h; }
+
+    public void addCar(String reg, Car c){
+        Cars.put(reg, c);
+    }
 
     public void setToolbarTitle(String s){
         Toolbar mToolbar = (Toolbar)findViewById(R.id.toolbar);
