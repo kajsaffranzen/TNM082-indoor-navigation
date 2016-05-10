@@ -15,14 +15,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -59,6 +58,8 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
     private Map<String, House> houseMap;
     private List<String> houseNameList;
+
+    private ProgressBar mapsLoadingPanel;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -104,6 +105,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_house, container, false);
 
+        //Get Map component
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -116,6 +118,9 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         //Add qr view button
         goToQRBtn = (Button) view.findViewById(R.id.qrViewBtn);
+
+        //Add progressbar
+        mapsLoadingPanel = (ProgressBar) view.findViewById(R.id.mapsLoadingPanel);
 
         setListeners();
 
@@ -155,12 +160,6 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                     return;
 
                 List<String> coordList = Arrays.asList(dataSnapshot.child("latlng").getValue().toString().split(","));
-
-                Log.d("latlng", "Name = " + dataSnapshot.getKey());
-                Log.d("latlng", "LAT  = " + coordList.get(0));
-                Log.d("latlng", "LONG = " + coordList.get(1));
-
-
                 LatLng newMarkerCoords = new LatLng( Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
 
                 //Set marker on map
@@ -168,6 +167,9 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                         .title(dataSnapshot.getKey())
                         .snippet("Click to see more")
                         .position(newMarkerCoords));
+
+                //Remove progress bar as data is loaded
+                mapsLoadingPanel.setVisibility(View.GONE);
             }
 
             @Override
