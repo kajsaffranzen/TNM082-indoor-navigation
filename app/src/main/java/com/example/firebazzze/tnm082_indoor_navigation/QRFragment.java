@@ -38,6 +38,7 @@ public class QRFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     private static final String KEY = "housename";
+    private static final String CAR_KEY = "carkey";
     private OnFragmentInteractionListener mListener;
 
     CameraSource cameraSource;
@@ -70,6 +71,27 @@ public class QRFragment extends Fragment {
         if (getArguments() != null) {
             //IF WE WANT TO PASS ARGUMENTS
         }
+    }
+
+    public void showCarOnMap(String platenr){
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        Fragment AddHouseFragment = new AddHouseFragment();
+
+
+
+        Bundle bundle = new Bundle();
+        bundle.putString(CAR_KEY, platenr);
+
+        AddHouseFragment.setArguments(bundle);
+
+        fm.beginTransaction().replace(R.id.fragmentContainer, AddHouseFragment)
+                .addToBackStack("AddHouseFragment")
+                .commit();
+
+        //getSupportFragmentManager().popBackStack();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+
     }
 
     //go to list and search view
@@ -160,13 +182,19 @@ public class QRFragment extends Fragment {
                                     barcodes.valueAt(0).displayValue
                             );
 
-                            if(barcodes.valueAt(0).displayValue.contains("/")){
-                                //for cars
-                                House garage = new House(barcodes.valueAt(0).displayValue);
 
-                            }else{
-                                //go to next fragment and send text from qr
-                                goToListAndSearch( barcodes.valueAt(0).displayValue );
+                            if(!barcodes.valueAt(0).displayValue.substring(0,3).matches("[0-9]+") && barcodes.valueAt(0).displayValue.substring(3,6).matches("[0-9]+")){
+                                showCarOnMap(barcodes.valueAt(0).displayValue);
+                            }
+                            else {
+                                if (barcodes.valueAt(0).displayValue.contains("/")) {
+                                    //for cars
+                                    House garage = new House(barcodes.valueAt(0).displayValue);
+
+                                } else {
+                                    //go to next fragment and send text from qr
+                                    goToListAndSearch(barcodes.valueAt(0).displayValue);
+                                }
                             }
 
 

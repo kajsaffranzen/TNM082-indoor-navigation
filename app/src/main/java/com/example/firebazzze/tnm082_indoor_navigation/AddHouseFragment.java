@@ -50,6 +50,8 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private static final String CAR_KEY = "carkey";
+
     private GoogleMap mMap;
     private Button addPOIBtn;
     private static final String KEY = "housename";
@@ -58,7 +60,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     private List<String> houseNameList;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String platenr;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
@@ -89,7 +91,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            platenr = getArguments().getString(CAR_KEY);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -117,6 +119,18 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
+    private void findCar(){
+
+        List<String> coords = Arrays.asList(((MainActivity)getActivity()).getCar(platenr).getLatlng().split(","));
+        LatLng carPos = new LatLng(Double.parseDouble(coords.get(0)), Double.parseDouble(coords.get(1)));
+
+        mMap.addMarker(new MarkerOptions()
+                .title(platenr)
+                .position(carPos)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+
+    }
+
     private void addMarkers() {
         String DBUrl = "https://tnm082-indoor.firebaseio.com/";
         //String DBUrl = "https://coord-test.firebaseio.com/"; //dummy
@@ -132,9 +146,6 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
                 List<String> coordList = Arrays.asList(dataSnapshot.child("latlng").getValue().toString().split(","));
 
-                Log.d("rickard", dataSnapshot.toString());
-                Log.d("rickard", "LAT  = " + coordList.get(0));
-                Log.d("rickard", "LONG = " + coordList.get(1));
 
                 LatLng newMarkerCoords = new LatLng( Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
 
@@ -154,36 +165,18 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onCancelled(FirebaseError firebaseError) {}
         });
+        Map<String, Car> carMap = ((MainActivity)getActivity()).getCars();
+        for(Map.Entry<String, Car> c : carMap.entrySet()){
 
-        DB.child("bilar").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            List<String> coordList = Arrays.asList(c.getValue().getLatlng().split(","));
+            LatLng newMarkerCoords = new LatLng( Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
 
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    Log.i("rickard", postSnapshot.getValue().toString());
+            mMap.addMarker(new MarkerOptions()
+                    .title(c.getKey())
+                    .position(newMarkerCoords)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        }
 
-                    Car car = postSnapshot.getValue(Car.class);
-
-                    ((MainActivity)getActivity()).addCar(dataSnapshot.getKey(), car);
-
-                    List<String> coordList = Arrays.asList(car.getLatlng().toString().split(","));
-
-                    LatLng newMarkerCoords = new LatLng( Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
-
-                    mMap.addMarker(new MarkerOptions()
-                            .position(newMarkerCoords)
-                            .title(postSnapshot.getKey())
-                            .snippet("dummy")
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-                }
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
     }
 
     //Set Listeners
@@ -248,14 +241,22 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng nkpg = new LatLng(58, 16);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(nkpg));
-
+        if(platenr == null) {
+            // Add a marker in Sydney and move the camera
+            LatLng nkpg = new LatLng(58, 16);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(nkpg));
+        }else{
+            List<String> coords = Arrays.asList(((MainActivity)getActivity()).getCar(platenr).getLatlng().split(","));
+            LatLng carPos = new LatLng(Double.parseDouble(coords.get(0)), Double.parseDouble(coords.get(1)));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(carPos));
+        }
         setMapListeners();
 
-        //Add markers for existing POIs
-        addMarkers();
+        if(platenr == null) {
+            addMarkers();
+        }else{
+            findCar();
+        }
     }
 
     //Add listeners to the map

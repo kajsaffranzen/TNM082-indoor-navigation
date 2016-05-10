@@ -12,10 +12,6 @@ public class Car {
     public Car(){
     }
 
-    /*public Car(int latlng){
-        this.latlng = latlng;
-    }*/
-
     public String getLatlng(){ return this.latlng; }
 
     public boolean getUsed() {return this.used; }

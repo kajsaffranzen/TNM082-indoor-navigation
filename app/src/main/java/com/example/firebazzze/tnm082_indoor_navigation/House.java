@@ -149,7 +149,7 @@ public class House {
                     return;
 
                 POI newPOI = snapshot.getValue(POI.class);
-                Log.i("test2", "testing");
+
                 //Needed since firebase expects that we add the key
                 //"path" to the first element of the array, really stupid
                 //newPOI.getPath().remove(0);
