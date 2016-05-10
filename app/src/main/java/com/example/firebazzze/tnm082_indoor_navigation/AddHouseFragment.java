@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -114,6 +115,24 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        // TODO Auto-generated method stub
+        super.onDestroyView();
+
+        try {
+            SupportMapFragment fragment = (SupportMapFragment) getChildFragmentManager()
+                    .findFragmentById(R.id.map);
+
+            FragmentTransaction ft = getActivity().getSupportFragmentManager()
+                    .beginTransaction();
+            ft.remove(fragment);
+            ft.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void addMarkers() {

@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.firebazzze.tnm082_indoor_navigation.AddHouseFragment">
+    tools:context="com.example.firebazzze.tnm082_indoor_navigation.AddHouseFragment"
+    android:id="@+id/addHouseFragmentLayout">
 
     <RelativeLayout
         android:layout_width="match_parent"
