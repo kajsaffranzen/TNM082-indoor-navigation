@@ -106,6 +106,10 @@ public class QRFragment extends Fragment {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment ListAndSearchFragment = new ListAndSearchFragment();
 
+
+        //To get the back button to work properly
+        ((MainActivity)getActivity()).fromMaps = false;
+
         Bundle bundle = new Bundle();
         bundle.putString(KEY, houseName);
 
