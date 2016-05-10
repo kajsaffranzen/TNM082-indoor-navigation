@@ -34,14 +34,14 @@ public class MainActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
         //Navigate to the map view
-        getSupportFragmentManager().popBackStack();
-        AddHouseFragment fragment = new AddHouseFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+//        getSupportFragmentManager().popBackStack();
+//        AddHouseFragment fragment = new AddHouseFragment();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
 
         //Navigate to the camera view
-//        getSupportFragmentManager().popBackStack();
-//        QRFragment fragment = new QRFragment();
-//        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+        getSupportFragmentManager().popBackStack();
+        QRFragment fragment = new QRFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
     }
 
     //Override the back button when on qr fragment
