@@ -16,4 +16,6 @@ public class Car {
 
     public boolean getUsed() {return this.used; }
 
+    public void setUsed() {this.used = !this.used; }
+
 }

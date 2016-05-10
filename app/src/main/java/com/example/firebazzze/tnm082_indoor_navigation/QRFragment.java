@@ -1,10 +1,12 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -41,6 +43,8 @@ public class QRFragment extends Fragment {
     private static final String CAR_KEY = "carkey";
     private OnFragmentInteractionListener mListener;
 
+    private boolean scanned = false;
+
     CameraSource cameraSource;
     SurfaceView cameraView;
     TextView barcodeInfo;
@@ -71,14 +75,14 @@ public class QRFragment extends Fragment {
         if (getArguments() != null) {
             //IF WE WANT TO PASS ARGUMENTS
         }
+
+        scanned = false;
     }
 
     public void showCarOnMap(String platenr){
-
+        Log.i("rickard", "here i am");
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment AddHouseFragment = new AddHouseFragment();
-
-
 
         Bundle bundle = new Bundle();
         bundle.putString(CAR_KEY, platenr);
@@ -114,7 +118,7 @@ public class QRFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_qr, container, false);
-
+        scanned = false;
         //Hide search field and button in toolbar
         EditText tBarSearchField = (EditText) getActivity().findViewById(R.id.toolbarSearchField);
         Button tBarSearchButton = (Button) getActivity().findViewById(R.id.searchInflaterButton);
@@ -174,7 +178,8 @@ public class QRFragment extends Fragment {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
 
-                if (barcodes.size() != 0) {
+                if (barcodes.size() != 0 && !scanned) {
+                    scanned = true;
                     barcodeInfo.post(new Runnable() {    // Use the post method of the TextView
                         public void run() {
 
@@ -183,7 +188,40 @@ public class QRFragment extends Fragment {
                             );
 
                             if(barcodes.valueAt(0).displayValue.length() > 5 && !barcodes.valueAt(0).displayValue.substring(0,3).matches("[0-9]+") && barcodes.valueAt(0).displayValue.substring(3,6).matches("[0-9]+")){
-                                showCarOnMap(barcodes.valueAt(0).displayValue);
+                                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                                Car c = ((MainActivity) getActivity()).getCar(barcodes.valueAt(0).displayValue);
+
+                                alertDialog.setTitle("Bil alternativ")
+                                        .setCancelable(true)
+                                        .setNeutralButton("Använd", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                ((MainActivity)getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed();
+                                                dialog.cancel();
+                                                scanned = false;
+                                            }
+                                        }).setNegativeButton("Parkera", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                ((MainActivity) getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed();
+
+                                                //Get
+                                                dialog.cancel();
+                                                scanned = false;
+                                            }
+                                         })
+                                        .setPositiveButton("Hitta", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                showCarOnMap(barcodes.valueAt(0).displayValue);
+                                                dialog.cancel();
+                                                scanned = false;
+                                            }
+                                        });
+
+                                AlertDialog alertDialog2 = alertDialog.create();
+                                alertDialog2.show();
+
                             }
                             else {
                                 if (barcodes.valueAt(0).displayValue.contains("/")) {
