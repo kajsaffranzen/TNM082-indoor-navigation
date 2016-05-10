@@ -182,8 +182,7 @@ public class QRFragment extends Fragment {
                                     barcodes.valueAt(0).displayValue
                             );
 
-
-                            if(!barcodes.valueAt(0).displayValue.substring(0,3).matches("[0-9]+") && barcodes.valueAt(0).displayValue.substring(3,6).matches("[0-9]+")){
+                            if(barcodes.valueAt(0).displayValue.length() > 5 && !barcodes.valueAt(0).displayValue.substring(0,3).matches("[0-9]+") && barcodes.valueAt(0).displayValue.substring(3,6).matches("[0-9]+")){
                                 showCarOnMap(barcodes.valueAt(0).displayValue);
                             }
                             else {
