@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements
     public boolean isAdmin = false;
     public DetailFragment detailFragment;
 
-
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -61,6 +60,14 @@ public class MainActivity extends AppCompatActivity implements
     private CharSequence mTitle;
 
     private DrawerAdapter mAdapter;
+
+    //Fragments should sync position with osArray
+    //Ugly solution ...
+    public String[] frag = {"QRFragment", "ListAndSearchFragment"};
+
+    //Items for drawer
+    private String[] osArray = { "QR-skanning", "Intressepunkter"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,42 +156,9 @@ public class MainActivity extends AppCompatActivity implements
     //to make the fragments work
     public void onFragmentInteraction(Uri uri){
     }
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.menuItemAdminMode:
-                item.setChecked(!item.isChecked());
-                isAdmin = item.isChecked();
-
-                //refresh the detail view in order to show/hide admin button
-                if(detailFragment != null && detailFragment.isAdded())
-                    detailFragment.refreshFragment();
-
-                else
-                    Log.d("test","check works");
-
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 
     private void addDrawerItems() {
-        String[] osArray = { "Android", "iOS", "Windows", "OS X", "Linux" };
-        mAdapter = new DrawerAdapter(this, new String[] { "data1", "data2" });
+        mAdapter = new DrawerAdapter(this, osArray);
         mDrawerList.setAdapter(mAdapter);
     }
 
@@ -233,24 +207,43 @@ public class MainActivity extends AppCompatActivity implements
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
-            Log.d("TAG", "Parent: " + parent);
-            Log.d("TAG", "Position: " + position);
-            Log.d("TAG", "View: " + view);
-            Log.d("TAG", "ID: " + id);
+            
             selectItem(position);
         }
     }
-    /** Swaps fragments in the main content view */
+
     private void selectItem(int position) {
-        // Create a new fragment and specify the planet to show based on position
-        Fragment fragment = new ListAndSearchFragment();
-        Bundle args = new Bundle();
-        args.putInt("hej", position);
-        fragment.setArguments(args);
-        // Highlight the selected item, update the title, and close the drawer
+
+        changeFragment(frag[position]);
+
         mDrawerList.setItemChecked(position, true);
-        //setTitle(mPlanetTitles[position]);
         mDrawerLayout.closeDrawer(mDrawerList);
+    }
+
+    /** Swaps fragments in the main content view */
+    private void changeFragment(String currentFrag){
+
+        Fragment fragment;
+        boolean flag = false;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        switch(currentFrag) {
+            default:
+            case "QRFragment":
+                fragment = new QRFragment();
+                flag = true;
+                break;
+            case "ListAndSearchFragment":
+                fragment = new ListAndSearchFragment();
+                flag = true;
+                break;
+        }
+
+        if(flag){
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, fragment)
+                    .addToBackStack(currentFrag)
+                    .commit();
+        }
     }
 
     @Override
