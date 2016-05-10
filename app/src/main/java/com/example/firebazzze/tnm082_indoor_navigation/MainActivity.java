@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements
     public boolean isAdmin = false;
     public DetailFragment detailFragment;
 
+    public boolean fromMaps = false;
+
     public House garage;
 
     public Map<String, Car> Cars = new HashMap<String, Car>();
@@ -87,9 +89,10 @@ public class MainActivity extends AppCompatActivity implements
         //get current fragment
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
 
+
         //Ugly fix: Map fragment could not be created twice so when backing to that fragment, it would crach
         //Instead map is now removed onDestroy, and on back the view is recreated.
-        if(f instanceof ListAndSearchFragment) {
+        if(f instanceof ListAndSearchFragment && fromMaps) {
             getSupportFragmentManager().popBackStack();
             AddHouseFragment fragment = new AddHouseFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
@@ -156,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public Car getCar(String reg){
-
         return Cars.get(reg);
     }
 
