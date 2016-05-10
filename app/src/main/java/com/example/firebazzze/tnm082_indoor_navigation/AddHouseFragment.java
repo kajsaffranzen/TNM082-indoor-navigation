@@ -165,6 +165,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         //String DBUrl = "https://coord-test.firebaseio.com/"; //dummy
         Firebase DB = new Firebase(DBUrl);
 
+        //Display all buildings on the map
         DB.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -174,7 +175,6 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                     return;
 
                 List<String> coordList = Arrays.asList(dataSnapshot.child("latlng").getValue().toString().split(","));
-
                 LatLng newMarkerCoords = new LatLng( Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
 
                 //Set marker on map
@@ -196,6 +196,8 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onCancelled(FirebaseError firebaseError) {}
         });
+
+        //Display all cars on the map
         Map<String, Car> carMap = ((MainActivity)getActivity()).getCars();
         for(Map.Entry<String, Car> c : carMap.entrySet()){
 
@@ -286,7 +288,18 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         }else{
             List<String> coords = Arrays.asList(((MainActivity)getActivity()).getCar(platenr).getLatlng().split(","));
             LatLng carPos = new LatLng(Double.parseDouble(coords.get(0)), Double.parseDouble(coords.get(1)));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(carPos));
+
+            //Move camera to marker, pretty zoomed out
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(carPos,5));
+
+            mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                @Override
+                public void onMapLoaded() {
+                    // Zoom in on marker
+                    mMap.animateCamera(CameraUpdateFactory.zoomIn());
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 1500, null);
+                }
+            });
         }
         setMapListeners();
 
@@ -314,11 +327,14 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        //The user clicks a marker, if its not a car, its name is stored for future use
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                currentMarkerName = marker.getTitle();
+                //Check if marker is car, if so dont make the infoWindow clickable
+                if(((MainActivity)getActivity()).getCar(marker.getTitle()) == null)
+                    currentMarkerName = marker.getTitle();
                 return false;
             }
         });

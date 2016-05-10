@@ -1,7 +1,9 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
 /**
- * Created by ricka on 2016-05-03.
+ * A class descripbing a car object
+ * The car has a position on the map: latlng
+ * The car also can be set as used with the "used" parameter
  */
 public class Car {
     private String latlng;

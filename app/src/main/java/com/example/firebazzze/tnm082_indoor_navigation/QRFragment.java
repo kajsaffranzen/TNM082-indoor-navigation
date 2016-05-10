@@ -45,6 +45,8 @@ public class QRFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Button goToMapsBtn;
 
+    //This boolean prevents the app from continously scan a qr code
+    // after it already has been successfully scanned
     private boolean scanned = false;
 
     CameraSource cameraSource;
@@ -81,6 +83,9 @@ public class QRFragment extends Fragment {
         scanned = false;
     }
 
+    //Start the map fragment and send the scaned car key.
+    // The map fragment will then only display that car,
+    // and no other markers, making it easier to find that car
     public void showCarOnMap(String platenr){
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -94,10 +99,6 @@ public class QRFragment extends Fragment {
         fm.beginTransaction().replace(R.id.fragmentContainer, AddHouseFragment)
                 .addToBackStack("AddHouseFragment")
                 .commit();
-
-        //getSupportFragmentManager().popBackStack();
-        //getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
-
     }
 
     //go to list and search view
@@ -244,6 +245,13 @@ public class QRFragment extends Fragment {
                                                 scanned = false;
                                             }
                                         });
+
+                                alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                    @Override
+                                    public void onCancel(DialogInterface dialog) {
+                                        scanned = false;
+                                    }
+                                });
 
                                 AlertDialog alertDialog2 = alertDialog.create();
                                 alertDialog2.show();

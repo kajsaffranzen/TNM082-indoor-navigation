@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    //Fetch all cars from the database and store them in a map,
+    // which later can be accessed locally
     private void getAllCars() {
 
         String DBUrl = "https://tnm082-indoor.firebaseio.com/";
@@ -67,14 +69,12 @@ public class MainActivity extends AppCompatActivity implements
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
 
                     Car car = postSnapshot.getValue(Car.class);
-
                     addCar(postSnapshot.getKey(), car);
                 }
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
             }
         });
 
@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
+        //get current fragment
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
 
         //Ugly fix: Map fragment could not be created twice so when backing to that fragment, it would crach
@@ -100,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements
             super.onBackPressed();
         }
 
+        //If the current fragment is the first fragment opened,
+        //do the following so that we're not left with a blank activity
         else{
             moveTaskToBack(true);
         }
