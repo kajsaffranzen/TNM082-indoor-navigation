@@ -133,11 +133,9 @@ public class MainActivity extends AppCompatActivity implements
 
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
-        Log.d("TAG", "ICON CLICK");
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        // Handle your other action bar items...
 
         return super.onOptionsItemSelected(item);
     }
@@ -207,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
-            
+
             selectItem(position);
         }
     }

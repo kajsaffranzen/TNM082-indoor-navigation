@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -48,7 +49,8 @@ class DrawerAdapter extends BaseAdapter {
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.drawer_list_item, null);
-        TextView text = (TextView) vi.findViewById(R.id.text);
+        ImageView imgView = (ImageView) vi.findViewById(R.id.icon);
+        TextView text = (TextView) vi.findViewById(R.id.title);
         text.setText(data[position]);
         return vi;
     }

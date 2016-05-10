@@ -40,6 +40,8 @@ public class QRFragment extends Fragment {
     private static final String KEY = "housename";
     private OnFragmentInteractionListener mListener;
 
+    public House house;
+
     CameraSource cameraSource;
     SurfaceView cameraView;
     TextView barcodeInfo;
@@ -161,7 +163,7 @@ public class QRFragment extends Fragment {
                             );
 
                             //go to next fragment and send text from qr
-                            goToListAndSearch( barcodes.valueAt(0).displayValue );
+                            goToListAndSearch(barcodes.valueAt(0).displayValue);
                         }
                     });
                 }
