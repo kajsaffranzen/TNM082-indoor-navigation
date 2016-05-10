@@ -1,46 +1,21 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
-
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.SparseArray;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.ValueEventListener;
 import com.firebase.client.DataSnapshot;
 
-import com.example.firebazzze.tnm082_indoor_navigation.House;
 
 import com.firebase.client.FirebaseError;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
-
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements
@@ -72,15 +47,12 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Navigate to the camera view
-//        getSupportFragmentManager().popBackStack();
-//        AddHouseFragment fragment = new AddHouseFragment();
-//        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
 
         //Navigate to the camera view
         getSupportFragmentManager().popBackStack();
         QRFragment fragment = new QRFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+
     }
 
     private void getAllCars() {
@@ -113,9 +85,22 @@ public class MainActivity extends AppCompatActivity implements
     public void onBackPressed() {
 
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+
+        //Ugly fix: Map fragment could not be created twice so when backing to that fragment, it would crach
+        //Instead map is now removed onDestroy, and on back the view is recreated.
+        if(f instanceof ListAndSearchFragment) {
+            getSupportFragmentManager().popBackStack();
+            AddHouseFragment fragment = new AddHouseFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+            return;
+        }
+
+        //Default
         if (!(f instanceof QRFragment)) {//the fragment on which you want to handle your back press
             super.onBackPressed();
-        }else{
+        }
+
+        else{
             moveTaskToBack(true);
         }
     }
@@ -176,5 +161,4 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar mToolbar = (Toolbar)findViewById(R.id.toolbar);
         mToolbar.setTitle(s);
     }
-
 }

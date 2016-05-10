@@ -53,6 +53,7 @@ public class House {
 
     // Creates a house object with coodinates, called from map view
     public House(String houseName, String latLng){
+
         this.houseName = houseName;
         this.latLng = latLng;
         POIs = new ArrayList<POI>();
@@ -131,6 +132,7 @@ public class House {
     // Gets the data from the firebase database
     private void getData(){
 
+
         //Change this into our database
         //Reference to Database
         Firebase DB = new Firebase(DBUrl + this.houseName);
@@ -145,20 +147,20 @@ public class House {
             public void onChildAdded(DataSnapshot snapshot, String s) {
 
                 //TODO - should not need this, replace with try catch
-                if(snapshot.getKey().equals("latlng"))
-                    return;
+                if(!snapshot.getKey().equals("latlng")) {
 
-                POI newPOI = snapshot.getValue(POI.class);
+                    POI newPOI = snapshot.getValue(POI.class);
 
-                //Needed since firebase expects that we add the key
-                //"path" to the first element of the array, really stupid
-                //newPOI.getPath().remove(0);
+                    //Needed since firebase expects that we add the key
+                    //"path" to the first element of the array, really stupid
+                    newPOI.getPath().remove(0);
 
-                POIs2.put(snapshot.getKey(), newPOI);
+                    POIs2.put(snapshot.getKey(), newPOI);
+                    POIs.add(newPOI); //NOT USING THIS //TODO- remove
 
-
-                if(listener != null)
-                    listener.onLoaded();
+                    if (listener != null)
+                        listener.onLoaded();
+                }
             }
 
             @Override
@@ -179,6 +181,7 @@ public class House {
 
     //Add the new house to DB
     private void addData() {
+
         Firebase DB = new Firebase(DBUrl);
         Firebase newPoiRef = DB.child(this.houseName);
         Firebase newLatLng = newPoiRef.child("latlng");

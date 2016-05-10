@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -42,6 +43,7 @@ public class QRFragment extends Fragment {
     private static final String KEY = "housename";
     private static final String CAR_KEY = "carkey";
     private OnFragmentInteractionListener mListener;
+    private Button goToMapsBtn;
 
     private boolean scanned = false;
 
@@ -80,7 +82,7 @@ public class QRFragment extends Fragment {
     }
 
     public void showCarOnMap(String platenr){
-        Log.i("rickard", "here i am");
+
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment AddHouseFragment = new AddHouseFragment();
 
@@ -113,12 +115,36 @@ public class QRFragment extends Fragment {
                 .commit();
     }
 
+    //Navigate to QR view
+    private void goToMapsView() {
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        Fragment AddHouseFragment = new AddHouseFragment();
+
+        Bundle bundle = new Bundle();
+
+        AddHouseFragment.setArguments(bundle);
+        fm.beginTransaction().replace(R.id.fragmentContainer, AddHouseFragment)
+                .addToBackStack("ListAndSearchFragment")
+                .commit();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_qr, container, false);
         scanned = false;
+
+        //Add goToMapsBtn
+        goToMapsBtn = (Button) view.findViewById(R.id.mapsViewBtn);
+        goToMapsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMapsView();
+            }
+        });
+
         //Hide search field and button in toolbar
         EditText tBarSearchField = (EditText) getActivity().findViewById(R.id.toolbarSearchField);
         Button tBarSearchButton = (Button) getActivity().findViewById(R.id.searchInflaterButton);

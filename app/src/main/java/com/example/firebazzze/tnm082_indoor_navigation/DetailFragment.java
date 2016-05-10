@@ -79,7 +79,6 @@ public class DetailFragment extends Fragment {
         if (getArguments() != null) {
             POIkey = getArguments().getString(KEY);
         }
-
     }
 
     @Override
@@ -110,6 +109,7 @@ public class DetailFragment extends Fragment {
 
         offRelLay = (RelativeLayout)view.findViewById(R.id.detailOfficialButtonLayout);
 
+
         //get properties from the poiList and set text
         try {
             poiFindText.setText("Hitta till " + ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getCategory());
@@ -133,6 +133,7 @@ public class DetailFragment extends Fragment {
         if(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getOfficial())
             makeOfficialButton.setText("Gör inofficiell");
         else makeOfficialButton.setText("Gör officiell");
+
 
         //show "make official button visible if user is admin
         if( ((MainActivity)getActivity()).isAdmin ) {
@@ -167,6 +168,7 @@ public class DetailFragment extends Fragment {
                 //Todo - Define what happens when done button is clicked
             }
         });
+
 
     }
 

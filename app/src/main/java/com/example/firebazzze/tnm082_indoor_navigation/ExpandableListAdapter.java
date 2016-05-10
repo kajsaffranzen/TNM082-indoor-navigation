@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,6 +101,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         ImageView imgView = (ImageView) convertView.findViewById(R.id.officialMarkImg);
 
         String text = (String) getChild(groupPosition, childPosition);
+
+        Log.i("rickard", text);
 
         if(text.contains("***")) {
             text = text.replace("***", "");
