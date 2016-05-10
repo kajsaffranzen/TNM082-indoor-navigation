@@ -99,6 +99,14 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
 
+        //Even uglier fix... Dont try this at home
+        else if(f instanceof AddHouseFragment && fromMaps) {
+            getSupportFragmentManager().popBackStack();
+            QRFragment fragment = new QRFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+            return;
+        }
+
         //Default
         if (!(f instanceof QRFragment)) {//the fragment on which you want to handle your back press
             super.onBackPressed();
@@ -137,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements
                 //refresh the detail view in order to show/hide admin button
                 if(detailFragment != null && detailFragment.isAdded())
                     detailFragment.refreshFragment();
+
                 else
                     Log.d("test","check works");
 

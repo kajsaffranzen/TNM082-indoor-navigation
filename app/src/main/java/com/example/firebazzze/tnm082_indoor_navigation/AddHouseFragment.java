@@ -293,7 +293,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             LatLng carPos = new LatLng(Double.parseDouble(coords.get(0)), Double.parseDouble(coords.get(1)));
 
             //Move camera to marker, pretty zoomed out
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(carPos,5));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(carPos,2));
 
             mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                 @Override
