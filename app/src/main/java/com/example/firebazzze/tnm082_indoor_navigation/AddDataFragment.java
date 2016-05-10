@@ -85,8 +85,8 @@ public class AddDataFragment extends Fragment {
         listOfPath = new ArrayList<>();
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.item_layout_add, R.id.Itemname, listOfPath);
 
-
         lv = (ListView) view.findViewById(R.id.poi_info);
+        //lv.getSelectedItem().
 
         counter = 0;
 
@@ -214,6 +214,7 @@ public class AddDataFragment extends Fragment {
         else{
             if(POIname.getText().toString().equals("")){
                 POIname.setBackgroundColor(Color.RED);
+
                 POIname.addTextChangedListener(POInameWatcher);
             }
             if (listOfPath.isEmpty()){

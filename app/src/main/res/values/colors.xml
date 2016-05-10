@@ -11,5 +11,6 @@
     <color name="dividerColor">#3C3C3C</color>
     <color name="infoTxt">#000000</color>
     <color name="editTxtLine">#3C3C3C</color>
+    <color name="wrong">#EC6F6C</color>
 </resources>
 
