@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -53,6 +54,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private Button addPOIBtn;
     private static final String KEY = "housename";
+    private String currentMarkerName = null;
 
     private Map<String, House> houseMap;
     private List<String> houseNameList;
@@ -160,7 +162,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                 //Set marker on map
                 mMap.addMarker(new MarkerOptions()
                         .title(dataSnapshot.getKey())
-                        .snippet("dummy")
+                        .snippet("Click to see more")
                         .position(newMarkerCoords));
             }
 
@@ -268,20 +270,42 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                Fragment ListAndSearchFragment = new ListAndSearchFragment();
-
-                Bundle bundle = new Bundle();
-                bundle.putString(KEY, marker.getTitle());
-
-                ListAndSearchFragment.setArguments(bundle);
-                fm.beginTransaction().replace(R.id.fragmentContainer, ListAndSearchFragment)
-                        .addToBackStack("ListAndSearchFragment")
-                        .commit();
-
+                currentMarkerName = marker.getTitle();
                 return false;
             }
         });
+
+        //The user clicks the map to deselect a marker, and goToMarker option is hidden
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                currentMarkerName = null;
+            }
+        });
+
+        //The user clicks on the infoWindow and navigates to ListAndSearch
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                if(currentMarkerName != null)
+                    goToListAndSearch(currentMarkerName);
+            }
+        });
+    }
+
+    //Navigate to listAndSearch view
+    private void goToListAndSearch(String title) {
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        Fragment ListAndSearchFragment = new ListAndSearchFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY, title);
+
+        ListAndSearchFragment.setArguments(bundle);
+        fm.beginTransaction().replace(R.id.fragmentContainer, ListAndSearchFragment)
+                .addToBackStack("ListAndSearchFragment")
+                .commit();
     }
 
     //Shows a popup dialogue where user can enter input for the new POI
@@ -297,15 +321,15 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         TextView textDesc = new TextView(getContext());
 
         textName.setText("Name");
-        textDesc.setText("Description");
+        //textDesc.setText("Description");
 
         final EditText inputName = new EditText(getContext());
-        final EditText inputDesc = new EditText(getContext());
+        //final EditText inputDesc = new EditText(getContext());
 
         linearLayout.addView(textName);
         linearLayout.addView(inputName);
         linearLayout.addView(textDesc);
-        linearLayout.addView(inputDesc);
+        //linearLayout.addView(inputDesc);
 
         alert.setView(linearLayout);
 
@@ -318,7 +342,8 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                 House newHouse = new House(inputName.getText().toString(), coords);
                 mMap.addMarker(new MarkerOptions()
                         .title(inputName.getText().toString())
-                        .snippet(inputDesc.getText().toString())
+                        //.snippet(inputDesc.getText().toString())
+                        .snippet("Click to see more")
                         .position(latLng));
             }
         });
