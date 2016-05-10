@@ -1,12 +1,14 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -36,7 +38,6 @@ import java.util.List;
  * uses House to add a new POI to the House
 */
 
-//TODO: fixa så att skapa knappen först kan tryckas på när fälten är ifyllda
 public class AddDataFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
@@ -45,11 +46,9 @@ public class AddDataFragment extends Fragment {
     private List<String> listOfPath;
     private ArrayAdapter<String> adapter;
     private final String CAT_LIST = "catlist";
-
     private View view;
-
     private int counter;
-
+    private String chosenCat;
     private Button addPathBtn;
     private ImageButton createPOI;
     private EditText POIname, POIdesc, POIpath;
@@ -57,8 +56,6 @@ public class AddDataFragment extends Fragment {
     private Spinner spinner;
     private boolean officialPOI = false;
 
-
-    private String chosenCat;
 
     public AddDataFragment() {
         // Required empty public constructor
@@ -89,8 +86,8 @@ public class AddDataFragment extends Fragment {
         listOfPath = new ArrayList<>();
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.item_layout_add, R.id.Itemname, listOfPath);
 
-
         lv = (ListView) view.findViewById(R.id.poi_info);
+        //lv.getSelectedItem().
 
         counter = 0;
 
@@ -105,76 +102,29 @@ public class AddDataFragment extends Fragment {
 
         fillScroller();
 
-        //TODO: kolla ifall POIpath har text om true - kolla om användaren fill lägga till den
-        //add a new POI to firebase, checks if the user has done it right or not
+
+
         createPOI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chosenCat = spinner.getSelectedItem().toString();
-
-                if(!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null
-                        && !listOfPath.isEmpty()){
-
-                    House h = ((MainActivity)getActivity()).getHouse();
-
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
-
-                    //get AddDataChildFragment and its functions
-                    AddDataChildFragment addDataChildFragment = (AddDataChildFragment) fm.findFragmentById(R.id.isOfficialCheckBox);
-
-                    officialPOI = addDataChildFragment.getOfficial();
-                    Log.i("official", ""+officialPOI);
-
-                    //TODO: Check if admin, then change false to true
-                    h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, officialPOI, listOfPath);
-
-                    Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
-
-                    //Reset text field
-                    POIname.setText("");
-                    POIdesc.setText("");
-
-                    POIname.setHint("Namn");
-                    POIdesc.setHint("Beskrivning");
-                    chosenCat = null;
-
-                    //go back to ListAndSearchView
-                    fm.popBackStack();
-                }
-
+                if(!POIpath.getText().toString().equals(""))
+                    checkPathField();
                 else
-                    Toast.makeText(getActivity(), "FYLL I ALLA FÄLT DÅE", Toast.LENGTH_SHORT).show();
-
+                    addNewPOI();
             }
         });
 
-        //add new path to the POI
         addPathBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!POIpath.getText().toString().equals("")){
+                if(!POIpath.getText().toString().equals(""))
+                    addPath();
 
-                    listOfPath.add(POIpath.getText().toString());
-                    counter++;
-                    adapter.notifyDataSetChanged();
-                    Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
-
-                    //Reset text field
-                    POIpath.setText("");
-                    POIpath.setHint("Lägg till punkt nr " + (counter + 1));
-                }
-                else{
-                    //TODO: ändra bakgrundsfärg på textfältet & att det blir vitt igen när en fixar att
-                    Toast.makeText(getActivity(), "Fyll i fältet korrekt din ko", Toast.LENGTH_SHORT).show();
-                    POIpath.setHint("Fyll i korrekt");
-                    //POIpath.setBackgroundResource(Color.RED);
-                    //POIpath.setBackgroundColor(Color.RED);
-                }
-
+                else
+                    Toast.makeText(getActivity(), "Fyll i fältet", Toast.LENGTH_SHORT).show();
             }
         });
 
-        //TODO Implementera så man inte kan klicka bort objekten från listan med ett vanligt klick
         //removes the chosen item from the list and updates it
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -199,7 +149,111 @@ public class AddDataFragment extends Fragment {
         spinner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList));
     }
 
-    public void checkAdmin(){}
+    //adds the path to the list
+    public void addPath(){
+        listOfPath.add(POIpath.getText().toString());
+        counter++;
+        adapter.notifyDataSetChanged();
+
+        //Reset text field
+        POIpath.setText("");
+        POIpath.setHint("Lägg till punkt nr " + (counter + 1));
+
+    }
+
+    //checks if the the last PathDescription should be added to the path or not
+    public void checkPathField(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setMessage("Vill du lägga till den sista vägbeskrivningen?");
+
+        alertDialogBuilder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                addPath();
+                Toast.makeText(getActivity(),"Vägbeskrivningen har lagts till!",Toast.LENGTH_LONG).show();
+                addNewPOI();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Nej",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                POIpath.setText("");
+                POIpath.setHint("Lägg till punkt nr " + (counter));
+                addNewPOI();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
+    //adds the new POI to firebazzze
+    public void addNewPOI(){
+        chosenCat = spinner.getSelectedItem().toString();
+
+        if(!POIname.getText().toString().equals("") && chosenCat != null && !listOfPath.isEmpty()){
+
+            //get AddDataChildFragment and its functions
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            AddDataChildFragment addDataChildFragment = (AddDataChildFragment) fm.findFragmentById(R.id.isOfficialCheckBox);
+
+            officialPOI = addDataChildFragment.getOfficial();
+            Log.i("official", ""+officialPOI);
+
+            House h = ((MainActivity)getActivity()).getHouse();
+            h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, officialPOI, listOfPath);
+
+            Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
+
+            //Reset text field
+            POIname.setText("");
+            POIdesc.setText("");
+
+            POIname.setHint("Namn");
+            POIdesc.setHint("Beskrivning");
+            chosenCat = null;
+
+            //go back to ListAndSearchView
+            fm.popBackStack();
+        }
+
+        else{
+            if(POIname.getText().toString().equals("")){
+                POIname.setBackgroundColor(Color.RED);
+
+                POIname.addTextChangedListener(POInameWatcher);
+            }
+            if (listOfPath.isEmpty()){
+                POIpath.setBackgroundColor(Color.RED);
+                POIpath.addTextChangedListener(POIpathWatcher);
+            }
+
+            Toast.makeText(getActivity(), "Fyll i alla fält!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private final TextWatcher POInameWatcher = new TextWatcher() {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            POIname.setBackgroundColor(Color.WHITE);
+        }
+
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private final TextWatcher POIpathWatcher = new TextWatcher() {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            POIpath.setBackgroundColor(Color.WHITE);
+        }
+
+        public void afterTextChanged(Editable s) {}
+    };
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
