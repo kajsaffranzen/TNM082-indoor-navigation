@@ -28,18 +28,19 @@
 
                 <EditText
                     android:id="@+id/toolbarSearchField"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="match_parent"
                     android:hint="Sök intressepunkt"
                     android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/searchInflaterButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
                     android:background="?attr/colorPrimary"
-                    android:text="Sök"
-                    android:visibility="gone"/>
+                    android:layout_gravity="top|end"
+                    android:visibility="visible"
+                    android:drawableLeft="@drawable/ic_search_white_24dp" />
 
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
@@ -54,13 +55,14 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <!-- The navigation drawer -->
-    <ListView android:id="@+id/left_drawer"
-        android:layout_width="280dp"
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nvView"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:background="#ffeeeeee"
-        android:paddingTop="8dp"/>
+        android:background="@android:color/white"
+        app:menu="@menu/drawer_view"
+        app:headerLayout="@layout/nav_header"/>
 
 </android.support.v4.widget.DrawerLayout>
 

@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -59,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements
     private String mActivityTitle;
     private CharSequence mTitle;
 
-    private DrawerAdapter mAdapter;
+    private NavigationView nvDrawer;
+    private Toolbar toolbar;
 
     //Fragments should sync position with osArray
     //Ugly solution ...
@@ -77,18 +79,20 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         //add the toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mActivityTitle = getTitle().toString();
 
         //This is for the drawerMenu
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView)findViewById(R.id.left_drawer);
-        ArrayList<String> tester = new ArrayList<String>();
+        mDrawerToggle = setUpDrawerToggle();
 
-        addDrawerItems();
-        setUpDrawer();
+        //Content in drawerMenu
+        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        setUpDrawer(nvDrawer);
+
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -99,13 +103,8 @@ public class MainActivity extends AppCompatActivity implements
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
     }
 
-    /* Called whenever we call invalidateOptionsMenu() */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        //menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
+    private ActionBarDrawerToggle setUpDrawerToggle() {
+        return new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open,  R.string.drawer_close);
     }
 
     @Override
@@ -155,40 +154,52 @@ public class MainActivity extends AppCompatActivity implements
     public void onFragmentInteraction(Uri uri){
     }
 
-    private void addDrawerItems() {
-        mAdapter = new DrawerAdapter(this, osArray);
-        mDrawerList.setAdapter(mAdapter);
+    private void setUpDrawer(NavigationView navigationView){
+
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        changeFragment(menuItem);
+                        return true;
+                    }
+                });
     }
 
-    private void setUpDrawer(){
+    public void selectDrawerItem(MenuItem menuItem) {
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        Fragment fragment = null;
+        Class fragmentClass;
+        switch(menuItem.getItemId()) {
+            case R.id.nav_first_fragment:
+                fragmentClass = QRFragment.class;
+                break;
+            case R.id.nav_second_fragment:
+                fragmentClass = ListAndSearchFragment.class;
+                break;
+            case R.id.nav_third_fragment:
+                fragmentClass = QRFragment.class;
+                break;
+            default:
+                fragmentClass = QRFragment.class;
+        }
 
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this, /* host Activity */
-                mDrawerLayout, /* DrawerLayout object */
-                R.string.drawer_open,
-                R.string.drawer_close
-        ) {
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
 
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Navigation!");
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mActivityTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        // Set the drawer toggle as the DrawerListener
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawerLayout.closeDrawers();
     }
 
     //Used to have a public house, Get House
@@ -201,36 +212,19 @@ public class MainActivity extends AppCompatActivity implements
         getSupportActionBar().setTitle(s);
     }
 
-    /*Feels like this should be moved out of here..*/
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
-
-            selectItem(position);
-        }
-    }
-
-    private void selectItem(int position) {
-
-        changeFragment(frag[position]);
-
-        mDrawerList.setItemChecked(position, true);
-        mDrawerLayout.closeDrawer(mDrawerList);
-    }
-
     /** Swaps fragments in the main content view */
-    private void changeFragment(String currentFrag){
+    private void changeFragment(MenuItem menuItem){
 
         Fragment fragment;
         boolean flag = false;
         FragmentManager fragmentManager = getSupportFragmentManager();
-        switch(currentFrag) {
+        switch(menuItem.getItemId()) {
             default:
-            case "QRFragment":
+            case R.id.nav_first_fragment:
                 fragment = new QRFragment();
                 flag = true;
                 break;
-            case "ListAndSearchFragment":
+            case R.id.nav_second_fragment:
                 fragment = new ListAndSearchFragment();
                 flag = true;
                 break;
@@ -239,9 +233,16 @@ public class MainActivity extends AppCompatActivity implements
         if(flag){
             fragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainer, fragment)
-                    .addToBackStack(currentFrag)
+                    .addToBackStack(menuItem.toString())
                     .commit();
         }
+
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        //setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawerLayout.closeDrawers();
     }
 
     @Override
