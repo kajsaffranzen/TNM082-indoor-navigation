@@ -2,24 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F2F2F2">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/officialMarkImg"
-        android:layout_gravity="center"
-        android:background="@drawable/chkimg"
-        android:visibility="invisible"
-        android:layout_marginLeft="40dp"/>
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/expListItem"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:textSize="10pt"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:textSize="18sp"
         android:gravity="center_vertical"
-        android:layout_marginLeft="10dp"
+        android:paddingLeft="56dp"
+        android:layout_weight="1"
         android:textColor="@color/editTxtLine"/>
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/officialMarkImg"
+        android:padding="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/icon_official"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
+
 </LinearLayout>

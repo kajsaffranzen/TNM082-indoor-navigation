@@ -101,7 +101,10 @@ public class ListAndSearchFragment extends Fragment {
         loadingPanel = (ProgressBar)view.findViewById(R.id.loadingPanel);
 
         //Change the toolbar title to housename
-        ((MainActivity)getActivity()).setToolbarTitle(houseName);
+        ((MainActivity)getActivity()).setToolbarTitle("Intressepunkter");
+        TextView titel = (TextView)view.findViewById(R.id.infoText);
+
+        titel.setText(houseName);
 
 
         categoryList = new ArrayList<String>();
@@ -272,8 +275,9 @@ public class ListAndSearchFragment extends Fragment {
                 if (s.toString().equals("")) {
                     searchField.setHint("Sök intressepunkt");
                     listSearch.setVisibility(View.GONE);
-                    infoText.setVisibility(View.GONE);
+                    infoText.setVisibility(View.VISIBLE);
                     myExpandableListView.setVisibility(View.VISIBLE);
+
                     return;
                 }
 
@@ -295,6 +299,7 @@ public class ListAndSearchFragment extends Fragment {
 
                 listSearch.setVisibility(View.VISIBLE);
                 myExpandableListView.setVisibility(View.GONE);
+                infoText.setVisibility(View.GONE);
                 searchListAdapter.notifyDataSetChanged();
             }
 

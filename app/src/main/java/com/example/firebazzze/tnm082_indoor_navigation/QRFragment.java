@@ -101,7 +101,7 @@ public class QRFragment extends Fragment {
         tBarSearchField.setVisibility(View.GONE);
         tBarSearchButton.setVisibility(View.GONE);
 
-        ((MainActivity)getActivity()).setToolbarTitle("TNM082-indoor-navigation");
+        ((MainActivity)getActivity()).setToolbarTitle("QR-skanning");
 
         /*String hus = "test";
         goToListAndSearch(hus);*/

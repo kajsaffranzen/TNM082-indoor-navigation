@@ -1,0 +1,35 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/drawer_group">
+
+        <item android:title="Navigering">
+            <menu>
+                <item
+                    android:id="@+id/nav_first_fragment"
+                    android:icon="@drawable/ic_fingerprint_black_24dp"
+                    android:title="QR-skanning" />
+                <item
+                    android:id="@+id/nav_second_fragment"
+                    android:icon="@drawable/ic_map_black_24dp"
+                    android:title="Karta" />
+                <item
+                    android:id="@+id/nav_third_fragment"
+                    android:icon="@drawable/ic_place_black_24dp"
+                    android:title="Intressepunkter" />
+            </menu>
+        </item>
+
+
+        <item
+            android:icon="@drawable/ic_input_black_24dp"
+            android:title="Login" />
+        <item
+            android:icon="@drawable/ic_info_black_24dp"
+            android:title="Om" />
+        <item
+            android:icon="@drawable/ic_help_black_24dp"
+            android:title="Hjälp" />
+
+    </group>
+</menu>

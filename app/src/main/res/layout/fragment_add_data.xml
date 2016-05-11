@@ -64,7 +64,7 @@
         android:id="@+id/addPath"
         android:layout_width="@dimen/btn_size"
         android:layout_height="@dimen/btn_size"
-        android:background="@drawable/addpoiimg"
+        android:background="@drawable/ic_add_circle_main_color_48dp"
         android:width="@dimen/btn_size"
         android:layout_below="@+id/catSpinner"
         android:layout_alignRight="@+id/POIpath"/>

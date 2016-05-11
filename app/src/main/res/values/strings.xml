@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TNM082-indoor-navigation</string>
+    <string name="app_name">Findin</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_list_and_search_view">ListAndSearchView</string>
     <string name="button_text">TESTING</string>
@@ -8,4 +8,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Kategorier -->
+    <string name="cat_resturang">Resturang</string>
+    <string name="cat_skrivare">Skrivare</string>
+    <string name="cat_sal">Sal</string>
+    <string name="cat_cafe">Café</string>
+    <string name="cat_ovrigt">Övrigt</string>
+
 </resources>

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +84,27 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView textViewGroup = (TextView) convertView
                 .findViewById(R.id.expListGroup);
+
+        ImageView imageViewGroup = (ImageView) convertView
+                 .findViewById(R.id.catImage);
+
         textViewGroup.setText(textGroup);
+
+        Log.d("TAG", "CAT: " + textGroup);
+
+        switch (textGroup) {
+            case "skrivare":
+                Log.d("TAG", "S");
+                imageViewGroup.setBackgroundResource(R.drawable.ic_local_printshop_black_48dp);
+                break;
+            case "sal":
+                Log.d("TAG", "D");
+                imageViewGroup.setBackgroundResource(R.drawable.ic_place_black_24dp);
+                break;
+            default:
+                Log.d("TAG", "E");
+                imageViewGroup.setBackgroundResource(R.drawable.ic_local_offer_black_48dp);
+        }
 
         return convertView;
     }

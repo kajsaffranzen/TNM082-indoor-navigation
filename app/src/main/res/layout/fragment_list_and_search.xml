@@ -22,32 +22,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp">
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Intressepunkter"
-            android:textSize="12pt"
+            android:textSize="40dp"
             android:textColor="@color/infoTxt"
             android:gravity="center"
+            android:background="@color/backgroundTitle"
             android:id="@+id/infoText"/>
 
         <ExpandableListView
             android:id="@+id/expList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="30dp"
-            android:childDivider="#EDEDED"/>
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp" />
     </LinearLayout>
 
     <Button
         android:id="@+id/buttoncreatepoi"
         android:layout_width="@dimen/btn_size_big"
         android:layout_height="@dimen/btn_size_big"
-        android:background="@drawable/addpoiimg"
+        android:background="@drawable/ic_add_circle_main_color_48dp"
         android:width="@dimen/btn_size_big"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="15dp"/>
