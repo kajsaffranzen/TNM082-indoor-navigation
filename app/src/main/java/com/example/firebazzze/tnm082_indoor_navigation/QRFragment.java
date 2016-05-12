@@ -46,6 +46,8 @@ public class QRFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Button goToMapsBtn;
 
+    //This boolean prevents the app from continously scan a qr code
+    // after it already has been successfully scanned
     private boolean scanned = false;
 
     CameraSource cameraSource;
@@ -82,6 +84,9 @@ public class QRFragment extends Fragment {
         scanned = false;
     }
 
+    //Start the map fragment and send the scaned car key.
+    // The map fragment will then only display that car,
+    // and no other markers, making it easier to find that car
     public void showCarOnMap(String platenr){
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -95,10 +100,6 @@ public class QRFragment extends Fragment {
         fm.beginTransaction().replace(R.id.fragmentContainer, AddHouseFragment)
                 .addToBackStack("AddHouseFragment")
                 .commit();
-
-        //getSupportFragmentManager().popBackStack();
-        //getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
-
     }
 
     //go to list and search view
@@ -106,7 +107,6 @@ public class QRFragment extends Fragment {
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment ListAndSearchFragment = new ListAndSearchFragment();
-
 
         //To get the back button to work properly
         ((MainActivity)getActivity()).fromMaps = false;
@@ -158,8 +158,8 @@ public class QRFragment extends Fragment {
 
         ((MainActivity)getActivity()).setToolbarTitle("TNM082-indoor-navigation");
 
-        //String hus = "test";
-        //goToListAndSearch(hus);
+        /*String hus = "test";
+        goToListAndSearch(hus);*/
         
         cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
         barcodeInfo = (TextView) view.findViewById(R.id.code_info);
@@ -241,7 +241,7 @@ public class QRFragment extends Fragment {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             ((MainActivity)getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed(true);
-                                            ((MainActivity) getActivity()).updateCar(barcodes.valueAt(0).displayValue);
+                                            //((MainActivity) getActivity()).updateCar(barcodes.valueAt(0).displayValue);
                                             dialog.cancel();
                                             scanned = false;
                                         }
@@ -257,7 +257,6 @@ public class QRFragment extends Fragment {
                                         }
                                     });
                                 }
-
 
                                 AlertDialog alertDialog2 = alertDialog.create();
                                 alertDialog2.show();

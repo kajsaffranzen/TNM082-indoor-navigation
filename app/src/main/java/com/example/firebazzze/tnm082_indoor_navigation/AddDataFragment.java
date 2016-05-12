@@ -1,9 +1,11 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,10 +16,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Scroller;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -41,9 +45,12 @@ public class AddDataFragment extends Fragment {
 
     private View view;
 
+    private int counter;
+
     private Button createPOI, addPathBtn;
     private EditText POIname, POIdesc, POIpath;
-
+    private ListView lv;
+    private Spinner spinner;
 
 
     private String chosenCat;
@@ -74,31 +81,33 @@ public class AddDataFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add_data, container, false);
 
+        final List<String> listOfPath = new ArrayList<String>();
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listOfPath);
 
-        ((MainActivity)getActivity()).setToolbarTitle("Täppan");
+        lv = (ListView) view.findViewById(R.id.poi_info);
 
-        listOfPath = new ArrayList<String>();
-        int i = 1;
+        counter = 0;
 
+        lv.setAdapter(adapter);
 
-        fillScroller();
-
-        POIdesc = (EditText) view.findViewById(R.id.POIdesc);
         POIname = (EditText) view.findViewById(R.id.POIname);
         POIpath = (EditText) view.findViewById(R.id.POIpath);
-
-        createPOI = (Button) view.findViewById(R.id.createPOI);
+        POIdesc = (EditText) view.findViewById(R.id.POIdesc);
         addPathBtn = (Button) view.findViewById(R.id.addPath);
+        createPOI = (Button) view.findViewById(R.id.createPOI);
+        spinner = (Spinner) view.findViewById(R.id.catSpinner);
 
+        fillScroller();
 
 
         //add a new POI to firebase, checks if the user has done it right or not
         createPOI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: kolla om POIpath är tom - om den ej är det så är det ännu en beskrivning som behövs läggas till
+                chosenCat = spinner.getSelectedItem().toString();
 
                 if(!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null){
+
                     House h = ((MainActivity)getActivity()).getHouse();
 
                     //TODO: Check if admin, then change false to true
@@ -115,7 +124,6 @@ public class AddDataFragment extends Fragment {
                     chosenCat = null;
                 }
 
-                //TODO: felmarkera vilket fält som ej är korrekt ifyllt genom en röd bakgrundsfärg
                 else
                     Toast.makeText(getActivity(), "FYLL I ALLA FÄLT DÅE", Toast.LENGTH_SHORT).show();
 
@@ -123,6 +131,8 @@ public class AddDataFragment extends Fragment {
         });
 
         //add new path to the POI
+        //TODO: uppdatera fragmentet direkt när det har lagts till, annars måste användaren
+        //själv trycka någonstans vilket är störigt
         addPathBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,14 +140,38 @@ public class AddDataFragment extends Fragment {
 
                     listOfPath.add(POIpath.getText().toString());
                     Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
-                }
+                    counter++;
 
-                //Reset text field
-                POIpath.setText("");
-                POIpath.setHint("Vägbeskrivning");
+                    //Reset text field
+                    POIpath.setText("");
+                    POIpath.setHint("Lägg till punkt nr " + (counter + 1));
+                }
+                else{
+                    //TODO: ändra bakgrundsfärg på textfältet & att det blir vitt igen när en fixar att
+                    Toast.makeText(getActivity(), "Fyll i fältet korrekt din ko", Toast.LENGTH_SHORT).show();
+                    POIpath.setHint("Fyll i korrekt");
+                    //POIpath.setBackgroundResource(Color.RED);
+                    //POIpath.setBackgroundColor(Color.RED);
+                }
 
             }
         });
+
+        //TODO Implementera så man inte kan klicka bort objekten från listan med ett vanligt klick
+        //removes the chosen item from the list and updates it
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listOfPath.remove(position);
+                adapter.notifyDataSetChanged();
+                counter--;
+                POIpath.setHint("Lägg till punkt nr " + (counter + 1));
+            }
+
+        });
+
+
+
 
         return view;
     }
@@ -145,15 +179,15 @@ public class AddDataFragment extends Fragment {
 
     //fill the scroller with categories
     public void fillScroller(){
-        Spinner scroller = (Spinner) view.findViewById(R.id.catSpinner);
+        //Spinner scroller = (Spinner) view.findViewById(R.id.catSpinner);
 
         if(!categoryList.contains("Övrigt"))
             categoryList.add("Övrigt");
 
-        scroller.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList));
+        spinner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList));
 
-        //getString from category
-        //scroller.getSelectedItem().toString();
+        //chosenCat = scroller.getSelectedItem().toString();
+
     }
 
 

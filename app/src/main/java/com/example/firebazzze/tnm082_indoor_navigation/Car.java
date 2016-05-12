@@ -4,7 +4,9 @@ import android.location.Location;
 import android.util.Log;
 
 /**
- * Created by ricka on 2016-05-03.
+ * A class descripbing a car object
+ * The car has a position on the map: latlng
+ * The car also can be set as used with the "used" parameter
  */
 public class Car {
     public String latlng;

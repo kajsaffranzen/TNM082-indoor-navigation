@@ -92,9 +92,13 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void updateLocation(Location location) {
+
         publicPos = location;
+
     }
 
+    //Fetch all cars from the database and store them in a map,
+    // which later can be accessed locally
     private void getAllCars() {
 
         String DBUrl = "https://tnm082-indoor.firebaseio.com/";
@@ -107,14 +111,12 @@ public class MainActivity extends AppCompatActivity implements
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
 
                     Car car = postSnapshot.getValue(Car.class);
-
                     addCar(postSnapshot.getKey(), car);
                 }
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
             }
         });
 
@@ -124,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
+        //get current fragment
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
 
 
@@ -136,11 +139,21 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
 
+        //Even uglier fix... Dont try this at home
+        else if(f instanceof AddHouseFragment && fromMaps) {
+            getSupportFragmentManager().popBackStack();
+            QRFragment fragment = new QRFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+            return;
+        }
+
         //Default
         if (!(f instanceof QRFragment)) {//the fragment on which you want to handle your back press
             super.onBackPressed();
         }
 
+        //If the current fragment is the first fragment opened,
+        //do the following so that we're not left with a blank activity
         else{
             moveTaskToBack(true);
         }
@@ -172,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements
                 //refresh the detail view in order to show/hide admin button
                 if(detailFragment != null && detailFragment.isAdded())
                     detailFragment.refreshFragment();
+
                 else
                     Log.d("test","check works");
 

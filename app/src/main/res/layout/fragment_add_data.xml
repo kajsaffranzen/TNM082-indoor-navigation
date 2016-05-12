@@ -24,29 +24,29 @@
         android:backgroundTint="@color/editTxtLine"
         android:textColorLink="@color/editTxtLine"
         android:textColor="@color/colorQRText"
-        android:layout_marginTop="60dp" />
+        android:layout_marginTop="60dp" /><!--fixa margin-->
 
-        <TextView
-            android:id="@+id/cat_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Välj kategori"
-            android:textSize="12pt"
-            android:backgroundTint="@color/editTxtLine"
-            android:textColor="@color/colorQRText"
-            android:layout_marginTop="30px"
-            android:layout_below="@+id/POIname" />
+    <TextView
+        android:id="@+id/cat_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Välj kategori"
+        android:textSize="12pt"
+        android:backgroundTint="@color/editTxtLine"
+        android:textColor="@color/colorQRText"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/POIname" />
 
-        <Spinner
-            android:id="@+id/catSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dialog"
-            android:overScrollMode="ifContentScrolls"
-            android:layout_below="@+id/cat_info"
-            android:layout_alignParentRight="true"
-            android:drawSelectorOnTop="false"
-            ></Spinner>
+    <Spinner
+        android:id="@+id/catSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:overScrollMode="ifContentScrolls"
+        android:layout_alignParentRight="true"
+        android:drawSelectorOnTop="false"
+        android:layout_below="@+id/cat_info"
+        />
 
     <EditText
         android:id="@+id/POIpath"
@@ -57,7 +57,7 @@
         android:backgroundTint="@color/editTxtLine"
         android:textColorLink="@color/editTxtLine"
         android:textColor="@color/colorQRText"
-        android:layout_marginTop="30px"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/catSpinner" />
 
     <Button
@@ -69,6 +69,14 @@
         android:layout_below="@+id/catSpinner"
         android:layout_alignRight="@+id/POIpath"/>
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/poi_info"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/POIpath"/>
+
+
     <EditText
         android:id="@+id/POIdesc"
         android:layout_width="match_parent"
@@ -77,8 +85,21 @@
         android:textSize="12pt"
         android:backgroundTint="@color/editTxtLine"
         android:textColor="@color/colorQRText"
-        android:layout_marginTop="30px"
-        android:layout_below="@+id/POIpath" />
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/poi_info" />
+
+
+    <!--CheckBox
+        android:id="@+id/officalBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Officiell intressepunkt"
+        android:textSize="10pt"
+        android:textColor="@color/colorQRText"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/POIdesc"/-->
+
+
 
     <Button
         android:id="@+id/createPOI"
@@ -89,6 +110,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/POIdesc"/>
+
 
 
 </RelativeLayout>

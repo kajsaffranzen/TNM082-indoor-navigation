@@ -12,9 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -123,8 +125,12 @@ public class DetailFragment extends Fragment {
         //Add the path description from the POI in question and add to the adapter
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 getActivity(),
+
                 //android.R.layout.simple_list_item_1,
                 R.layout.path_list_item_layout,
+
+                //android.R.layout.simple_list_item_checked,
+
                 ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getPath()
         );
         lv.setAdapter(arrayAdapter);
@@ -161,6 +167,7 @@ public class DetailFragment extends Fragment {
             }
         });
 
+
         //Done button
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,8 +175,6 @@ public class DetailFragment extends Fragment {
                 //Todo - Define what happens when done button is clicked
             }
         });
-
-
     }
 
     public void refreshFragment() {
