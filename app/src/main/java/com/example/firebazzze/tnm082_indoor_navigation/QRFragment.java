@@ -19,7 +19,12 @@ import android.widget.ImageView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -271,7 +276,31 @@ public class QRFragment extends Fragment {
 
                                 } else {
                                     //go to next fragment and send text from qr
-                                    goToListAndSearch(barcodes.valueAt(0).displayValue);
+                                    String DBUrl = "https://tnm082-indoor.firebaseio.com/";
+                                    Firebase DB = new Firebase(DBUrl + barcodes.valueAt(0).displayValue);
+
+                                    //boolean kalle = false;
+
+                                    DB.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            if(dataSnapshot.exists()) goToListAndSearch(barcodes.valueAt(0).displayValue);
+                                            else {
+                                                Toast.makeText((MainActivity)getActivity(), "Huset kunde inte hittas, testa kartan",
+                                                        Toast.LENGTH_LONG).show();
+                                                scanned = false;
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(FirebaseError firebaseError) {
+
+                                        }
+                                    });
+
+                                    //if(DB != null) goToListAndSearch(barcodes.valueAt(0).displayValue);
+                                    //else Toast.makeText((MainActivity)getActivity(), "Huset kunde inte hittas, testa kartan",
+                                     //       Toast.LENGTH_LONG).show();
                                 }
                             }
 
