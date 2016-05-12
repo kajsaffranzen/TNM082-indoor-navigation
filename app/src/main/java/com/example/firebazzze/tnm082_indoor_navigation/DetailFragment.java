@@ -81,6 +81,7 @@ public class DetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             POIkey = getArguments().getString(KEY);
+            Log.i("TOOBE", POIkey);
         }
     }
 

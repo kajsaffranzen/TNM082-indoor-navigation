@@ -1,10 +1,36 @@
 <resources>
-    <string name="app_name">TNM082-indoor-navigation</string>
+    <string name="app_name">Findin</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_list_and_search_view">ListAndSearchView</string>
     <string name="button_text">TESTING</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Kategorier -->
+    <string name="cat_resturang">Resturang</string>
+    <string name="cat_skrivare">Skrivare</string>
+    <string name="cat_sal">Sal</string>
+    <string name="cat_cafe">Café</string>
+    <string name="cat_ovrigt">Övrigt</string>
+
+    <!-- Text help fragment -->
+    <string name="header_help_nav">Navigering</string>
+    <string name="text_help_nav">Navigering genom appen sker med hjälp av menyn i toolbaren. Där kommer
+    man åt de olika vyerna i appen</string>
+
+    <string name="header_help_add">Lägg till intressepunkt</string>
+    <string name="text_help_add">Gå till listan med intressepunkter för ditt valda hus och tryck på ikonen längst ner.
+    Lägg till genom att fylla i alla fält.</string>
+
+    <!-- Text about fragment -->
+    <string name="header_about_app">Findin</string>
+    <string name="text_about_app">Findin är en app utvecklad på Linköpings universitet i kursen TNM082</string>
+
+    <string name="header_about_version">Version</string>
+    <string name="text_about_version">1.5.0</string>
+
     <string name="title_activity_maps">Map</string>
 </resources>

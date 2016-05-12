@@ -83,8 +83,10 @@ public class AddDataFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add_data, container, false);
 
+
         listOfPath = new ArrayList<>();
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.item_layout_add, R.id.Itemname, listOfPath);
+
 
         lv = (ListView) view.findViewById(R.id.poi_info);
         //lv.getSelectedItem().

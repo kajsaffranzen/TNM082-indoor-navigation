@@ -49,6 +49,8 @@ public class QRFragment extends Fragment {
     // after it already has been successfully scanned
     private boolean scanned = false;
 
+    public House house;
+
     CameraSource cameraSource;
     SurfaceView cameraView;
     TextView barcodeInfo;
@@ -155,7 +157,7 @@ public class QRFragment extends Fragment {
         tBarSearchField.setVisibility(View.GONE);
         tBarSearchButton.setVisibility(View.GONE);
 
-        ((MainActivity)getActivity()).setToolbarTitle("TNM082-indoor-navigation");
+        ((MainActivity)getActivity()).setToolbarTitle("QR-skanning");
 
         /*String hus = "gulahuset";
         goToListAndSearch(hus);*/
@@ -270,8 +272,6 @@ public class QRFragment extends Fragment {
                                     goToListAndSearch(barcodes.valueAt(0).displayValue);
                                 }
                             }
-
-
 
                         }
                     });
