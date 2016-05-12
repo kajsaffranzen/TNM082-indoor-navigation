@@ -7,25 +7,18 @@ import android.gesture.GestureOverlayView;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.CheckedTextView;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -80,6 +73,7 @@ public class DetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             POIkey = getArguments().getString(KEY);
+            Log.i("TOOBE", POIkey);
         }
     }
 
@@ -116,24 +110,27 @@ public class DetailFragment extends Fragment {
         try {
             poiFindText.setText("Hitta till " + ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getCategory());
             poiName.setText(POIkey);
-            poiDescription.setText(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getDescription());
+
+            if(((MainActivity)getActivity()).getHouse().getPOIs2().get(POIkey).getDescription().length() > 1)
+                poiDescription.setText(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getDescription());
+
         } catch(Exception err) {
             Log.d("error", "OnCreateView get poi stuff " + err.getMessage());
         }
+        if(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getPath() != null) {
+            //Add the path description from the POI in question and add to the adapter
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                    getActivity(),
 
+                    //android.R.layout.simple_list_item_1,
+                    R.layout.path_list_item_layout,
 
-        //Add the path description from the POI in question and add to the adapter
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                getActivity(),
+                    //android.R.layout.simple_list_item_checked,
 
-                //android.R.layout.simple_list_item_1,
-                R.layout.path_list_item_layout,
-
-                //android.R.layout.simple_list_item_checked,
-
-                ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getPath()
-        );
-        lv.setAdapter(arrayAdapter);
+                    ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getPath()
+            );
+            lv.setAdapter(arrayAdapter);
+        }
 
         //Change the text on the button depending on if the POI is official or not
         if(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getOfficial())
@@ -173,6 +170,9 @@ public class DetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //Todo - Define what happens when done button is clicked
+                //go back to ListAndSearchView
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                fm.popBackStack();
             }
         });
     }
