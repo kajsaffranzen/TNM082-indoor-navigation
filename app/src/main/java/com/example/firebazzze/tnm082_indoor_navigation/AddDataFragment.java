@@ -145,7 +145,7 @@ public class AddDataFragment extends Fragment {
 
     //fill the scroller with categories
     public void fillScroller(){
-        if(!categoryList.contains("Övrigt") || !categoryList.contains("övrigt"))
+        if(!categoryList.contains("Övrigt") && !categoryList.contains("övrigt"))
             categoryList.add("Övrigt");
 
         spinner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList));
