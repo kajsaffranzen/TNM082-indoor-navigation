@@ -288,21 +288,22 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             // Add a marker in Sydney and move the camera
             LatLng nkpg = new LatLng(58, 16);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(nkpg));
-        }else{
+        } else {
             List<String> coords = Arrays.asList(((MainActivity)getActivity()).getCar(platenr).getLatlng().split(","));
             LatLng carPos = new LatLng(Double.parseDouble(coords.get(0)), Double.parseDouble(coords.get(1)));
 
             //Move camera to marker, pretty zoomed out
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(carPos,2));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(carPos));
+            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(carPos,2));
 
-            mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                @Override
-                public void onMapLoaded() {
-                    // Zoom in on marker
-                    mMap.animateCamera(CameraUpdateFactory.zoomIn());
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 1500, null);
-                }
-            });
+//            mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+//                @Override
+//                public void onMapLoaded() {
+//                    // Zoom in on marker
+//                    mMap.animateCamera(CameraUpdateFactory.zoomIn());
+//                    mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 4000, null);
+//                }
+//            });
         }
         setMapListeners();
 
@@ -310,6 +311,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             addMarkers();
         }else{
             findCar();
+            mapsLoadingPanel.setVisibility(View.GONE);
         }
     }
 
