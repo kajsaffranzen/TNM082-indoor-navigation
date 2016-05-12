@@ -108,7 +108,7 @@ public class DetailFragment extends Fragment {
 
         //get properties from the poiList and set text
         try {
-            poiFindText.setText("Hitta till " + ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getCategory());
+            poiFindText.setText("Hitta till");// + " " + ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getCategory());
             poiName.setText(POIkey);
 
             if(((MainActivity)getActivity()).getHouse().getPOIs2().get(POIkey).getDescription().length() > 1)
@@ -140,8 +140,9 @@ public class DetailFragment extends Fragment {
 
         //show "make official button visible if user is admin
         if( ((MainActivity)getActivity()).isAdmin ) {
-            offRelLay.setVisibility(View.VISIBLE);
-            makeOfficialButton.setVisibility(View.VISIBLE);
+            //offRelLay.setVisibility(View.VISIBLE);
+            //makeOfficialButton.setVisibility(View.VISIBLE);
+            Log.d("", "");
         }
         else {
             offRelLay.setVisibility(View.GONE);

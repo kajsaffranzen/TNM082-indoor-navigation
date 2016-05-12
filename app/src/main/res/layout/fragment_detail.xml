@@ -7,7 +7,8 @@
     <RelativeLayout
         android:id="@+id/detailOfficialButtonLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/makeOfficialButton"
@@ -22,22 +23,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="40dp">
+        android:paddingTop="20dp">
 
         <LinearLayout
             android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="30dp">
+            android:paddingBottom="15dp">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="25dp"
                 android:text="Hitta till"
                 android:id="@+id/detailFindText"
-                android:layout_gravity="center_horizontal"
-                android:textSize="15dp"/>
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:textSize="15dp"
+                android:allowUndo="true" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -74,6 +76,7 @@
                 android:fadeScrollbars="false" />
 
             <ImageButton
+                android:paddingTop="15dp"
                 android:id="@+id/detailDoneButton"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
