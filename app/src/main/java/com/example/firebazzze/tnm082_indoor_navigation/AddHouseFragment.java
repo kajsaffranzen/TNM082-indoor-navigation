@@ -182,15 +182,17 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         //Display device location
         Location deviceLocation = ((MainActivity) getActivity()).publicPos;
+        LatLng devicePos;
 
-        LatLng devicePos = new LatLng(0.0, 0.0);
+        if(deviceLocation != null){
+            devicePos = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
+        }
 
         if(deviceLocation != null)
             devicePos = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
         else
             Toast.makeText((MainActivity)getActivity(), "Device position could not be found",
                     Toast.LENGTH_LONG).show();
-
 
         //Maybe make use of the circle for device location
         /*mMap.addCircle(new CircleOptions()
@@ -200,7 +202,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                         .fillColor(Color.BLUE));*/
 
         mMap.addMarker(new MarkerOptions()
-                .title("YOU")
+                .title("Din position")
                 .position(devicePos)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 
@@ -440,7 +442,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     private void addPoiPopup(final LatLng latLng) {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        alert.setTitle("Add new point of interest");
+        alert.setTitle("Lägg till ny intressepunkt");
 
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -471,7 +473,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                 mMap.addMarker(new MarkerOptions()
                         .title(inputName.getText().toString())
                         //.snippet(inputDesc.getText().toString())
-                        .snippet("Click to see more")
+                        .snippet("Tryck för att se mer")
                         .position(latLng));
             }
         });
@@ -488,8 +490,8 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     private void mustBeAdminPopup() {
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
 
-        alert.setTitle("Add new point of interest");
-        alert.setMessage("You must be admin to add new points");
+        alert.setTitle("Lägg till ny intressepunkt");
+        alert.setMessage("Du måste vara admin för att lägga till ny punkt.");
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }
@@ -504,9 +506,9 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         alert.setTitle("");
         if( !((MainActivity)getActivity()).isAdmin )
-            alert.setMessage("Must be admin to add points of interest");
+            alert.setMessage("Du måste vara admin för att lägga till ny punkt.");
         else
-            alert.setMessage("Hold on map to create a point of interest at that location");
+            alert.setMessage("Tryck och håll in på kartan för att skapa en ny punkt.");
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }
