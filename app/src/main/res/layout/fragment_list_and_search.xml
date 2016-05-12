@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="skanna in hus"
+            android:text="inget hus skannat"
             android:textSize="32dp"
             android:textColor="@color/infoTxt"
             android:gravity="center"
