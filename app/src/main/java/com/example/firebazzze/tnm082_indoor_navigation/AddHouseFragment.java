@@ -26,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -135,14 +136,21 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void findCar() {
+        Car c = ((MainActivity) getActivity()).getCar(platenr);
 
-        List<String> coords = Arrays.asList(((MainActivity) getActivity()).getCar(platenr).getLatlng().split(","));
+        List<String> coords = Arrays.asList(c.getLatlng().split(","));
+
         LatLng carPos = new LatLng(Double.parseDouble(coords.get(0)), Double.parseDouble(coords.get(1)));
+
+        BitmapDescriptor markerColor;
+
+        if(c.getUsed()) markerColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
+        else markerColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
 
         mMap.addMarker(new MarkerOptions()
                 .title(platenr)
                 .position(carPos)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                .icon(markerColor));
     }
 
     @Override
@@ -199,16 +207,22 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onCancelled(FirebaseError firebaseError) {}
         });
+
         Map<String, Car> carMap = ((MainActivity)getActivity()).getCars();
         for(Map.Entry<String, Car> c : carMap.entrySet()){
 
             List<String> coordList = Arrays.asList(c.getValue().getLatlng().split(","));
             LatLng newMarkerCoords = new LatLng( Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
 
+            BitmapDescriptor markerColor;
+
+            if(c.getValue().getUsed()) markerColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
+            else markerColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+
             mMap.addMarker(new MarkerOptions()
                     .title(c.getKey())
                     .position(newMarkerCoords)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                    .icon(markerColor));
         }
 
     }
@@ -284,9 +298,13 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         if(platenr == null) {
             // Add a marker in Sydney and move the camera
+
             LatLng nkpg = new LatLng(58, 16);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(nkpg));
         }else{
+            //Remove progress bar as data is loaded
+            mapsLoadingPanel.setVisibility(View.GONE);
+
             List<String> coords = Arrays.asList(((MainActivity)getActivity()).getCar(platenr).getLatlng().split(","));
             LatLng carPos = new LatLng(Double.parseDouble(coords.get(0)), Double.parseDouble(coords.get(1)));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(carPos));
