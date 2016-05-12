@@ -310,16 +310,17 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             LatLng carPos = new LatLng(Double.parseDouble(coords.get(0)), Double.parseDouble(coords.get(1)));
 
             //Move camera to marker, pretty zoomed out
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(carPos,2));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(carPos));
+            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(carPos,2));
 
-            mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                @Override
-                public void onMapLoaded() {
-                    // Zoom in on marker
-                    //mMap.animateCamera(CameraUpdateFactory.zoomIn());
-                    //mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 1500, null);
-                }
-            });
+//            mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+//                @Override
+//                public void onMapLoaded() {
+//                    // Zoom in on marker
+//                    mMap.animateCamera(CameraUpdateFactory.zoomIn());
+//                    mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 4000, null);
+//                }
+//            });
         }
         setMapListeners();
 
@@ -327,6 +328,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             addMarkers();
         }else{
             findCar();
+            mapsLoadingPanel.setVisibility(View.GONE);
         }
     }
 
