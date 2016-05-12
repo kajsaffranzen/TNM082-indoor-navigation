@@ -14,6 +14,12 @@ public class Car {
     public Car(){
     }
 
+    //New car constructor
+    public Car(String latlng, boolean used) {
+        this.latlng = latlng;
+        this.used = used;
+    }
+
     public String getLatlng(){ return this.latlng; }
 
     public boolean getUsed() {return this.used; }
