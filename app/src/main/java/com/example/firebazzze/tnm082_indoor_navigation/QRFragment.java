@@ -157,7 +157,7 @@ public class QRFragment extends Fragment {
 
         ((MainActivity)getActivity()).setToolbarTitle("TNM082-indoor-navigation");
 
-        /*String hus = "test";
+        /*String hus = "gulahuset";
         goToListAndSearch(hus);*/
         
         cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
