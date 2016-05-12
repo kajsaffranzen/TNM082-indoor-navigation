@@ -82,7 +82,6 @@ public class DetailFragment extends Fragment {
             POIkey = getArguments().getString(KEY);
             Log.i("TOOBE", POIkey);
         }
-
     }
 
     @Override
@@ -113,6 +112,7 @@ public class DetailFragment extends Fragment {
 
         offRelLay = (RelativeLayout)view.findViewById(R.id.detailOfficialButtonLayout);
 
+
         //get properties from the poiList and set text
         try {
             poiFindText.setText("Hitta till " + ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getCategory());
@@ -140,6 +140,7 @@ public class DetailFragment extends Fragment {
         if(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getOfficial())
             makeOfficialButton.setText("Gör inofficiell");
         else makeOfficialButton.setText("Gör officiell");
+
 
         //show "make official button visible if user is admin
         if( ((MainActivity)getActivity()).isAdmin ) {
@@ -175,31 +176,6 @@ public class DetailFragment extends Fragment {
                 //Todo - Define what happens when done button is clicked
             }
         });
-
-       /* lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                CheckedTextView ctv = (CheckedTextView) view;
-
-                if(!ctv.isChecked()){
-
-                    ctv.setChecked(true);
-
-                }
-
-
-                }
-
-        });*/
-
-
-        if( ((MainActivity)getActivity()).isAdmin )
-            makeOfficialButton.setVisibility(View.VISIBLE);
-        else
-            makeOfficialButton.setVisibility(View.INVISIBLE);
-
-
     }
 
     public void refreshFragment() {

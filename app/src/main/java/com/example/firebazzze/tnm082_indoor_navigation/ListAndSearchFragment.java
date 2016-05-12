@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -154,7 +155,6 @@ public class ListAndSearchFragment extends Fragment {
                 loadingPanel.setVisibility(View.GONE);
             }
         });
-
     }
 
     private void addData(House newHouse){
@@ -255,6 +255,7 @@ public class ListAndSearchFragment extends Fragment {
             //Handle on child click event in expandable list
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
                 String POIkey = dynamicCategoryList.get(groupPosition).get(childPosition);
                 POIkey = POIkey.replace("***", "");
                 goToDetailFragment(POIkey);

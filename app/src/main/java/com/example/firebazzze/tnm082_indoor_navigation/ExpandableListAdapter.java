@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,19 +89,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         textViewGroup.setText(textGroup);
 
-        Log.d("TAG", "CAT: " + textGroup);
-
+        //Set icon depending on category
+        //Maybe pre-define an array with the categories?
         switch (textGroup) {
             case "skrivare":
                 Log.d("TAG", "S");
                 imageViewGroup.setBackgroundResource(R.drawable.ic_local_printshop_black_48dp);
                 break;
             case "sal":
-                Log.d("TAG", "D");
                 imageViewGroup.setBackgroundResource(R.drawable.ic_place_black_24dp);
                 break;
             default:
-                Log.d("TAG", "E");
                 imageViewGroup.setBackgroundResource(R.drawable.ic_local_offer_black_48dp);
         }
 
@@ -122,6 +119,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         ImageView imgView = (ImageView) convertView.findViewById(R.id.officialMarkImg);
 
         String text = (String) getChild(groupPosition, childPosition);
+
+        Log.i("rickard", text);
 
         if(text.contains("***")) {
             text = text.replace("***", "");

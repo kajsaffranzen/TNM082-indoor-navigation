@@ -4,46 +4,66 @@
     android:layout_height="match_parent"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.QRFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <SurfaceView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/camera_view"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true" />
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center">
-        <ImageView
+
+        <!-- TODO: Update blank fragment layout -->
+        <SurfaceView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/camera_view"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="20dp"
-            android:id="@+id/focusImage"
-            android:src="@drawable/focus_square"/>
+            android:orientation="vertical"
+            android:layout_centerInParent="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/camera_view"
-            android:layout_gravity="center_horizontal"
-            android:textColor="#8C8C8C"
-            android:textSize="35sp"
-            android:text="Skanna din QR-kod"
-            android:id="@+id/infoTxt"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="20dp"
+                android:id="@+id/focusImage"
+                android:src="@drawable/focus_square"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/infoTxt"
-            android:layout_gravity="center_horizontal"
-            android:textColor="#8C8C8C"
-            android:textSize="20sp"
-            android:text="Nothing to read."
-            android:id="@+id/code_info" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/camera_view"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#8C8C8C"
+                android:textSize="35sp"
+                android:text="Skanna din QR-kod"
+                android:id="@+id/infoTxt"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/infoTxt"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#8C8C8C"
+                android:textSize="20sp"
+                android:text="Nothing to read."
+                android:id="@+id/code_info" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/mapsViewBtn"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/maps_img"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+
 
 </FrameLayout>

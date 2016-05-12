@@ -1,10 +1,12 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -38,7 +41,13 @@ public class QRFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     private static final String KEY = "housename";
+    private static final String CAR_KEY = "carkey";
     private OnFragmentInteractionListener mListener;
+    private Button goToMapsBtn;
+
+    //This boolean prevents the app from continously scan a qr code
+    // after it already has been successfully scanned
+    private boolean scanned = false;
 
     public House house;
 
@@ -72,6 +81,26 @@ public class QRFragment extends Fragment {
         if (getArguments() != null) {
             //IF WE WANT TO PASS ARGUMENTS
         }
+
+        scanned = false;
+    }
+
+    //Start the map fragment and send the scaned car key.
+    // The map fragment will then only display that car,
+    // and no other markers, making it easier to find that car
+    public void showCarOnMap(String platenr){
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        Fragment AddHouseFragment = new AddHouseFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(CAR_KEY, platenr);
+
+        AddHouseFragment.setArguments(bundle);
+
+        fm.beginTransaction().replace(R.id.fragmentContainer, AddHouseFragment)
+                .addToBackStack("AddHouseFragment")
+                .commit();
     }
 
     //go to list and search view
@@ -79,6 +108,9 @@ public class QRFragment extends Fragment {
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment ListAndSearchFragment = new ListAndSearchFragment();
+
+        //To get the back button to work properly
+        ((MainActivity)getActivity()).fromMaps = false;
 
         Bundle bundle = new Bundle();
         bundle.putString(KEY, houseName);
@@ -89,11 +121,35 @@ public class QRFragment extends Fragment {
                 .commit();
     }
 
+    //Navigate to QR view
+    private void goToMapsView() {
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        Fragment AddHouseFragment = new AddHouseFragment();
+
+        Bundle bundle = new Bundle();
+
+        AddHouseFragment.setArguments(bundle);
+        fm.beginTransaction().replace(R.id.fragmentContainer, AddHouseFragment)
+                .addToBackStack("ListAndSearchFragment")
+                .commit();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_qr, container, false);
+        scanned = false;
+
+        //Add goToMapsBtn
+        goToMapsBtn = (Button) view.findViewById(R.id.mapsViewBtn);
+        goToMapsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMapsView();
+            }
+        });
 
         //Hide search field and button in toolbar
         EditText tBarSearchField = (EditText) getActivity().findViewById(R.id.toolbarSearchField);
@@ -154,7 +210,8 @@ public class QRFragment extends Fragment {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
 
-                if (barcodes.size() != 0) {
+                if (barcodes.size() != 0 && !scanned) {
+                    scanned = true;
                     barcodeInfo.post(new Runnable() {    // Use the post method of the TextView
                         public void run() {
 
@@ -162,8 +219,60 @@ public class QRFragment extends Fragment {
                                     barcodes.valueAt(0).displayValue
                             );
 
-                            //go to next fragment and send text from qr
-                            goToListAndSearch(barcodes.valueAt(0).displayValue);
+                            if(barcodes.valueAt(0).displayValue.length() > 5 && !barcodes.valueAt(0).displayValue.substring(0,3).matches("[0-9]+") && barcodes.valueAt(0).displayValue.substring(3,6).matches("[0-9]+")){
+                                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                                Car c = ((MainActivity) getActivity()).getCar(barcodes.valueAt(0).displayValue);
+
+                                alertDialog.setTitle("Bil alternativ")
+                                        .setCancelable(true)
+                                        .setNeutralButton("Använd", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                ((MainActivity)getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed();
+                                                dialog.cancel();
+                                                scanned = false;
+                                            }
+                                        }).setNegativeButton("Parkera", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                ((MainActivity) getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed();
+
+                                                //Get
+                                                dialog.cancel();
+                                                scanned = false;
+                                            }
+                                         })
+                                        .setPositiveButton("Hitta", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                showCarOnMap(barcodes.valueAt(0).displayValue);
+                                                dialog.cancel();
+                                                scanned = false;
+                                            }
+                                        });
+
+                                alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                    @Override
+                                    public void onCancel(DialogInterface dialog) {
+                                        scanned = false;
+                                    }
+                                });
+
+                                AlertDialog alertDialog2 = alertDialog.create();
+                                alertDialog2.show();
+
+                            }
+                            else {
+                                if (barcodes.valueAt(0).displayValue.contains("/")) {
+                                    //for cars
+                                    House garage = new House(barcodes.valueAt(0).displayValue);
+
+                                } else {
+                                    //go to next fragment and send text from qr
+                                    goToListAndSearch(barcodes.valueAt(0).displayValue);
+                                }
+                            }
+
                         }
                     });
                 }
