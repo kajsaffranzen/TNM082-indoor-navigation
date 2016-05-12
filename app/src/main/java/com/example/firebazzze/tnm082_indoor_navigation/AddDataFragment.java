@@ -1,11 +1,13 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -42,6 +45,7 @@ public class AddDataFragment extends Fragment {
     private ArrayList<String> categoryList;
     private List<String> listOfPath;
     private final String CAT_LIST = "catlist";
+    private final String NEW_CATEGORY = "Lägg till ny kategori";
 
     private View view;
 
@@ -51,7 +55,10 @@ public class AddDataFragment extends Fragment {
     private EditText POIname, POIdesc, POIpath;
     private ListView lv;
     private Spinner spinner;
+    private String spinnerText;
+    private String addCat;
 
+    private ArrayAdapter<String> spinnerAdapter;
 
     private String chosenCat;
 
@@ -99,12 +106,31 @@ public class AddDataFragment extends Fragment {
 
         fillScroller();
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                spinnerText = spinner.getItemAtPosition(position).toString();
+
+                if(spinnerText == NEW_CATEGORY)
+                    addCatPopup(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
 
         //add a new POI to firebase, checks if the user has done it right or not
         createPOI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chosenCat = spinner.getSelectedItem().toString();
+
+                //add new category if the user chose "Lägg till ny kategori"
+                if(chosenCat == NEW_CATEGORY)
+                    chosenCat = addCat;
 
                 if(!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null){
 
@@ -170,9 +196,6 @@ public class AddDataFragment extends Fragment {
 
         });
 
-
-
-
         return view;
     }
 
@@ -183,14 +206,76 @@ public class AddDataFragment extends Fragment {
 
         if(!categoryList.contains("Övrigt"))
             categoryList.add("Övrigt");
+        if(!categoryList.contains(NEW_CATEGORY))
+            categoryList.add(NEW_CATEGORY);
 
-        spinner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList));
+        spinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList);
+        spinner.setAdapter(spinnerAdapter);
 
         //chosenCat = scroller.getSelectedItem().toString();
 
     }
 
+    //add popup where you can add a new category
+    private void addCatPopup(final int position) {
 
+        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        alert.setTitle(NEW_CATEGORY);
+
+        LinearLayout linearLayout = new LinearLayout(getContext());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+        final EditText newCat = new EditText(getContext());
+
+        linearLayout.addView(newCat);
+
+        alert.setView(linearLayout);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                addCat = newCat.getText().toString();
+                categoryList.remove(position);
+                categoryList.add(addCat);
+                spinner.setSelection(position);
+                categoryList.add(NEW_CATEGORY);
+                spinnerAdapter.notifyDataSetChanged();
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        });
+
+        alert.show();
+
+    }
+
+    //Shows a popup dialogue where user can enter input for the new POI
+    /*private void addPoiPopup(final LatLng latLng) {
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                String coords = latLng.toString().replace("lat/lng: (", "");
+                coords = coords.replace(")", "");
+
+                House newHouse = new House(inputName.getText().toString(), coords);
+                mMap.addMarker(new MarkerOptions()
+                        .title(inputName.getText().toString())
+                        //.snippet(inputDesc.getText().toString())
+                        .snippet("Click to see more")
+                        .position(latLng));
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        });
+
+        alert.show();
+    }*/
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
