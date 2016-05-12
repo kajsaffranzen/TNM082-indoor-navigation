@@ -19,15 +19,13 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:paddingTop="40dp">
 
-
-
         <LinearLayout
+            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -61,10 +59,12 @@
 
 
         <LinearLayout
+            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#e6e6e6">
+            android:background="#e6e6e6"
+            android:paddingBottom="15dp">
 
             <ListView
                 android:id="@+id/listView"
@@ -73,22 +73,14 @@
                 android:scrollbars="vertical"
                 android:fadeScrollbars="false" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="15dp">
-
-                <ImageButton
-                    android:id="@+id/detailDoneButton"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/path_done_button"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentBottom="true"/>
-
-            </RelativeLayout>
+            <ImageButton
+                android:id="@+id/detailDoneButton"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/path_done_button"
+                android:layout_gravity="center_horizontal"/>
 
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
 </FrameLayout>
