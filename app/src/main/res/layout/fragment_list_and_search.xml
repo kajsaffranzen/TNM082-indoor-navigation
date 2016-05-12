@@ -17,7 +17,8 @@
         android:layout_width="92dp"
         android:layout_height="92dp"
         android:layout_gravity="center"
-        android:indeterminate="true" />
+        android:indeterminate="true"
+        android:visibility="invisible"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +28,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Intressepunkter"
+            android:text="skanna in hus"
             android:textSize="32dp"
             android:textColor="@color/infoTxt"
             android:gravity="center"

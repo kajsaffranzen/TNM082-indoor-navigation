@@ -23,6 +23,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> listGroup;
     private HashMap<String, List<String>> listChild;
 
+    private String[] mTestArray;
+
     // Create an ExpandableListAdapter with values from the ListAndSearchView
     public ExpandableListAdapter(Context context, List<String> listGroup,
                                  HashMap<String, List<String>> listChild) {
@@ -93,11 +95,31 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         //Maybe pre-define an array with the categories?
         switch (textGroup) {
             case "skrivare":
-                Log.d("TAG", "S");
                 imageViewGroup.setBackgroundResource(R.drawable.ic_local_printshop_black_48dp);
                 break;
             case "sal":
-                imageViewGroup.setBackgroundResource(R.drawable.ic_place_black_24dp);
+                imageViewGroup.setBackgroundResource(R.drawable.ic_place_black_48dp);
+                break;
+            case "lokal":
+                imageViewGroup.setBackgroundResource(R.drawable.ic_place_black_48dp);
+                break;
+            case "resturang":
+                imageViewGroup.setBackgroundResource(R.drawable.ic_restaurant_black_48dp);
+                break;
+            case "kaffemaskin":
+                imageViewGroup.setBackgroundResource(R.drawable.ic_local_cafe_black_48dp);
+                break;
+            case "badrum":
+                imageViewGroup.setBackgroundResource(R.drawable.ic_wc_black_48dp);
+                break;
+            case "terass":
+                imageViewGroup.setBackgroundResource(R.drawable.ic_local_florist_black_48dp);
+                break;
+            case "kiosk":
+                imageViewGroup.setBackgroundResource(R.drawable.ic_cake_black_48dp);
+                break;
+            case "relax":
+                imageViewGroup.setBackgroundResource(R.drawable.ic_weekend_black_48dp);
                 break;
             default:
                 imageViewGroup.setBackgroundResource(R.drawable.ic_local_offer_black_48dp);

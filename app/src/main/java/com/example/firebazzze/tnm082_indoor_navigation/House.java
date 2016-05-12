@@ -48,7 +48,10 @@ public class House {
         POIs = new ArrayList<POI>();
         POIs2 = new HashMap<String, POI>();
         POIs = new ArrayList<POI>();
-        houseExists();
+
+        if(houseName != null){
+            houseExists();
+        }
     }
 
     // Creates a house object with coodinates, called from map view
