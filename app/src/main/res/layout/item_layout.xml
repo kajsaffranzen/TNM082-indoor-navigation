@@ -15,8 +15,8 @@
         android:textColor="@color/editTxtLine"/>
 
     <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:id="@+id/officialMarkImg"
         android:padding="16dp"
         android:layout_marginRight="16dp"

@@ -6,15 +6,15 @@
         <item android:title="Navigering">
             <menu>
                 <item
-                    android:id="@+id/nav_first_fragment"
+                    android:id="@+id/nav_qr_fragment"
                     android:icon="@drawable/ic_fingerprint_black_24dp"
                     android:title="QR-skanning" />
                 <item
-                    android:id="@+id/nav_second_fragment"
+                    android:id="@+id/nav_map_fragment"
                     android:icon="@drawable/ic_map_black_24dp"
                     android:title="Karta" />
                 <item
-                    android:id="@+id/nav_third_fragment"
+                    android:id="@+id/nav_list_and_search_fragment"
                     android:icon="@drawable/ic_place_black_24dp"
                     android:title="Intressepunkter" />
             </menu>
@@ -22,12 +22,15 @@
 
 
         <item
+            android:id="@+id/nav_login_fragment"
             android:icon="@drawable/ic_input_black_24dp"
-            android:title="Login" />
+            android:title="Login Admin" />
         <item
+            android:id="@+id/nav_about_fragment"
             android:icon="@drawable/ic_info_black_24dp"
             android:title="Om" />
         <item
+            android:id="@+id/nav_help_fragment"
             android:icon="@drawable/ic_help_black_24dp"
             android:title="Hjälp" />
 

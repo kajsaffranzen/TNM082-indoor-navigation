@@ -28,18 +28,20 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Intressepunkter"
-            android:textSize="40dp"
+            android:textSize="32dp"
             android:textColor="@color/infoTxt"
             android:gravity="center"
             android:background="@color/backgroundTitle"
+            android:textAllCaps="true"
             android:id="@+id/infoText"/>
 
         <ExpandableListView
             android:id="@+id/expList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp" />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:childDivider="#1111"/>
     </LinearLayout>
 
     <Button

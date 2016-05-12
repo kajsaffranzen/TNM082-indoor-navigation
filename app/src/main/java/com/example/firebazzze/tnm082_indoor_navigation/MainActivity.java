@@ -48,27 +48,23 @@ public class MainActivity extends AppCompatActivity implements
         QRFragment.OnFragmentInteractionListener,
         ListAndSearchFragment.OnFragmentInteractionListener,
         AddDataFragment.OnFragmentInteractionListener,
-        DetailFragment.OnFragmentInteractionListener{
+        DetailFragment.OnFragmentInteractionListener,
+        AboutFragment.OnFragmentInteractionListener,
+        HelpFragment.OnFragmentInteractionListener,
+        LoginFragment.OnFragmentInteractionListener{
 
     public House house;
     public boolean isAdmin = false;
     public DetailFragment detailFragment;
 
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private NavigationView nvDrawer;
+
     private String mActivityTitle;
     private CharSequence mTitle;
 
-    private NavigationView nvDrawer;
     private Toolbar toolbar;
-
-    //Fragments should sync position with osArray
-    //Ugly solution ...
-    public String[] frag = {"QRFragment", "ListAndSearchFragment"};
-
-    //Items for drawer
-    private String[] osArray = { "QR-skanning", "Intressepunkter"};
 
 
     @Override
@@ -101,23 +97,6 @@ public class MainActivity extends AppCompatActivity implements
         getSupportFragmentManager().popBackStack();
         QRFragment fragment = new QRFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
-    }
-
-    private ActionBarDrawerToggle setUpDrawerToggle() {
-        return new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open,  R.string.drawer_close);
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -154,6 +133,25 @@ public class MainActivity extends AppCompatActivity implements
     public void onFragmentInteraction(Uri uri){
     }
 
+    //Used to have a public house, Get House
+    public House getHouse(){ return house; }
+
+    //set House
+    public void setHouse(House h){ house = h; }
+
+    public void setToolbarTitle(String s){
+        getSupportActionBar().setTitle(s);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
+    }
+
+    /******************************************************/
+    /** Navigation drawer methods */
+
     private void setUpDrawer(NavigationView navigationView){
 
         navigationView.setNavigationItemSelectedListener(
@@ -166,66 +164,53 @@ public class MainActivity extends AppCompatActivity implements
                 });
     }
 
-    public void selectDrawerItem(MenuItem menuItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment fragment = null;
-        Class fragmentClass;
-        switch(menuItem.getItemId()) {
-            case R.id.nav_first_fragment:
-                fragmentClass = QRFragment.class;
-                break;
-            case R.id.nav_second_fragment:
-                fragmentClass = ListAndSearchFragment.class;
-                break;
-            case R.id.nav_third_fragment:
-                fragmentClass = QRFragment.class;
-                break;
-            default:
-                fragmentClass = QRFragment.class;
-        }
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
-
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
-        // Close the navigation drawer
-        mDrawerLayout.closeDrawers();
+    //Animatin for opening and closing the drawer
+    private ActionBarDrawerToggle setUpDrawerToggle() {
+        return new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open,  R.string.drawer_close);
     }
 
-    //Used to have a public house, Get House
-    public House getHouse(){ return house; }
-
-    //set House
-    public void setHouse(House h){ house = h; }
-
-    public void setToolbarTitle(String s){
-        getSupportActionBar().setTitle(s);
+    //Sync animation
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
     }
 
-    /** Swaps fragments in the main content view */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    //Swaps the between the different fragments
     private void changeFragment(MenuItem menuItem){
 
-        Fragment fragment;
+        Fragment fragment = null;
         boolean flag = false;
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch(menuItem.getItemId()) {
             default:
-            case R.id.nav_first_fragment:
+            case R.id.nav_qr_fragment:
                 fragment = new QRFragment();
                 flag = true;
                 break;
-            case R.id.nav_second_fragment:
+            case R.id.nav_map_fragment:
+                break;
+            case R.id.nav_list_and_search_fragment:
                 fragment = new ListAndSearchFragment();
+                flag = true;
+                break;
+            case R.id.nav_login_fragment:
+                fragment = new LoginFragment();
+                flag = true;
+                break;
+            case R.id.nav_about_fragment:
+                fragment = new AboutFragment();
+                flag = true;
+                break;
+            case R.id.nav_help_fragment:
+                fragment = new HelpFragment();
                 flag = true;
                 break;
         }
@@ -245,9 +230,6 @@ public class MainActivity extends AppCompatActivity implements
         mDrawerLayout.closeDrawers();
     }
 
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
-    }
+    /******************************************************/
+
 }
