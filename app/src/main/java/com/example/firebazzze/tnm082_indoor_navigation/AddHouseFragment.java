@@ -182,7 +182,12 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         //Display device location
         Location deviceLocation = ((MainActivity) getActivity()).publicPos;
 
-        LatLng devicePos = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
+        if(deviceLocation != null){
+            LatLng devicePos = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
+        }
+
+
+        LatLng devicePos = new LatLng(0.0, 0.0);
 
         //Maybe make use of the circle for device location
         /*mMap.addCircle(new CircleOptions()
