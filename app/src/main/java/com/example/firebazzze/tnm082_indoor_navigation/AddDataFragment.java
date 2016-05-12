@@ -120,7 +120,7 @@ public class AddDataFragment extends Fragment {
                     POIdesc.setText("");
 
                     POIname.setHint("Namn");
-                    POIdesc.setHint("Beskrivning");
+                    POIdesc.setHint("Beskrivning av intressepunkt");
                     chosenCat = null;
                 }
 
