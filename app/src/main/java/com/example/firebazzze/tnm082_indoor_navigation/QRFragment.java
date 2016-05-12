@@ -2,6 +2,7 @@ package com.example.firebazzze.tnm082_indoor_navigation;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -159,7 +160,7 @@ public class QRFragment extends Fragment {
 
         ((MainActivity)getActivity()).setToolbarTitle("QR-skanning");
 
-        /*String hus = "test";
+       /* String hus = "gulahuset";
         goToListAndSearch(hus);*/
         
         cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
@@ -171,7 +172,7 @@ public class QRFragment extends Fragment {
                         .setBarcodeFormats(Barcode.QR_CODE)
                         .build();
 
-        // TODO: cameraView.getHeight() & cameraView.getWidth()
+        // TODO: cameraView/*.getHeight() & cameraView.getWidth()
         cameraSource = new CameraSource
                 .Builder(getActivity(), barcodeDetector)
                 .setRequestedPreviewSize(540, 540)  // get the size from the SurfaceView
@@ -222,27 +223,13 @@ public class QRFragment extends Fragment {
                             if(barcodes.valueAt(0).displayValue.length() > 5 && !barcodes.valueAt(0).displayValue.substring(0,3).matches("[0-9]+") && barcodes.valueAt(0).displayValue.substring(3,6).matches("[0-9]+")){
                                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                                 Car c = ((MainActivity) getActivity()).getCar(barcodes.valueAt(0).displayValue);
+                                String s;
+                                if(c.getUsed()) s = "Bilen används";
+                                else s = "Bilen är ledig";
 
-                                alertDialog.setTitle("Bil alternativ")
+                                alertDialog.setTitle(s)
                                         .setCancelable(true)
-                                        .setNeutralButton("Använd", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                ((MainActivity)getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed();
-                                                dialog.cancel();
-                                                scanned = false;
-                                            }
-                                        }).setNegativeButton("Parkera", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                ((MainActivity) getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed();
-
-                                                //Get
-                                                dialog.cancel();
-                                                scanned = false;
-                                            }
-                                         })
-                                        .setPositiveButton("Hitta", new DialogInterface.OnClickListener() {
+                                        .setPositiveButton("Hitta senaste pos", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 showCarOnMap(barcodes.valueAt(0).displayValue);
@@ -251,12 +238,27 @@ public class QRFragment extends Fragment {
                                             }
                                         });
 
-                                alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                    @Override
-                                    public void onCancel(DialogInterface dialog) {
-                                        scanned = false;
-                                    }
-                                });
+                                if(!c.getUsed()){
+                                    alertDialog.setNeutralButton("Använd", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            ((MainActivity)getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed(true);
+                                            //((MainActivity) getActivity()).updateCar(barcodes.valueAt(0).displayValue);
+                                            dialog.cancel();
+                                            scanned = false;
+                                        }
+                                    });
+                                }else{
+                                    alertDialog.setNeutralButton("Parkera", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            ((MainActivity) getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed(false);
+                                            ((MainActivity) getActivity()).updateCar(barcodes.valueAt(0).displayValue);
+                                            dialog.cancel();
+                                            scanned = false;
+                                        }
+                                    });
+                                }
 
                                 AlertDialog alertDialog2 = alertDialog.create();
                                 alertDialog2.show();

@@ -2,6 +2,8 @@ package com.example.firebazzze.tnm082_indoor_navigation;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -28,7 +31,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -136,14 +141,21 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void findCar() {
+        Car c = ((MainActivity) getActivity()).getCar(platenr);
 
-        List<String> coords = Arrays.asList(((MainActivity) getActivity()).getCar(platenr).getLatlng().split(","));
+        List<String> coords = Arrays.asList(c.getLatlng().split(","));
+
         LatLng carPos = new LatLng(Double.parseDouble(coords.get(0)), Double.parseDouble(coords.get(1)));
+
+        BitmapDescriptor markerColor;
+
+        if(c.getUsed()) markerColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
+        else markerColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
 
         mMap.addMarker(new MarkerOptions()
                 .title(platenr)
                 .position(carPos)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                .icon(markerColor));
     }
 
     @Override
@@ -168,6 +180,29 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         String DBUrl = "https://tnm082-indoor.firebaseio.com/";
         //String DBUrl = "https://coord-test.firebaseio.com/"; //dummy
         Firebase DB = new Firebase(DBUrl);
+
+        //Display device location
+        Location deviceLocation = ((MainActivity) getActivity()).publicPos;
+        LatLng devicePos = new LatLng(0.0, 0.0);
+
+        if(deviceLocation != null){
+            devicePos = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
+        }
+        else
+            Toast.makeText((MainActivity)getActivity(), "Din position kunde inte hittas",
+                    Toast.LENGTH_LONG).show();
+
+        //Maybe make use of the circle for device location
+        /*mMap.addCircle(new CircleOptions()
+                        .center(devicePos)
+                        .radius(10000)
+                        .strokeColor(Color.RED)
+                        .fillColor(Color.BLUE));*/
+
+        mMap.addMarker(new MarkerOptions()
+                .title("Din position")
+                .position(devicePos)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 
         //Display all buildings on the map
         DB.addChildEventListener(new ChildEventListener() {
@@ -208,10 +243,15 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             List<String> coordList = Arrays.asList(c.getValue().getLatlng().split(","));
             LatLng newMarkerCoords = new LatLng( Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
 
+            BitmapDescriptor markerColor;
+
+            if(c.getValue().getUsed()) markerColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
+            else markerColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+
             mMap.addMarker(new MarkerOptions()
                     .title(c.getKey())
                     .position(newMarkerCoords)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                    .icon(markerColor));
         }
 
     }
@@ -287,9 +327,13 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         if(platenr == null) {
             // Add a marker in Sydney and move the camera
+
             LatLng nkpg = new LatLng(58, 16);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(nkpg));
-        } else {
+        }else{
+            //Remove progress bar as data is loaded
+            mapsLoadingPanel.setVisibility(View.GONE);
+
             List<String> coords = Arrays.asList(((MainActivity)getActivity()).getCar(platenr).getLatlng().split(","));
             LatLng carPos = new LatLng(Double.parseDouble(coords.get(0)), Double.parseDouble(coords.get(1)));
 
@@ -395,7 +439,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     //Shows a popup dialogue where user can enter input for the new POI
     private void addPoiPopup(final LatLng latLng) {
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        alert.setTitle("Add new point of interest");
+        alert.setTitle("Lägg till ny intressepunkt");
 
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -459,10 +503,9 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                     //Add the marker to the map
                     mMap.addMarker(new MarkerOptions()
                         .title(inputName.getText().toString())
-                        .position(carPos)
+                        .position(latLng)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
-                    setMapListeners();
                 }
             }
         });
@@ -479,8 +522,8 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     private void mustBeAdminPopup() {
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
 
-        alert.setTitle("Add new point of interest");
-        alert.setMessage("You must be admin to add new points");
+        alert.setTitle("Lägg till ny intressepunkt");
+        alert.setMessage("Du måste vara admin för att lägga till ny punkt.");
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }
@@ -495,9 +538,9 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         alert.setTitle("");
         if( !((MainActivity)getActivity()).isAdmin )
-            alert.setMessage("Must be admin to add points of interest");
+            alert.setMessage("Du måste vara admin för att lägga till ny punkt.");
         else
-            alert.setMessage("Hold on map to create a point of interest at that location");
+            alert.setMessage("Tryck och håll in på kartan för att skapa en ny punkt.");
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }

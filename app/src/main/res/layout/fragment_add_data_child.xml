@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.firebazzze.tnm082_indoor_navigation.AddDataChildFragment"
+    android:id="@+id/addDataChildFragment">
+
+    <CheckBox
+        android:id="@+id/officalBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Officiell intressepunkt"
+        android:textSize="10pt"
+        android:textColor="@color/colorQRText"
+        android:layout_marginTop="20dp" /> <!--android:layout_below="@id/POIdesc"/-->
+
+</FrameLayout>
