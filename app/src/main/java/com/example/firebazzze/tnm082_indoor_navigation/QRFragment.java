@@ -159,7 +159,7 @@ public class QRFragment extends Fragment {
 
         ((MainActivity)getActivity()).setToolbarTitle("QR-skanning");
 
-        /*String hus = "gulahuset";
+       /* String hus = "gulahuset";
         goToListAndSearch(hus);*/
         
         cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
@@ -171,7 +171,7 @@ public class QRFragment extends Fragment {
                         .setBarcodeFormats(Barcode.QR_CODE)
                         .build();
 
-        // TODO: cameraView.getHeight() & cameraView.getWidth()
+        // TODO: cameraView/*.getHeight() & cameraView.getWidth()
         cameraSource = new CameraSource
                 .Builder(getActivity(), barcodeDetector)
                 .setRequestedPreviewSize(540, 540)  // get the size from the SurfaceView
