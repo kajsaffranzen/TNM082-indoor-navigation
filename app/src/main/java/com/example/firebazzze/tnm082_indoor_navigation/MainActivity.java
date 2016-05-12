@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements
                 });
     }
 
-    //Animatin for opening and closing the drawer
+    //Animation for opening and closing the drawer
     private ActionBarDrawerToggle setUpDrawerToggle() {
         return new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open,  R.string.drawer_close);
     }
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    //Swaps the between the different fragments
+    //Swaps between the different fragments
     private void changeFragment(MenuItem menuItem){
 
         Fragment fragment = null;
@@ -243,10 +243,13 @@ public class MainActivity extends AppCompatActivity implements
                 flag = true;
                 break;
             case R.id.nav_map_fragment:
+                fragment = new AddHouseFragment();
+                flag = true;
                 break;
             case R.id.nav_list_and_search_fragment:
-                fragment = new ListAndSearchFragment();
-                flag = true;
+                //Does not work, needs a houseName
+                //fragment = new ListAndSearchFragment();
+                //flag = true;
                 break;
             case R.id.nav_login_fragment:
                 fragment = new LoginFragment();
