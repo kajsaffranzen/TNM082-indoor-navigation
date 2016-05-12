@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.ValueEventListener;
@@ -92,9 +93,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void updateLocation(Location location) {
-
         publicPos = location;
-
     }
 
     //Fetch all cars from the database and store them in a map,
@@ -108,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
                     Car car = postSnapshot.getValue(Car.class);
                     addCar(postSnapshot.getKey(), car);
@@ -224,11 +223,19 @@ public class MainActivity extends AppCompatActivity implements
 
         Firebase DB = new Firebase(DBUrl);
 
-        String s = publicPos.getLatitude() + ", " + publicPos.getLongitude();
+        String s = "0, 0";
+
+        if(publicPos != null)
+            s = publicPos.getLatitude() + ", " + publicPos.getLongitude();
+        else {
+            Toast.makeText(this, "Device position could not be found, park position is therefore not correct",
+                    Toast.LENGTH_LONG).show();
+        }
 
         //if(Cars.get(platenr).getUsed())
         DB.child("bilar").child(platenr).child("latlng").setValue(s);
 
         DB.child("bilar").child(platenr).child("used").setValue(Cars.get(platenr).getUsed());
+
     }
 }

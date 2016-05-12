@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -182,12 +183,14 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         //Display device location
         Location deviceLocation = ((MainActivity) getActivity()).publicPos;
 
-        if(deviceLocation != null){
-            LatLng devicePos = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
-        }
-
-
         LatLng devicePos = new LatLng(0.0, 0.0);
+
+        if(deviceLocation != null)
+            devicePos = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
+        else
+            Toast.makeText((MainActivity)getActivity(), "Device position could not be found",
+                    Toast.LENGTH_LONG).show();
+
 
         //Maybe make use of the circle for device location
         /*mMap.addCircle(new CircleOptions()
