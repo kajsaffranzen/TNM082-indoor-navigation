@@ -322,6 +322,7 @@ public class ListAndSearchFragment extends Fragment {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
 
                 Fragment addDataFragment = new AddDataFragment();
+                Fragment addDataChildFragment = new AddDataChildFragment();
                 Bundle bundle = new Bundle();
 
                 //TODO: Fullösning tillsvidare...
@@ -333,7 +334,7 @@ public class ListAndSearchFragment extends Fragment {
                 bundle.putStringArrayList(CAT_LIST, temp);
 
                 addDataFragment.setArguments(bundle);
-                fm.beginTransaction().replace(R.id.fragmentContainer, addDataFragment).addToBackStack("AddDataFragment").commit();
+                fm.beginTransaction().replace(R.id.fragmentContainer, addDataFragment).addToBackStack("AddDataFragment").add(R.id.isOfficialCheckBox, addDataChildFragment).addToBackStack("AddDataChildFragment").commit();
             }
         });
 

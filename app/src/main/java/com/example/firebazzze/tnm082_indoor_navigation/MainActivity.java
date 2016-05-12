@@ -22,12 +22,14 @@ public class MainActivity extends AppCompatActivity implements
         QRFragment.OnFragmentInteractionListener,
         ListAndSearchFragment.OnFragmentInteractionListener,
         AddDataFragment.OnFragmentInteractionListener,
-        DetailFragment.OnFragmentInteractionListener,
-        AddHouseFragment.OnFragmentInteractionListener{
+        AddHouseFragment.OnFragmentInteractionListener,
+        AddDataChildFragment.OnFragmentInteractionListener,
+        DetailFragment.OnFragmentInteractionListener{
 
     public House house;
     public boolean isAdmin = false;
     public DetailFragment detailFragment;
+    public AddDataChildFragment addDataChild;
 
     public boolean fromMaps = false;
 
@@ -37,8 +39,9 @@ public class MainActivity extends AppCompatActivity implements
     public Map<String, House> Houses = new HashMap<String, House>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
         Firebase.setAndroidContext(this);
 
         setContentView(R.layout.activity_main);
@@ -135,6 +138,10 @@ public class MainActivity extends AppCompatActivity implements
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+        //get AddDataChildFragment
+        addDataChild = (AddDataChildFragment) getSupportFragmentManager().findFragmentById(R.id.isOfficialCheckBox);
+
         int id = item.getItemId();
 
         switch (id) {
@@ -145,9 +152,14 @@ public class MainActivity extends AppCompatActivity implements
                 //refresh the detail view in order to show/hide admin button
                 if(detailFragment != null && detailFragment.isAdded())
                     detailFragment.refreshFragment();
-
                 else
                     Log.d("test","check works");
+
+                //refresh addDataChildFragment in order to show/hide officialPOI checkbox
+                if(addDataChild != null && addDataChild.isAdded())
+                    addDataChild.refreshFragment();
+                else
+                    Log.d("test", ""+addDataChild);
 
                 break;
         }

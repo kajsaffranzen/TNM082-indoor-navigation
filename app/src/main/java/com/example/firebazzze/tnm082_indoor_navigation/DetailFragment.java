@@ -7,6 +7,7 @@ import android.gesture.GestureOverlayView;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -173,6 +174,9 @@ public class DetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //Todo - Define what happens when done button is clicked
+                //go back to ListAndSearchView
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                fm.popBackStack();
             }
         });
     }
