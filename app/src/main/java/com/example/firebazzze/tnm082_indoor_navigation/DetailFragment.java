@@ -123,7 +123,6 @@ public class DetailFragment extends Fragment {
             Log.d("error", "OnCreateView get poi stuff " + err.getMessage());
         }
 
-
         //Add the path description from the POI in question and add to the adapter
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 getActivity(),

@@ -1,7 +1,9 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingLeft="30dp"
     android:paddingRight="35dp"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.AddDataFragment">
@@ -90,17 +92,6 @@
         android:layout_below="@+id/poi_info" />
 
 
-    <!--CheckBox
-        android:id="@+id/officalBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Officiell intressepunkt"
-        android:textSize="10pt"
-        android:textColor="@color/colorQRText"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/POIdesc"/-->
-
-
     <ImageButton
         android:id="@+id/createPOI"
         android:layout_width="80dp"
@@ -118,3 +109,5 @@
 
 
 </RelativeLayout>
+
+

@@ -1,5 +1,9 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -12,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +25,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -79,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements
     public Map<String, Car> Cars = new HashMap<String, Car>();
     public Map<String, House> Houses = new HashMap<String, House>();
 
+    public Location publicPos;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -92,6 +101,33 @@ public class MainActivity extends AppCompatActivity implements
         //add the toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                updateLocation(location);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        // Register the listener with the Location Manager to receive location updates
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
         mActivityTitle = getTitle().toString();
 
@@ -115,6 +151,10 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    private void updateLocation(Location location) {
+        publicPos = location;
+    }
+
     //Fetch all cars from the database and store them in a map,
     // which later can be accessed locally
     private void getAllCars() {
@@ -126,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
                     Car car = postSnapshot.getValue(Car.class);
                     addCar(postSnapshot.getKey(), car);
@@ -326,5 +366,29 @@ public class MainActivity extends AppCompatActivity implements
     public void setToolbarTitle(String s){
         Toolbar mToolbar = (Toolbar)findViewById(R.id.toolbar);
         mToolbar.setTitle(s);
+    }
+    public void updateCar(String platenr){
+        String DBUrl = "https://tnm082-indoor.firebaseio.com/";
+
+        //Probably not needed
+        if(publicPos.getLongitude() != 0.0 && publicPos.getLatitude() != 0.0)
+            Cars.get(platenr).updateLatlng(publicPos);
+
+        Firebase DB = new Firebase(DBUrl);
+
+        String s = "0, 0";
+
+        if(publicPos != null)
+            s = publicPos.getLatitude() + ", " + publicPos.getLongitude();
+        else {
+            Toast.makeText(this, "Device position could not be found, park position is therefore not correct",
+                    Toast.LENGTH_LONG).show();
+        }
+
+        //if(Cars.get(platenr).getUsed())
+        DB.child("bilar").child(platenr).child("latlng").setValue(s);
+
+        DB.child("bilar").child(platenr).child("used").setValue(Cars.get(platenr).getUsed());
+
     }
 }
