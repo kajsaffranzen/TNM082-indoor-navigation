@@ -14,10 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -109,7 +111,6 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_house, container, false);
 
@@ -182,16 +183,13 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         //Display device location
         Location deviceLocation = ((MainActivity) getActivity()).publicPos;
-        LatLng devicePos;
+        LatLng devicePos = new LatLng(0.0, 0.0);
 
         if(deviceLocation != null){
             devicePos = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
         }
-
-        if(deviceLocation != null)
-            devicePos = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
         else
-            Toast.makeText((MainActivity)getActivity(), "Device position could not be found",
+            Toast.makeText((MainActivity)getActivity(), "Din position kunde inte hittas",
                     Toast.LENGTH_LONG).show();
 
         //Maybe make use of the circle for device location
@@ -440,7 +438,6 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
     //Shows a popup dialogue where user can enter input for the new POI
     private void addPoiPopup(final LatLng latLng) {
-
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setTitle("Lägg till ny intressepunkt");
 
@@ -448,18 +445,29 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         TextView textName = new TextView(getContext());
-        TextView textDesc = new TextView(getContext());
-
         textName.setText("Name");
-        //textDesc.setText("Description");
+        TextView textType = new TextView(getContext());
+        textType.setText("Type");
+
+        //Types of items that can be added onto the map view
+        List<String> typeList = new ArrayList<>();
+        typeList.add("Hus");
+        typeList.add("Bil");
+
+        //A drop down menu  for adding items of specific types, cars ect.
+        final Spinner typeDropDown = new Spinner(getContext());
+
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(
+                getActivity(), android.R.layout.simple_spinner_dropdown_item, typeList);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeDropDown.setAdapter(typeAdapter);
 
         final EditText inputName = new EditText(getContext());
-        //final EditText inputDesc = new EditText(getContext());
 
         linearLayout.addView(textName);
         linearLayout.addView(inputName);
-        linearLayout.addView(textDesc);
-        //linearLayout.addView(inputDesc);
+        linearLayout.addView(textType);
+        linearLayout.addView(typeDropDown);
 
         alert.setView(linearLayout);
 
@@ -469,12 +477,36 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                 String coords = latLng.toString().replace("lat/lng: (", "");
                 coords = coords.replace(")", "");
 
-                House newHouse = new House(inputName.getText().toString(), coords);
-                mMap.addMarker(new MarkerOptions()
+                if(typeDropDown.getSelectedItem().toString() == "Hus") {
+                    House newHouse = new House(inputName.getText().toString(), coords);
+                    mMap.addMarker(new MarkerOptions()
+                            .title(inputName.getText().toString())
+                            .snippet("Click to see more")
+                            .position(latLng));
+                }
+
+                else if(typeDropDown.getSelectedItem().toString() == "Bil") {
+
+                    //Add new car to DB
+                    String DBUrl = "https://tnm082-indoor.firebaseio.com/bilar/";
+                    Firebase DB = new Firebase(DBUrl);
+                    Firebase carsRef = DB.child(inputName.getText().toString());
+                    Firebase newLatLng = carsRef.child("latlng");
+                    newLatLng.setValue(coords);
+                    Firebase newUsed = carsRef.child("used");
+                    newUsed.setValue(false);
+
+                    //Convert coord-string to latnlg
+                    List<String> coordList = Arrays.asList(coords.split(","));
+                    LatLng carPos = new LatLng(Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
+
+                    //Add the marker to the map
+                    mMap.addMarker(new MarkerOptions()
                         .title(inputName.getText().toString())
-                        //.snippet(inputDesc.getText().toString())
-                        .snippet("Tryck för att se mer")
-                        .position(latLng));
+                        .position(latLng)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+
+                }
             }
         });
 
