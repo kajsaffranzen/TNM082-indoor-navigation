@@ -2,6 +2,8 @@ package com.example.firebazzze.tnm082_indoor_navigation;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -175,6 +178,23 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         String DBUrl = "https://tnm082-indoor.firebaseio.com/";
         //String DBUrl = "https://coord-test.firebaseio.com/"; //dummy
         Firebase DB = new Firebase(DBUrl);
+
+        //Display device location
+        Location deviceLocation = ((MainActivity) getActivity()).publicPos;
+
+        LatLng devicePos = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
+
+        //Maybe make use of the circle for device location
+        /*mMap.addCircle(new CircleOptions()
+                        .center(devicePos)
+                        .radius(10000)
+                        .strokeColor(Color.RED)
+                        .fillColor(Color.BLUE));*/
+
+        mMap.addMarker(new MarkerOptions()
+                .title("YOU")
+                .position(devicePos)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 
         //Display all buildings on the map
         DB.addChildEventListener(new ChildEventListener() {
