@@ -276,10 +276,10 @@ public class QRFragment extends Fragment {
 
                                 } else {
                                     //go to next fragment and send text from qr
+
+                                    //to check if the house really exists
                                     String DBUrl = "https://tnm082-indoor.firebaseio.com/";
                                     Firebase DB = new Firebase(DBUrl + barcodes.valueAt(0).displayValue);
-
-                                    //boolean kalle = false;
 
                                     DB.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -297,10 +297,6 @@ public class QRFragment extends Fragment {
 
                                         }
                                     });
-
-                                    //if(DB != null) goToListAndSearch(barcodes.valueAt(0).displayValue);
-                                    //else Toast.makeText((MainActivity)getActivity(), "Huset kunde inte hittas, testa kartan",
-                                     //       Toast.LENGTH_LONG).show();
                                 }
                             }
 
