@@ -165,10 +165,10 @@ public class QRFragment extends Fragment {
 
         ((MainActivity)getActivity()).setToolbarTitle("QR-skanning");
 
-        String hus = "vitahuset";
-        goToListAndSearch(hus);
+        /*String hus = "vitahuset";
+        goToListAndSearch(hus);*/
         
-        /*cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
+        cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
         barcodeInfo = (TextView) view.findViewById(R.id.code_info);
         focusImage = (ImageView) view.findViewById(R.id.focusImage);
 
@@ -310,7 +310,7 @@ public class QRFragment extends Fragment {
                     });
                 }
             }
-        });*/
+        });
 
         // Inflate the layout for this fragment
         return view;
