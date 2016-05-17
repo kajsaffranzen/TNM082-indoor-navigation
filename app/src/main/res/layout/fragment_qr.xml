@@ -66,11 +66,10 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="History"
+            android:text="Historik"
             android:id="@+id/historyBtn"
             android:layout_alignBottom="@+id/mapsViewBtn"
             android:layout_marginLeft="15dp"
-            android:alpha="0.5"
             android:background="@color/colorPrimary"
              />
 

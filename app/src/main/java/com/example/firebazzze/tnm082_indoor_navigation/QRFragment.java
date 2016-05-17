@@ -363,16 +363,12 @@ public class QRFragment extends Fragment {
                     .setAdapter(adapter, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
                             String s = historyList.get(which);
 
                             if(s.length() > 5 && !s.substring(0,3).matches("[0-9]+") && s.substring(3,6).matches("[0-9]+"))
                                 showCarDialog(s);
                             else
                                 goToListAndSearch(s);
-
-
-
                         }
                     })
                     .setNegativeButton("Stäng", new DialogInterface.OnClickListener() {
