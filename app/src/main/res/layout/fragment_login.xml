@@ -3,13 +3,13 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="fill_parent"
+    <CheckBox
+        android:id="@+id/officalBoxLogin"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp"
-        android:paddingTop="16dp"
-        android:text="INTE IMPLEMENTERAD"
-        android:textSize="32sp" />
+        android:text="Logga in som admin"
+        android:textSize="10pt"
+        android:textColor="@color/colorQRText" />
+
 
 </LinearLayout>

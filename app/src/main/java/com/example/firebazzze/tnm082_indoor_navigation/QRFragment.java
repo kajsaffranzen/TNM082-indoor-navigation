@@ -186,9 +186,6 @@ public class QRFragment extends Fragment {
         tBarSearchButton.setVisibility(View.GONE);
 
         ((MainActivity)getActivity()).setToolbarTitle("QR-skanning");
-
-        /*String hus = "gulahuset";
-        goToListAndSearch(hus);*/
         
         cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
         barcodeInfo = (TextView) view.findViewById(R.id.code_info);
