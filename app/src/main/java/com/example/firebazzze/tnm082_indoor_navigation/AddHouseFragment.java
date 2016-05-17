@@ -472,7 +472,16 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                 for (Map.Entry<String, Marker> entry : markerMap.entrySet()) {
                     String markerName = entry.getKey();
                     if(markerName.equals("DeviceLoc")) continue;
-                    if(markerName.toString().toLowerCase().equals(searchField.getText().toString().toLowerCase())) {
+
+                    if (markerName.length() > 5 && !markerName.substring(0, 3).matches("[0-9]+") &&
+                            markerName.substring(3, 6).matches("[0-9]+")) {
+                        //TODO - Set what happens when car is selected
+                        String toastMessage = "Implement this car action";
+                        Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
+                    else if(markerName.toString().toLowerCase().equals(searchField.getText().toString().toLowerCase())) {
                         goToListAndSearch(markerName);
                         return false;
                     }
@@ -495,8 +504,23 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         listSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Go to DetailViewIP pass the POI key
-                goToListAndSearch(searchResults.get(position));
+
+                Log.d("ok", "CLICKED: " + searchResults.get(position));
+
+                if (searchResults.get(position).length() > 5 &&
+                        !searchResults.get(position).substring(0, 3).matches("[0-9]+") &&
+                        searchResults.get(position).substring(3, 6).matches("[0-9]+")) {
+
+                    //TODO - Set what happens when car is selected
+                    String toastMessage = "Implement this car action";
+                    Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+                else {
+                    //Go to DetailViewIP pass the POI key
+                    goToListAndSearch(searchResults.get(position));
+                }
             }
         });
 
