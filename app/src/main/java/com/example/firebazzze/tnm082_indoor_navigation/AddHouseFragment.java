@@ -117,6 +117,9 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         //To get the back button to work properly
         ((MainActivity)getActivity()).fromMaps = true;
 
+        //Set toolbar title
+        ((MainActivity)getActivity()).setToolbarTitle("Karta");
+
         //Get Map component
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
