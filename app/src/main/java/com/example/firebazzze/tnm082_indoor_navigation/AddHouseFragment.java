@@ -35,6 +35,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -438,10 +439,41 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
                 //Loop through markers to find search matches
                 for (Map.Entry<String, Marker> entry : markerMap.entrySet()) {
-                    String markerName = entry.getKey();
+                    final String markerName = entry.getKey();
                     if(markerName.equals("DeviceLoc")) continue;
-                    if(markerName.toString().toLowerCase().contains(s.toString().toString())) {
+
+                    //Is car
+                    if(markerName.length() > 5 && !markerName.substring(0, 3).matches("[0-9]+") &&
+                            markerName.substring(3, 6).matches("[0-9]+") &&
+                            markerName.toString().toLowerCase().contains(s.toString().toString())) {
+                        searchResults.add(markerName + " (bil)");
+                    }
+
+                    //Is house
+                    else if(markerName.toString().toLowerCase().contains(s.toString().toString())) {
                         searchResults.add(markerName);
+
+                        //TODO - ADD POIS HERE
+                        String DBUrl = "https://tnm082-indoor.firebaseio.com/";
+                        Firebase ref = new Firebase(DBUrl);
+
+                        ref.child(markerName.toString()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                    Log.d("ok", "HOUSE ALSO CONTAINS: "+postSnapshot.getKey());
+
+                                    if(!postSnapshot.getKey().equals("latlng")) {
+                                        searchResults.add(postSnapshot.getKey() + " (" + markerName + ")");
+                                        searchListAdapter.notifyDataSetChanged();
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+                            }
+                        });
                     }
                 }
 
@@ -481,6 +513,13 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                         toast.show();
                     }
 
+                    else if(markerName.contains("(")) {
+                        //TODO - Set what happens when POI is selected
+                        String toastMessage = "Implement this POI action";
+                        Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
                     else if(markerName.toString().toLowerCase().equals(searchField.getText().toString().toLowerCase())) {
                         goToListAndSearch(markerName);
                         return false;
@@ -505,14 +544,20 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Log.d("ok", "CLICKED: " + searchResults.get(position));
-
+                //Dont go to listNSearch if item is a car
                 if (searchResults.get(position).length() > 5 &&
                         !searchResults.get(position).substring(0, 3).matches("[0-9]+") &&
                         searchResults.get(position).substring(3, 6).matches("[0-9]+")) {
 
                     //TODO - Set what happens when car is selected
                     String toastMessage = "Implement this car action";
+                    Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+                else if(searchResults.get(position).contains("(")) {
+                    //TODO - Set what happens when POI is selected
+                    String toastMessage = "Implement this POI action";
                     Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
                     toast.show();
                 }
