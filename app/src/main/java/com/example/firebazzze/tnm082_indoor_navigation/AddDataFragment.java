@@ -57,6 +57,8 @@ public class AddDataFragment extends Fragment {
     private int counter;
     private String chosenCat;
     private Button addPathBtn;
+    private Button btnAddPath;
+
     private ImageButton createPOI;
     private EditText POIname, POIdesc, POIpath;
     private ListView lv;
@@ -131,8 +133,8 @@ public class AddDataFragment extends Fragment {
             }
         });
 
-        final Button btnAddPath = (Button) view.findViewById(R.id.POIaddPath);
-        Button btnPathDone = (Button) view.findViewById(R.id.POIpathDone);
+        btnAddPath = (Button) view.findViewById(R.id.POIaddPath);
+        ImageButton btnPathDone = (ImageButton) view.findViewById(R.id.POIpathDone);
 
         final RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.test);
         final RelativeLayout rl2 = (RelativeLayout) view.findViewById(R.id.test2);
@@ -140,6 +142,8 @@ public class AddDataFragment extends Fragment {
         btnAddPath.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //btnAddPath.setBackgroundColor(Color.color);
+                btnAddPath.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
                 rl2.setVisibility(View.GONE);
                 rl.setVisibility(View.VISIBLE);
             }
@@ -148,14 +152,14 @@ public class AddDataFragment extends Fragment {
         btnPathDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!POIpath.getText().toString().equals(""))
+                    checkPathField();
+
                 rl.setVisibility(View.GONE);
                 rl2.setVisibility(View.VISIBLE);
                 btnAddPath.setText("Ändra vägbeskrivning");
             }
         });
-
-
-
 
         createPOI.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,7 +231,6 @@ public class AddDataFragment extends Fragment {
             public void onClick(DialogInterface arg0, int arg1) {
                 addPath();
                 Toast.makeText(getActivity(),"Vägbeskrivningen har lagts till!",Toast.LENGTH_LONG).show();
-                addNewPOI();
             }
         });
 
@@ -236,13 +239,14 @@ public class AddDataFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 POIpath.setText("");
                 POIpath.setHint("Lägg till punkt nr " + (counter));
-                addNewPOI();
             }
         });
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+
 
 
     //adds the new POI to firebazzze
@@ -286,7 +290,9 @@ public class AddDataFragment extends Fragment {
                 POIname.addTextChangedListener(POInameWatcher);
             }
             if (listOfPath.isEmpty()){
-                POIpath.setBackgroundColor(Color.RED);
+                btnAddPath.setBackgroundColor(Color.RED);
+                btnAddPath.setText("Lägg till en vägbeskrivning");
+                //POIpath.setBackgroundColor(Color.RED);
                 POIpath.addTextChangedListener(POIpathWatcher);
             }
 
