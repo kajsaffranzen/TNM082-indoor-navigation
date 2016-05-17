@@ -325,31 +325,29 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        if(platenr == null) {
-            // Add a marker in Sydney and move the camera
+        Log.d("ok", "BOKAY!");
 
-            LatLng nkpg = new LatLng(58, 16);
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(nkpg));
-        }else{
-            //Remove progress bar as data is loaded
-            mapsLoadingPanel.setVisibility(View.GONE);
+        //Remove progress bar as data is loaded
+        mapsLoadingPanel.setVisibility(View.GONE);
 
-            List<String> coords = Arrays.asList(((MainActivity)getActivity()).getCar(platenr).getLatlng().split(","));
-            LatLng carPos = new LatLng(Double.parseDouble(coords.get(0)), Double.parseDouble(coords.get(1)));
+        //get device location
+        Location deviceLocation = ((MainActivity) getActivity()).publicPos;
+        LatLng devicePos = new LatLng(0.0, 0.0);
 
-            //Move camera to marker, pretty zoomed out
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(carPos));
-            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(carPos,2));
-
-//            mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-//                @Override
-//                public void onMapLoaded() {
-//                    // Zoom in on marker
-//                    mMap.animateCamera(CameraUpdateFactory.zoomIn());
-//                    mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 4000, null);
-//                }
-//            });
+        if(deviceLocation != null) {
+            devicePos = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
         }
+
+        // Zoom in on user position when map is finnished loaded
+        final LatLng dPos = devicePos;
+        mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(dPos.latitude, dPos.longitude), 15));
+            }
+        });
+
         setMapListeners();
 
         if(platenr == null) {
