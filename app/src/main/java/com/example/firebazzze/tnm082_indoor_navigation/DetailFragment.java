@@ -11,6 +11,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -71,6 +73,7 @@ public class DetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             POIkey = getArguments().getString(KEY);
             Log.i("TOOBE", POIkey);
@@ -152,6 +155,9 @@ public class DetailFragment extends Fragment {
         //add listeners to buttons ect
         setListeners();
 
+        ((MainActivity)getActivity()).poi = ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey);
+        ((MainActivity)getActivity()).poiName = POIkey;
+
         return view;
     }
 
@@ -224,4 +230,12 @@ public class DetailFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    @Override
+    public void onCreateOptionsMenu(
+            Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+    }
+
+
 }

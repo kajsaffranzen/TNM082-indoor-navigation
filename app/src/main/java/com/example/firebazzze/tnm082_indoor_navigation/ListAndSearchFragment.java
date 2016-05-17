@@ -49,7 +49,7 @@ public class ListAndSearchFragment extends Fragment {
     private ExpandableListView myExpandableListView;
     private ExpandableListAdapter myExpandableListAdapter;
 
-    private ArrayList<String> categoryList;
+    public ArrayList<String> categoryList;
     private HashMap<String, List<String>> interestPointsList;
     private List<List<String>> dynamicCategoryList;
 
@@ -144,6 +144,8 @@ public class ListAndSearchFragment extends Fragment {
 
         fillListWithData(houseName);
         setListeners(newHouse);
+
+        ((MainActivity)getActivity()).myCatList = this;
 
         return view;
     }
@@ -388,5 +390,6 @@ public class ListAndSearchFragment extends Fragment {
         DetailFragment.setArguments(bundle);
         fm.beginTransaction().replace(R.id.fragmentContainer, DetailFragment).addToBackStack("DetailFragment").commit();
     }
+
 
 }

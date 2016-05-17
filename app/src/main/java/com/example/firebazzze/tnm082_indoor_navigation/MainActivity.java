@@ -64,14 +64,19 @@ public class MainActivity extends AppCompatActivity implements
 
 
     public House house;
-    public boolean isAdmin = false;
+    public boolean isAdmin = true;
     public DetailFragment detailFragment;
     public AddDataChildFragment addDataChild;
+
+    private static final String KEY = "housename";
 
     //Navigation drawer
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView nvDrawer;
+
+    public ListAndSearchFragment myCatList;
+    private static final String CAT_LIST = "catlist";
 
     private String mActivityTitle;
     private CharSequence mTitle;
@@ -80,12 +85,17 @@ public class MainActivity extends AppCompatActivity implements
 
     public boolean fromMaps = false;
 
+    public boolean fromUpdate = false;
+
     public House garage;
 
     public Map<String, Car> Cars = new HashMap<String, Car>();
     public Map<String, House> Houses = new HashMap<String, House>();
 
     public Location publicPos;
+
+    public POI poi;
+    public String poiName;
 
 
     @Override
@@ -183,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        addDataChild = (AddDataChildFragment) getSupportFragmentManager().findFragmentById(R.id.isOfficialCheckBox);
+       /* addDataChild = (AddDataChildFragment) getSupportFragmentManager().findFragmentById(R.id.isOfficialCheckBox);
 
         //refresh the detail view in order to show/hide admin button
         if(detailFragment != null && detailFragment.isAdded())
@@ -208,9 +218,51 @@ public class MainActivity extends AppCompatActivity implements
         // true, then it has handled the app icon touch event
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
-        }
+        }*/
+        int id = item.getItemId();
 
-        return super.onOptionsItemSelected(item);
+
+        switch (id) {
+
+            case R.id.deletePOI:
+
+                FragmentManager fm = getSupportFragmentManager();
+                //fm.popBackStack();
+                Fragment ListAndSearchFragment = new ListAndSearchFragment();
+                Bundle bundle = new Bundle();
+                Log.i("testing", getHouse().getHouseName());
+                bundle.putString(KEY, getHouse().getHouseName());
+
+                ListAndSearchFragment.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.fragmentContainer, ListAndSearchFragment)
+                        .addToBackStack(null)
+                        .commit();
+
+                getHouse().deletePOI(poiName);
+
+                break;
+
+
+            case R.id.updatePOI:
+
+                Bundle newBundle = new Bundle();
+
+                //TODO: Fullösning tillsvidare...
+                ArrayList<String> temp = new ArrayList<String>();
+
+                for (int i = 0; i < myCatList.categoryList.size(); i++)
+                    temp.add(myCatList.categoryList.get(i));
+
+                newBundle.putStringArrayList(CAT_LIST, temp);
+                fromUpdate = true;
+
+                getSupportFragmentManager().popBackStack();
+                AddDataFragment fragmentData = new AddDataFragment();
+                fragmentData.setArguments(newBundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragmentData).addToBackStack(null).commit();
+        }
+                return super.onOptionsItemSelected(item);
+
     }
 
     //Override the back button when on qr fragment

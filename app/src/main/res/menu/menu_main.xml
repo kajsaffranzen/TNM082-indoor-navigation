@@ -3,14 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/deletePOI"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Radera"
         app:showAsAction="never" />
 
-    <item android:id="@+id/menuItemAdminMode"
-        android:title="Admin Mode"
-        app:showAsAction="never"
-        android:checkable="true"
-        android:checked="false"/>
+    <item android:id="@+id/updatePOI"
+        android:title="Uppdatera"
+        app:showAsAction="never" />
 </menu>
