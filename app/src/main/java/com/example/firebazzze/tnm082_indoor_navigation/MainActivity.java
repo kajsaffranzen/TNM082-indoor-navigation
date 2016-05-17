@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements
@@ -72,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView nvDrawer;
+
+    private ArrayList<String> historyList = new ArrayList<String>();
 
     private String mActivityTitle;
     private CharSequence mTitle;
@@ -390,5 +393,12 @@ public class MainActivity extends AppCompatActivity implements
 
         DB.child("bilar").child(platenr).child("used").setValue(Cars.get(platenr).getUsed());
 
+    }
+    public void addToHistory(String s){
+        if(!historyList.contains(s))
+            historyList.add(s);
+    }
+    public ArrayList<String> getHistoryList(){
+        return historyList;
     }
 }

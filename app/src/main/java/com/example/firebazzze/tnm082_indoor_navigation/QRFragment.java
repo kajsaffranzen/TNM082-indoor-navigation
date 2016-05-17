@@ -15,9 +15,13 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +36,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 /**
@@ -51,6 +56,8 @@ public class QRFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Button goToMapsBtn;
     private Button historyBtn;
+
+    private ArrayList<String> historyList = new ArrayList<String>();
 
     //This boolean prevents the app from continously scan a qr code
     // after it already has been successfully scanned
@@ -112,6 +119,8 @@ public class QRFragment extends Fragment {
 
     //go to list and search view
     public void goToListAndSearch(String houseName){
+
+        ((MainActivity) getActivity()).addToHistory(houseName);
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment ListAndSearchFragment = new ListAndSearchFragment();
@@ -239,53 +248,8 @@ public class QRFragment extends Fragment {
                             );
 
                             if(barcodes.valueAt(0).displayValue.length() > 5 && !barcodes.valueAt(0).displayValue.substring(0,3).matches("[0-9]+") && barcodes.valueAt(0).displayValue.substring(3,6).matches("[0-9]+")){
-                                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-                                Car c = ((MainActivity) getActivity()).getCar(barcodes.valueAt(0).displayValue);
-                                String s;
-                                if(c != null) {
-                                    if (c.getUsed()) s = "Bilen används";
-                                    else s = "Bilen är ledig";
 
-                                    alertDialog.setTitle(s)
-                                            .setCancelable(true)
-                                            .setPositiveButton("Hitta senaste pos", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    showCarOnMap(barcodes.valueAt(0).displayValue);
-                                                    dialog.cancel();
-                                                    scanned = false;
-                                                }
-                                            });
-
-                                    if (!c.getUsed()) {
-                                        alertDialog.setNeutralButton("Använd", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                ((MainActivity) getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed(true);
-                                                //((MainActivity) getActivity()).updateCar(barcodes.valueAt(0).displayValue);
-                                                dialog.cancel();
-                                                scanned = false;
-                                            }
-                                        });
-                                    } else {
-                                        alertDialog.setNeutralButton("Parkera", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                ((MainActivity) getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed(false);
-                                                ((MainActivity) getActivity()).updateCar(barcodes.valueAt(0).displayValue);
-                                                dialog.cancel();
-                                                scanned = false;
-                                            }
-                                        });
-                                    }
-
-                                    AlertDialog alertDialog2 = alertDialog.create();
-                                    alertDialog2.show();
-                                }else{
-                                    Toast.makeText((MainActivity)getActivity(), "Bilen hann inte laddas",
-                                            Toast.LENGTH_LONG).show();
-                                    scanned = false;
-                                }
+                                showCarDialog(barcodes.valueAt(0).displayValue);
 
                             }
                             else {
@@ -329,15 +293,98 @@ public class QRFragment extends Fragment {
         return view;
     }
 
+    private void showCarDialog(String platenr){
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        Car c = ((MainActivity) getActivity()).getCar(platenr);
+        String s;
+        if(c != null) {
+            if (c.getUsed()) s = "Bilen används";
+            else s = "Bilen är ledig";
+
+            ((MainActivity)getActivity()).addToHistory(platenr);
+
+            final String plateNr = platenr;
+
+            alertDialog.setTitle(s)
+                    .setCancelable(true)
+                    .setPositiveButton("Hitta senaste pos", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            showCarOnMap(plateNr);
+                            dialog.cancel();
+                            scanned = false;
+                        }
+                    });
+
+            if (!c.getUsed()) {
+                alertDialog.setNeutralButton("Använd", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((MainActivity) getActivity()).getCar(plateNr).setUsed(true);
+                        //((MainActivity) getActivity()).updateCar(barcodes.valueAt(0).displayValue);
+                        dialog.cancel();
+                        scanned = false;
+                    }
+                });
+            } else {
+                alertDialog.setNeutralButton("Parkera", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((MainActivity) getActivity()).getCar(plateNr).setUsed(false);
+                        ((MainActivity) getActivity()).updateCar(plateNr);
+                        dialog.cancel();
+                        scanned = false;
+                    }
+                });
+            }
+
+            AlertDialog alertDialog2 = alertDialog.create();
+            alertDialog2.show();
+        }else{
+            Toast.makeText((MainActivity)getActivity(), "Bilen hann inte laddas",
+                    Toast.LENGTH_LONG).show();
+            scanned = false;
+        }
+
+    }
+
     private void showHistoryDialog() {
+        historyList = ((MainActivity)getActivity()).getHistoryList();
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-        dialog.setTitle("Testing");
-        dialog.setCancelable(true);
+        if(historyList.size() < 1) {
+            Toast.makeText((MainActivity)getActivity(), "Din historik är tom",
+                    Toast.LENGTH_LONG).show();
+        }else {
 
-        View view = ((MainActivity) getContext()).getLayoutInflater().inflate(R.simple_)
+            ListAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, historyList);
+
+            new AlertDialog.Builder(getActivity())
+                    .setAdapter(adapter, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            String s = historyList.get(which);
+
+                            if(s.length() > 5 && !s.substring(0,3).matches("[0-9]+") && s.substring(3,6).matches("[0-9]+"))
+                                showCarDialog(s);
+                            else
+                                goToListAndSearch(s);
 
 
+
+                        }
+                    })
+                    .setNegativeButton("Stäng", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .setTitle("Historik")
+                    .setCancelable(true)
+                    .show();
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
