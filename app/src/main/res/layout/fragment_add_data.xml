@@ -40,9 +40,8 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/POIpath"/>
 
-        <Button
-            android:text="Klar"
-            android:background="@color/colorPrimary"
+        <ImageButton
+            android:background="@drawable/path_done_button"
             android:id="@+id/POIpathDone"
             android:textColor="@color/white"
             android:layout_width="80dp"
@@ -107,8 +106,8 @@
         android:id="@+id/POIaddPath"
         android:background="@color/colorPrimaryDark"
         android:textColor="@color/white"
-        android:layout_width="160dp"
-        android:layout_height="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:layout_below="@+id/catSpinner"
         android:layout_centerHorizontal="true"
         />
@@ -131,8 +130,7 @@
         android:layout_height="80dp"
         android:background="@drawable/path_done_button"
         android:layout_below="@+id/POIdesc"
-        android:layout_centerHorizontal="true"
-    />
+        android:layout_centerHorizontal="true" />
 
     <FrameLayout
         android:id="@+id/isOfficialCheckBox"
