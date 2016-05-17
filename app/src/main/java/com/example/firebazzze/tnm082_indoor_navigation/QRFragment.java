@@ -167,7 +167,7 @@ public class QRFragment extends Fragment {
 
         /*String hus = "vitahuset";
         goToListAndSearch(hus);*/
-        
+
         cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
         barcodeInfo = (TextView) view.findViewById(R.id.code_info);
         focusImage = (ImageView) view.findViewById(R.id.focusImage);
