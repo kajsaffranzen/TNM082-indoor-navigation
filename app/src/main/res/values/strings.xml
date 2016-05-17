@@ -10,11 +10,17 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Kategorier -->
-    <string name="cat_resturang">Resturang</string>
-    <string name="cat_skrivare">Skrivare</string>
-    <string name="cat_sal">Sal</string>
-    <string name="cat_cafe">Café</string>
-    <string name="cat_ovrigt">Övrigt</string>
+        <string name="cat_resturang">Resturang</string>
+        <string name="cat_skrivare">Skrivare</string>
+        <string name="cat_sal">Sal</string>
+        <string name="cat_cafe">Café</string>
+        <string name="cat_ovrigt">Övrigt</string>
+
+    <!-- Kategori array-->
+    <string-array name="categories">
+        <item>@string/cat_resturang</item>
+        <item>@string/cat_ovrigt</item>
+    </string-array>
 
     <!-- Text help fragment -->
     <string name="header_help_nav">Navigering</string>

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,13 @@ import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,6 +98,7 @@ public class ListAndSearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            Log.d("TAG", "onCreate: " + houseName);
             houseName = getArguments().getString(KEY);
         }
     }
@@ -98,17 +107,25 @@ public class ListAndSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        Log.d("TAG", "onCreateView: " + houseName);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_and_search, container, false);
 
         loadingPanel = (ProgressBar)view.findViewById(R.id.loadingPanel);
 
+        //loads firebase in order to cancel progress bar if there is no data
+        tryLoad();
+
         //Change the toolbar title to housename
         ((MainActivity)getActivity()).setToolbarTitle("Intressepunkter");
-        TextView titel = (TextView)view.findViewById(R.id.infoText);
 
-        titel.setText(houseName);
-
+        //Check if house is null
+        if(houseName != null){
+            TextView titel = (TextView)view.findViewById(R.id.infoText);
+            titel.setText(houseName);
+            loadingPanel.setVisibility(View.VISIBLE);
+        }
 
         categoryList = new ArrayList<String>();
         interestPointsList = new HashMap<String, List<String>>();
@@ -311,6 +328,41 @@ public class ListAndSearchFragment extends Fragment {
             }
         });
 
+        //On enter click for search
+        searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                //string empty, dont search
+                if (searchField.getText().toString().equals("")) {
+                    searchField.setHint("Sök intressepunkt");
+                    listSearch.setVisibility(View.GONE);
+                    infoText.setVisibility(View.VISIBLE);
+                    myExpandableListView.setVisibility(View.VISIBLE);
+                    return false;
+                }
+
+                //If exact match, go to item
+                for(int i = 0; i < searchResults.size(); i++) {
+                    if(searchField.getText().toString().equals(searchResults.get(i))) {
+                        goToDetailFragment(searchResults.get(i));
+                        return false;
+                    }
+                }
+
+                //Else, no exact match found
+                String toastMessage = searchField.getText().toString() + " finns inte";
+                Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
+                toast.show();
+
+                //Close keyboard
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
+                return false;
+            }
+        });
+
         //Handle onClick for searchList items
         listSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -325,6 +377,8 @@ public class ListAndSearchFragment extends Fragment {
         addPOIBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                listSearch.setVisibility(View.GONE);
 
                 FragmentManager fm = getActivity().getSupportFragmentManager();
 
@@ -383,6 +437,37 @@ public class ListAndSearchFragment extends Fragment {
         DetailFragment.setArguments(bundle);
        // fm.beginTransaction().replace(R.id.fragmentContainer, DetailFragment).addToBackStack("DetailFragment").add(R.id.officalBoxLogin, loginFragment).addToBackStack("LoginFragment").commit();
         fm.beginTransaction().replace(R.id.fragmentContainer, DetailFragment).addToBackStack("DetailFragment").commit();
+    }
+
+    //load database to check if its empty
+    private void tryLoad() {
+
+        String DBUrl = "https://tnm082-indoor.firebaseio.com/";
+        Firebase ref = new Firebase(DBUrl + this.houseName);
+
+        final String hName = this.houseName;
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                //If there are no POI's
+                if(dataSnapshot.getChildrenCount() == 1) {
+                    loadingPanel.setVisibility(View.GONE);
+
+                    String toastMessage = hName + " innehåller inga intressepunkter!";
+                    Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+            public void onCancelled(FirebaseError firebaseError) { }
+        });
+        ref.addChildEventListener(new ChildEventListener() {
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousKey) {}
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
     }
 
 }

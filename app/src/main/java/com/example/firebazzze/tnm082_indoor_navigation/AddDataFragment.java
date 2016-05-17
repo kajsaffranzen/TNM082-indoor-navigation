@@ -21,9 +21,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
+import android.widget.LinearLayout;
+
 import android.widget.ImageButton;
+
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Scroller;
 import android.widget.Spinner;
@@ -46,16 +51,25 @@ public class AddDataFragment extends Fragment {
     private List<String> listOfPath;
     private ArrayAdapter<String> adapter;
     private final String CAT_LIST = "catlist";
+    private final String NEW_CATEGORY = "Lägg till ny kategori";
+
     private View view;
     private int counter;
     private String chosenCat;
     private Button addPathBtn;
+    private Button btnAddPath;
+
     private ImageButton createPOI;
     private EditText POIname, POIdesc, POIpath;
     private ListView lv;
     private Spinner spinner;
+
+    private String spinnerText;
+    private String addCat;
+
     private boolean officialPOI = false;
 
+    private ArrayAdapter<String> spinnerAdapter;
 
     public AddDataFragment() {
         // Required empty public constructor
@@ -104,7 +118,48 @@ public class AddDataFragment extends Fragment {
 
         fillScroller();
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+                spinnerText = spinner.getItemAtPosition(position).toString();
+
+                if(spinnerText == NEW_CATEGORY)
+                    addCatPopup(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        btnAddPath = (Button) view.findViewById(R.id.POIaddPath);
+        ImageButton btnPathDone = (ImageButton) view.findViewById(R.id.POIpathDone);
+
+        final RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.test);
+        final RelativeLayout rl2 = (RelativeLayout) view.findViewById(R.id.test2);
+
+        btnAddPath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //btnAddPath.setBackgroundColor(Color.color);
+                btnAddPath.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                rl2.setVisibility(View.GONE);
+                rl.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnPathDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!POIpath.getText().toString().equals(""))
+                    checkPathField();
+
+                rl.setVisibility(View.GONE);
+                rl2.setVisibility(View.VISIBLE);
+                btnAddPath.setText("Ändra vägbeskrivning");
+            }
+        });
 
         createPOI.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,10 +200,13 @@ public class AddDataFragment extends Fragment {
 
     //fill the scroller with categories
     public void fillScroller(){
-        if(!categoryList.contains("Övrigt") || !categoryList.contains("övrigt"))
+        if(!categoryList.contains("Övrigt") && !categoryList.contains("övrigt"))
             categoryList.add("Övrigt");
+        if(!categoryList.contains(NEW_CATEGORY))
+            categoryList.add(NEW_CATEGORY);
 
-        spinner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList));
+        spinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, categoryList);
+        spinner.setAdapter(spinnerAdapter);
     }
 
     //adds the path to the list
@@ -173,7 +231,6 @@ public class AddDataFragment extends Fragment {
             public void onClick(DialogInterface arg0, int arg1) {
                 addPath();
                 Toast.makeText(getActivity(),"Vägbeskrivningen har lagts till!",Toast.LENGTH_LONG).show();
-                addNewPOI();
             }
         });
 
@@ -182,7 +239,6 @@ public class AddDataFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 POIpath.setText("");
                 POIpath.setHint("Lägg till punkt nr " + (counter));
-                addNewPOI();
             }
         });
 
@@ -191,9 +247,15 @@ public class AddDataFragment extends Fragment {
     }
 
 
+
+
     //adds the new POI to firebazzze
     public void addNewPOI(){
         chosenCat = spinner.getSelectedItem().toString();
+
+        //add new category if the user chose "Lägg till ny kategori"
+        if(chosenCat == NEW_CATEGORY)
+            chosenCat = addCat;
 
         if(!POIname.getText().toString().equals("") && chosenCat != null && !listOfPath.isEmpty()){
 
@@ -228,12 +290,49 @@ public class AddDataFragment extends Fragment {
                 POIname.addTextChangedListener(POInameWatcher);
             }
             if (listOfPath.isEmpty()){
-                POIpath.setBackgroundColor(Color.RED);
+                btnAddPath.setBackgroundColor(Color.RED);
+                btnAddPath.setText("Lägg till en vägbeskrivning");
+                //POIpath.setBackgroundColor(Color.RED);
                 POIpath.addTextChangedListener(POIpathWatcher);
             }
 
             Toast.makeText(getActivity(), "Fyll i alla fält!", Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    //add popup where you can add a new category
+    private void addCatPopup(final int position) {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        alert.setTitle(NEW_CATEGORY);
+
+        LinearLayout linearLayout = new LinearLayout(getContext());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+        final EditText newCat = new EditText(getContext());
+
+        linearLayout.addView(newCat);
+
+        alert.setView(linearLayout);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                addCat = newCat.getText().toString();
+                categoryList.remove(position);
+                categoryList.add(addCat);
+                spinner.setSelection(position);
+                categoryList.add(NEW_CATEGORY);
+                spinnerAdapter.notifyDataSetChanged();
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        });
+
+        alert.show();
 
     }
 

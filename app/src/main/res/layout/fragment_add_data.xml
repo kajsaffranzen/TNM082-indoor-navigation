@@ -8,6 +8,56 @@
     android:paddingRight="35dp"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.AddDataFragment">
 
+    <RelativeLayout
+        android:id="@+id/test"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+        <EditText
+            android:id="@+id/POIpath"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Vägbeskrivning"
+            android:textSize="12pt"
+            android:backgroundTint="@color/editTxtLine"
+            android:textColorLink="@color/editTxtLine"
+            android:textColor="@color/colorQRText"
+            android:layout_marginTop="20dp"
+            />
+
+        <Button
+            android:id="@+id/addPath"
+            android:layout_width="@dimen/btn_size"
+            android:layout_height="@dimen/btn_size"
+            android:background="@drawable/ic_add"
+            android:width="@dimen/btn_size"
+            android:layout_alignRight="@+id/POIpath"/>
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/poi_info"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/POIpath"/>
+
+        <ImageButton
+            android:background="@drawable/path_done_button"
+            android:id="@+id/POIpathDone"
+            android:textColor="@color/white"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/test2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="wrap_content"
@@ -51,34 +101,16 @@
         android:layout_below="@+id/cat_info"
         />
 
-    <EditText
-        android:id="@+id/POIpath"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Vägbeskrivning"
-        android:textSize="12pt"
-        android:backgroundTint="@color/editTxtLine"
-        android:textColorLink="@color/editTxtLine"
-        android:textColor="@color/colorQRText"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/catSpinner" />
-
     <Button
-        android:id="@+id/addPath"
-        android:layout_width="@dimen/btn_size"
-        android:layout_height="@dimen/btn_size"
-        android:background="@drawable/ic_add"
-        android:width="@dimen/btn_size"
+        android:text="Lägg till vägbeskrivning"
+        android:id="@+id/POIaddPath"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:layout_below="@+id/catSpinner"
-        android:layout_alignRight="@+id/POIpath"/>
-
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/poi_info"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/POIpath"/>
-
+        />
 
     <EditText
         android:id="@+id/POIdesc"
@@ -88,8 +120,8 @@
         android:textSize="12pt"
         android:backgroundTint="@color/editTxtLine"
         android:textColor="@color/colorQRText"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/poi_info" />
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/POIaddPath" />
 
 
     <ImageButton
@@ -97,17 +129,17 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:background="@drawable/path_done_button"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        />
-    
+        android:layout_below="@+id/POIdesc"
+        android:layout_centerHorizontal="true" />
+
     <FrameLayout
         android:id="@+id/isOfficialCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/POIdesc"></FrameLayout>
-
+    </RelativeLayout>
 
 </RelativeLayout>
+
 
 

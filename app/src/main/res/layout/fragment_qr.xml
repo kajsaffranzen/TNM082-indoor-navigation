@@ -48,7 +48,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textColor="#8C8C8C"
                 android:textSize="20sp"
-                android:text="Nothing to read."
+                android:text="Inget att skanna."
                 android:id="@+id/code_info" />
         </LinearLayout>
 
@@ -58,7 +58,7 @@
             android:layout_height="80dp"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="15dp"
-            android:background="@drawable/maps_img"
+            android:background="@drawable/planet_earth"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"/>
 

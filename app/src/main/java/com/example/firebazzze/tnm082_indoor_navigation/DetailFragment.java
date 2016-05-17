@@ -13,21 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.CheckedTextView;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -115,24 +107,28 @@ public class DetailFragment extends Fragment {
 
         //get properties from the poiList and set text
         try {
-            poiFindText.setText("Hitta till " + ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getCategory());
+            poiFindText.setText("Hitta till");// + " " + ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getCategory());
             poiName.setText(POIkey);
-            poiDescription.setText(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getDescription());
+
+            if(((MainActivity)getActivity()).getHouse().getPOIs2().get(POIkey).getDescription().length() > 1)
+                poiDescription.setText(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getDescription());
+
         } catch(Exception err) {
             Log.d("error", "OnCreateView get poi stuff " + err.getMessage());
         }
+        if(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getPath() != null) {
+            //Add the path description from the POI in question and add to the adapter
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                    getActivity(),
 
-        //Add the path description from the POI in question and add to the adapter
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                getActivity(),
+                    //android.R.layout.simple_list_item_1,
+                    R.layout.path_list_item_layout,
 
-                //android.R.layout.simple_list_item_1,
-                R.layout.path_list_item_layout,
-
-                //android.R.layout.simple_list_item_checked,
-                ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getPath()
-        );
-        lv.setAdapter(arrayAdapter);
+                    //android.R.layout.simple_list_item_checked,
+                    ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getPath()
+            );
+            lv.setAdapter(arrayAdapter);
+        }
 
 
         //check if user is admin and show make official checkbox visible if user is admin
@@ -149,7 +145,6 @@ public class DetailFragment extends Fragment {
             checkBox.setVisibility(View.VISIBLE);
         else
             checkBox.setVisibility(View.GONE);
-
 
         //add listeners to buttons ect
         setListeners();

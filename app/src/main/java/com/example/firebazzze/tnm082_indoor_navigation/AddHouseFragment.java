@@ -2,7 +2,6 @@ package com.example.firebazzze.tnm082_indoor_navigation;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,11 +10,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -33,7 +35,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -63,11 +64,18 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private Button addPOIBtn;
     private Button goToQRBtn;
+    private CheckBox carFilt, houseFilt;
     private static final String KEY = "housename";
     private String currentMarkerName = null;
 
+    private SupportMapFragment mapFragment;
+    private View view;
+    private ViewGroup mContainter;
+
     private Map<String, House> houseMap;
     private List<String> houseNameList;
+
+    private Map<String, Marker> markerMap;
 
     private ProgressBar mapsLoadingPanel;
 
@@ -100,6 +108,11 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -111,11 +124,30 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_house, container, false);
+
+
+        if(view != null && this.mContainter == container){
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if(parent != null){
+                parent.removeView(view);
+            }
+        }
+        else{
+            try{
+                // Inflate the layout for this fragment
+                view = inflater.inflate(R.layout.fragment_add_house, container, false);
+                this.mContainter = container;
+            } catch (InflateException e){
+                Log.d("e", "Inflateexception");
+            }
+        }
+
 
         //To get the back button to work properly
         ((MainActivity)getActivity()).fromMaps = true;
+
+        //Set toolbar title
+        ((MainActivity)getActivity()).setToolbarTitle("Karta");
 
         //Get Map component
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -124,6 +156,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         //Initialize the house map
         houseMap = new HashMap<>();
         houseNameList = new ArrayList<>();
+        markerMap = new HashMap<>();
 
         //Add POI button
         addPOIBtn = (Button) view.findViewById(R.id.addPoiBtn);
@@ -131,12 +164,26 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         //Add qr view button
         goToQRBtn = (Button) view.findViewById(R.id.qrViewBtn);
 
+        carFilt = (CheckBox) view.findViewById(R.id.carFilter);
+        houseFilt = (CheckBox) view.findViewById(R.id.houseFilter);
+
+        Log.i("tester", "here: " + platenr);
+
+        if(platenr != null){
+            carFilt.setChecked(false);
+            houseFilt.setChecked(false);
+        }else{
+            carFilt.setChecked(true);
+            houseFilt.setChecked(true);
+        }
+
+
+
         //Add progressbar
         mapsLoadingPanel = (ProgressBar) view.findViewById(R.id.mapsLoadingPanel);
 
         setListeners();
 
-        // Inflate the layout for this fragment
         return view;
     }
 
@@ -144,36 +191,33 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         Car c = ((MainActivity) getActivity()).getCar(platenr);
 
         List<String> coords = Arrays.asList(c.getLatlng().split(","));
-
         LatLng carPos = new LatLng(Double.parseDouble(coords.get(0)), Double.parseDouble(coords.get(1)));
+        Marker m;
+        //Car unavailable
+        if(c.getUsed()) {
+            m = mMap.addMarker(new MarkerOptions()
+                    .title(platenr)
+                    .snippet("Upptagen")
+                    .position(carPos)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon_car_gray))
+            );
+        }//Car available
+        else {
+            m = mMap.addMarker(new MarkerOptions()
+                    .title(platenr)
+                    .position(carPos)
+                    .snippet("Ledig")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon_car))
+            );
+        }
+        markerMap.put(platenr, m);
 
-        BitmapDescriptor markerColor;
-
-        if(c.getUsed()) markerColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
-        else markerColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-
-        mMap.addMarker(new MarkerOptions()
-                .title(platenr)
-                .position(carPos)
-                .icon(markerColor));
     }
 
     @Override
     public void onDestroyView() {
         // TODO Auto-generated method stub
         super.onDestroyView();
-
-        try {
-            SupportMapFragment fragment = (SupportMapFragment) getChildFragmentManager()
-                    .findFragmentById(R.id.map);
-
-            FragmentTransaction ft = getActivity().getSupportFragmentManager()
-                    .beginTransaction();
-            ft.remove(fragment);
-            ft.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void addMarkers() {
@@ -192,17 +236,13 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             Toast.makeText((MainActivity)getActivity(), "Din position kunde inte hittas",
                     Toast.LENGTH_LONG).show();
 
-        //Maybe make use of the circle for device location
-        /*mMap.addCircle(new CircleOptions()
-                        .center(devicePos)
-                        .radius(10000)
-                        .strokeColor(Color.RED)
-                        .fillColor(Color.BLUE));*/
-
-        mMap.addMarker(new MarkerOptions()
+        Marker m = mMap.addMarker(new MarkerOptions()
                 .title("Din position")
                 .position(devicePos)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+        );
+
+        markerMap.put("DeviceLoc", m);
 
         //Display all buildings on the map
         DB.addChildEventListener(new ChildEventListener() {
@@ -217,10 +257,16 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                 LatLng newMarkerCoords = new LatLng( Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
 
                 //Set marker on map
-                mMap.addMarker(new MarkerOptions()
+                Marker m = mMap.addMarker(new MarkerOptions()
                         .title(dataSnapshot.getKey())
-                        .snippet("Click to see more")
-                        .position(newMarkerCoords));
+                        .snippet("klicka för att se mer")
+                        .position(newMarkerCoords)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon_house_medium))
+                );
+
+                if(!houseFilt.isChecked()) m.setVisible(false);
+
+                markerMap.put(dataSnapshot.getKey(), m);
 
                 //Remove progress bar as data is loaded
                 mapsLoadingPanel.setVisibility(View.GONE);
@@ -245,15 +291,29 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
             BitmapDescriptor markerColor;
 
-            if(c.getValue().getUsed()) markerColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
-            else markerColor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+            Marker ms;
 
-            mMap.addMarker(new MarkerOptions()
-                    .title(c.getKey())
-                    .position(newMarkerCoords)
-                    .icon(markerColor));
+            //Car Unavailable
+            if(c.getValue().getUsed()) {
+                ms = mMap.addMarker(new MarkerOptions()
+                        .title(c.getKey())
+                        .snippet("Upptagen")
+                        .position(newMarkerCoords)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon_car_gray))
+                );
+            }//Car available
+            else {
+                ms = mMap.addMarker(new MarkerOptions()
+                        .title(c.getKey())
+                        .position(newMarkerCoords)
+                        .snippet("Ledig")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon_car))
+                );
+            }
+            if(!carFilt.isChecked()) ms.setVisible(false);
+
+            markerMap.put(c.getKey(), ms);
         }
-
     }
 
     //Set Listeners
@@ -262,6 +322,54 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 addPoiPopup();
+            }
+        });
+
+        carFilt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    for (Map.Entry<String, Marker> entry : markerMap.entrySet()) {
+                        String s = entry.getKey();
+                        if (s.length() > 5 && !s.substring(0, 3).matches("[0-9]+") && s.substring(3, 6).matches("[0-9]+")) {
+                            entry.getValue().setVisible(true);
+                        }
+                    }
+                }
+                else{
+                    for (Map.Entry<String, Marker> entry : markerMap.entrySet()) {
+                        String s = entry.getKey();
+                        if (s.length() > 5 && !s.substring(0, 3).matches("[0-9]+") && s.substring(3, 6).matches("[0-9]+")) {
+                            entry.getValue().setVisible(false);
+                        }
+                    }
+                }
+            }
+        });
+
+        houseFilt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    for (Map.Entry<String, Marker> entry : markerMap.entrySet()) {
+                        String s = entry.getKey();
+                        if (s.equals("DeviceLoc") || s.length() > 5 && !s.substring(0, 3).matches("[0-9]+") && s.substring(3, 6).matches("[0-9]+")) {
+                            //Stupid
+                        }else{
+                            entry.getValue().setVisible(true);
+                        }
+                    }
+                }
+                else{
+                    for (Map.Entry<String, Marker> entry : markerMap.entrySet()) {
+                        String s = entry.getKey();
+                        if (s.equals("DeviceLoc") || s.length() > 5 && !s.substring(0, 3).matches("[0-9]+") && s.substring(3, 6).matches("[0-9]+")) {
+                            //Stupid
+                        }else{
+                            entry.getValue().setVisible(false);
+                        }
+                    }
+                }
             }
         });
 
@@ -294,6 +402,9 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onDetach() {
         super.onDetach();
+
+
+
         mListener = null;
     }
 
@@ -351,13 +462,14 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 //            });
         }
         setMapListeners();
-
-        if(platenr == null) {
-            addMarkers();
-        }else{
+        addMarkers();
+        if(platenr != null) {
             findCar();
             mapsLoadingPanel.setVisibility(View.GONE);
         }
+
+
+
     }
 
     //Add listeners to the map
@@ -479,10 +591,17 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
                 if(typeDropDown.getSelectedItem().toString() == "Hus") {
                     House newHouse = new House(inputName.getText().toString(), coords);
-                    mMap.addMarker(new MarkerOptions()
+                    Marker m = mMap.addMarker(new MarkerOptions()
                             .title(inputName.getText().toString())
-                            .snippet("Click to see more")
-                            .position(latLng));
+                            .snippet("Klicka för att se mer")
+                            .position(latLng)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon_house_medium))
+                    );
+
+                    if(!houseFilt.isChecked()) m.setVisible(false);
+
+                    markerMap.put(inputName.getText().toString(), m);
+
                 }
 
                 else if(typeDropDown.getSelectedItem().toString() == "Bil") {
@@ -501,10 +620,15 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                     LatLng carPos = new LatLng(Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
 
                     //Add the marker to the map
-                    mMap.addMarker(new MarkerOptions()
+                    Marker m = mMap.addMarker(new MarkerOptions()
                         .title(inputName.getText().toString())
                         .position(latLng)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon_car))
+                    );
+
+                    if(!carFilt.isChecked()) m.setVisible(false);
+
+                    markerMap.put(inputName.getText().toString(), m);
 
                 }
             }
