@@ -28,6 +28,7 @@ import android.widget.ImageButton;
 
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Scroller;
 import android.widget.Spinner;
@@ -129,6 +130,30 @@ public class AddDataFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        final Button btnAddPath = (Button) view.findViewById(R.id.POIaddPath);
+        Button btnPathDone = (Button) view.findViewById(R.id.POIpathDone);
+
+        final RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.test);
+        final RelativeLayout rl2 = (RelativeLayout) view.findViewById(R.id.test2);
+
+        btnAddPath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rl2.setVisibility(View.GONE);
+                rl.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnPathDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rl.setVisibility(View.GONE);
+                rl2.setVisibility(View.VISIBLE);
+                btnAddPath.setText("Ändra vägbeskrivning");
+            }
+        });
+
 
 
 

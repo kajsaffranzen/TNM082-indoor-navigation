@@ -1,61 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingLeft="30dp"
+    android:paddingRight="35dp"
+    tools:context="com.example.firebazzze.tnm082_indoor_navigation.AddDataFragment">
 
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/test"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:paddingLeft="30dp"
-        android:paddingRight="35dp"
-        tools:context="com.example.firebazzze.tnm082_indoor_navigation.AddDataFragment">
-
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lägg till ny intressepunkt"
-            android:textSize="11pt"
-            android:textColor="@color/infoTxt"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="3dp"/>
-
-        <EditText
-            android:id="@+id/POIname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Namn"
-            android:textSize="12pt"
-            android:backgroundTint="@color/editTxtLine"
-            android:textColorLink="@color/editTxtLine"
-            android:textColor="@color/colorQRText"
-            android:layout_marginTop="60dp" /><!--fixa margin-->
-
-        <TextView
-            android:id="@+id/cat_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Välj kategori"
-            android:textSize="12pt"
-            android:backgroundTint="@color/editTxtLine"
-            android:textColor="@color/colorQRText"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/POIname" />
-
-        <Spinner
-            android:id="@+id/catSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dialog"
-            android:overScrollMode="ifContentScrolls"
-            android:layout_alignParentRight="true"
-            android:drawSelectorOnTop="false"
-            android:layout_below="@+id/cat_info"
-            />
-
+        android:visibility="invisible">
         <EditText
             android:id="@+id/POIpath"
             android:layout_width="match_parent"
@@ -66,7 +23,7 @@
             android:textColorLink="@color/editTxtLine"
             android:textColor="@color/colorQRText"
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/catSpinner" />
+            />
 
         <Button
             android:id="@+id/addPath"
@@ -74,7 +31,6 @@
             android:layout_height="@dimen/btn_size"
             android:background="@drawable/ic_add"
             android:width="@dimen/btn_size"
-            android:layout_below="@+id/catSpinner"
             android:layout_alignRight="@+id/POIpath"/>
 
         <ListView
@@ -84,37 +40,108 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/POIpath"/>
 
-
-        <EditText
-            android:id="@+id/POIdesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Beskrivning"
-            android:textSize="12pt"
-            android:backgroundTint="@color/editTxtLine"
-            android:textColor="@color/colorQRText"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/poi_info" />
-
-
-        <ImageButton
-            android:id="@+id/createPOI"
+        <Button
+            android:text="Klar"
+            android:background="@color/colorPrimary"
+            android:id="@+id/POIpathDone"
+            android:textColor="@color/white"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:background="@drawable/path_done_button"
-            android:layout_below="@+id/isOfficialCheckBox"
-            android:layout_centerHorizontal="true" />
-
-        <FrameLayout
-            android:id="@+id/isOfficialCheckBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/POIdesc"></FrameLayout>
-
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            />
 
 
     </RelativeLayout>
 
-</ScrollView>
+    <RelativeLayout
+        android:id="@+id/test2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lägg till ny intressepunkt"
+        android:textSize="11pt"
+        android:textColor="@color/infoTxt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"/>
+
+    <EditText
+        android:id="@+id/POIname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Namn"
+        android:textSize="12pt"
+        android:backgroundTint="@color/editTxtLine"
+        android:textColorLink="@color/editTxtLine"
+        android:textColor="@color/colorQRText"
+        android:layout_marginTop="60dp" /><!--fixa margin-->
+
+    <TextView
+        android:id="@+id/cat_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Välj kategori"
+        android:textSize="12pt"
+        android:backgroundTint="@color/editTxtLine"
+        android:textColor="@color/colorQRText"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/POIname" />
+
+    <Spinner
+        android:id="@+id/catSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:overScrollMode="ifContentScrolls"
+        android:layout_alignParentRight="true"
+        android:drawSelectorOnTop="false"
+        android:layout_below="@+id/cat_info"
+        />
+
+    <Button
+        android:text="Lägg till vägbeskrivning"
+        android:id="@+id/POIaddPath"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/white"
+        android:layout_width="160dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/catSpinner"
+        android:layout_centerHorizontal="true"
+        />
+
+    <EditText
+        android:id="@+id/POIdesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Beskrivning"
+        android:textSize="12pt"
+        android:backgroundTint="@color/editTxtLine"
+        android:textColor="@color/colorQRText"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/POIaddPath" />
+
+
+    <ImageButton
+        android:id="@+id/createPOI"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/path_done_button"
+        android:layout_below="@+id/POIdesc"
+        android:layout_centerHorizontal="true"
+    />
+
+    <FrameLayout
+        android:id="@+id/isOfficialCheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/POIdesc"></FrameLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
+
 
 
