@@ -17,6 +17,21 @@
             android:layout_height="match_parent"
             tools:context="com.example.firebazzze.tnm082_indoor_navigation.MapsActivity" />
 
+        <CheckBox
+            android:id="@+id/houseFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignLeft="@+id/addPoiBtn"
+            android:layout_alignStart="@+id/addPoiBtn" />
+        <CheckBox
+            android:id="@+id/carFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
         <Button
             android:id="@+id/addPoiBtn"
             android:layout_width="80dp"
@@ -43,6 +58,25 @@
             android:layout_height="92dp"
             android:layout_centerInParent="true"
             android:indeterminate="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hus"
+            android:id="@+id/textView"
+            android:layout_alignBaseline="@+id/houseFilter"
+            android:layout_alignBottom="@+id/houseFilter"
+            android:layout_toLeftOf="@+id/houseFilter"
+            android:layout_toStartOf="@+id/houseFilter" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bilar"
+            android:id="@+id/textView2"
+            android:layout_alignTop="@+id/textView"
+            android:layout_toLeftOf="@+id/carFilter"
+            android:layout_toStartOf="@+id/carFilter" />
 
     </RelativeLayout>
 
