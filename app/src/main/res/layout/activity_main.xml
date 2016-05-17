@@ -30,6 +30,8 @@
                     android:id="@+id/toolbarSearchField"
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch"
                     android:hint="Sök intressepunkt"
                     android:visibility="gone"/>
 

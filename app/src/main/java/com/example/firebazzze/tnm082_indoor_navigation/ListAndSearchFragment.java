@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -312,6 +314,41 @@ public class ListAndSearchFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+            }
+        });
+
+        //On enter click for search
+        searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                //string empty, dont search
+                if (searchField.getText().toString().equals("")) {
+                    searchField.setHint("Sök intressepunkt");
+                    listSearch.setVisibility(View.GONE);
+                    infoText.setVisibility(View.VISIBLE);
+                    myExpandableListView.setVisibility(View.VISIBLE);
+                    return false;
+                }
+
+                //If exact match, go to item
+                for(int i = 0; i < searchResults.size(); i++) {
+                    if(searchField.getText().toString().equals(searchResults.get(i))) {
+                        goToDetailFragment(searchResults.get(i));
+                        return false;
+                    }
+                }
+
+                //Else, no exact match found
+                String toastMessage = searchField.getText().toString() + " finns inte";
+                Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
+                toast.show();
+
+                //Close keyboard
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
+                return false;
             }
         });
 
