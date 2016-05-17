@@ -83,7 +83,6 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 if(checkBox.isChecked()){
                     officialPOI = true;
                     ((MainActivity) getActivity()).setAdmin(officialPOI);
@@ -91,7 +90,6 @@ public class LoginFragment extends Fragment {
                     officialPOI = false;
                     ((MainActivity) getActivity()).setAdmin(officialPOI);
                 }
-                Log.i("KAJSA i login", ""+officialPOI);
             }
         });
 
