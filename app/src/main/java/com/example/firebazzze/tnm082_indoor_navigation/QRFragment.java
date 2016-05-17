@@ -50,6 +50,7 @@ public class QRFragment extends Fragment {
     private static final String CAR_KEY = "carkey";
     private OnFragmentInteractionListener mListener;
     private Button goToMapsBtn;
+    private Button historyBtn;
 
     //This boolean prevents the app from continously scan a qr code
     // after it already has been successfully scanned
@@ -147,6 +148,18 @@ public class QRFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_qr, container, false);
         scanned = false;
+
+        //Add historybtn
+        historyBtn = (Button) view.findViewById(R.id.historyBtn);
+
+        historyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showHistoryDialog();
+            }
+        });
+
+
 
         //Add goToMapsBtn
         goToMapsBtn = (Button) view.findViewById(R.id.mapsViewBtn);
@@ -314,6 +327,17 @@ public class QRFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void showHistoryDialog() {
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setTitle("Testing");
+        dialog.setCancelable(true);
+
+        View view = ((MainActivity) getContext()).getLayoutInflater().inflate(R.simple_)
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -21,7 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:id="@+id/linearLayout">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -61,6 +62,18 @@
             android:background="@drawable/planet_earth"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="History"
+            android:id="@+id/historyBtn"
+            android:layout_alignBottom="@+id/mapsViewBtn"
+            android:layout_marginLeft="15dp"
+            android:alpha="0.5"
+            android:background="@color/colorPrimary"
+             />
+
 
     </RelativeLayout>
 
