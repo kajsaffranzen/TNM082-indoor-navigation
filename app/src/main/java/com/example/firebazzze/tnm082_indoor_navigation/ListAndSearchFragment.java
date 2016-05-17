@@ -445,10 +445,9 @@ public class ListAndSearchFragment extends Fragment {
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("We're done loading the initial "+dataSnapshot.getChildrenCount()+" items");
 
+                //If there are no POI's
                 if(dataSnapshot.getChildrenCount() == 1) {
-                    Log.d("progbar", "House caontains no pois");
                     loadingPanel.setVisibility(View.GONE);
 
                     String toastMessage = hName + " innehåller inga intressepunkter!";
