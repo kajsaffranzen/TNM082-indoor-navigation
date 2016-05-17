@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.gesture.GestureOverlayView;
+import android.net.MailTo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -53,6 +54,7 @@ public class DetailFragment extends Fragment {
     private TextView poiFindText;
     private RelativeLayout offRelLay;
 
+
     public DetailFragment() {
         // Required empty public constructor
     }
@@ -92,6 +94,9 @@ public class DetailFragment extends Fragment {
 
         //pass fragment to main activity
         ((MainActivity)getActivity()).detailFragment = this;
+
+        ((MainActivity)getActivity()).myMenu.findItem(R.id.menuItemUpdatePOI).setVisible(true);
+
 
         //set toolbar title
         try {
@@ -152,6 +157,9 @@ public class DetailFragment extends Fragment {
 
         //add listeners to buttons ect
         setListeners();
+
+        ((MainActivity)getActivity()).poi = ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey);
+        ((MainActivity)getActivity()).poiName = POIkey;
 
         return view;
     }
@@ -229,6 +237,7 @@ public class DetailFragment extends Fragment {
 
     @Override
     public void onDetach() {
+        ((MainActivity)getActivity()).myMenu.findItem(R.id.menuItemUpdatePOI).setVisible(false);
         super.onDetach();
         mListener = null;
     }

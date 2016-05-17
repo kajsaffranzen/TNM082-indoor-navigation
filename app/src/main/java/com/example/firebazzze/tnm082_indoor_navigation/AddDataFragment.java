@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Scroller;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class AddDataFragment extends Fragment {
     private EditText POIname, POIdesc, POIpath;
     private ListView lv;
     private Spinner spinner;
+    final ArrayAdapter<String> adapter = null;
 
 
     private String chosenCat;
@@ -81,14 +83,16 @@ public class AddDataFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add_data, container, false);
 
+
+
         final List<String> listOfPath = new ArrayList<String>();
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listOfPath);
+
 
         lv = (ListView) view.findViewById(R.id.poi_info);
 
         counter = 0;
 
-        lv.setAdapter(adapter);
+
 
         POIname = (EditText) view.findViewById(R.id.POIname);
         POIpath = (EditText) view.findViewById(R.id.POIpath);
@@ -99,6 +103,24 @@ public class AddDataFragment extends Fragment {
 
         fillScroller();
 
+        if(((MainActivity)getActivity()).poi != null && ((MainActivity)getActivity()).poiName !=null){
+
+            POIname.setText(((MainActivity)getActivity()).poiName);
+            POIdesc.setText(( (MainActivity)getActivity()).poi.getDescription());
+            ArrayAdapter myAdap = (ArrayAdapter) spinner.getAdapter();
+            int spinnerPos = myAdap.getPosition(((MainActivity)getActivity()).poi.category);
+            spinner.setSelection(spinnerPos);
+            for(int i = 0; i < ((MainActivity) getActivity()).poi.getPath().size() ; i++) {
+                listOfPath.add(((MainActivity) getActivity()).poi.getPath().get(i));
+            }
+
+        }
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listOfPath);
+        lv.setAdapter(adapter);
+
+
+
 
         //add a new POI to firebase, checks if the user has done it right or not
         createPOI.setOnClickListener(new View.OnClickListener() {
@@ -106,12 +128,18 @@ public class AddDataFragment extends Fragment {
             public void onClick(View v) {
                 chosenCat = spinner.getSelectedItem().toString();
 
-                if(!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null){
+                if (!POIdesc.getText().toString().equals("") && !POIname.getText().toString().equals("") && chosenCat != null && listOfPath != null) {
 
-                    House h = ((MainActivity)getActivity()).getHouse();
+                    House h = ((MainActivity) getActivity()).getHouse();
 
                     //TODO: Check if admin, then change false to true
-                    h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
+                    // if(POIname.getText().toString() == något som redan finns i listan så använd updatera POI istället )
+                    if (h.getPOIs2().get(POIname.getText().toString()) != null) {
+                        h.updatePOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
+                    } else {
+                        h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
+                    }
+
 
                     Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
 
@@ -122,9 +150,7 @@ public class AddDataFragment extends Fragment {
                     POIname.setHint("Namn");
                     POIdesc.setHint("Beskrivning");
                     chosenCat = null;
-                }
-
-                else
+                } else
                     Toast.makeText(getActivity(), "FYLL I ALLA FÄLT DÅE", Toast.LENGTH_SHORT).show();
 
             }
@@ -136,11 +162,13 @@ public class AddDataFragment extends Fragment {
         addPathBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!POIpath.getText().toString().equals("")){
+                if (!POIpath.getText().toString().equals("")){
 
                     listOfPath.add(POIpath.getText().toString());
                     Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
                     counter++;
+                    //Detta ska nog fixa uppdaterings problemet
+                    adapter.notifyDataSetChanged();
 
                     //Reset text field
                     POIpath.setText("");
@@ -231,4 +259,5 @@ public class AddDataFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }

@@ -35,6 +35,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements
         QRFragment.OnFragmentInteractionListener,
@@ -43,8 +44,13 @@ public class MainActivity extends AppCompatActivity implements
         DetailFragment.OnFragmentInteractionListener{
 
     public House house;
+    public POI poi;
     public boolean isAdmin = false;
     public DetailFragment detailFragment;
+    public Menu myMenu;
+    public ListAndSearchFragment myCatList;
+    private static final String CAT_LIST = "catlist";
+    public String poiName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +88,9 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        myMenu = menu;
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        menu.findItem(R.id.menuItemUpdatePOI).setVisible(false);
         return true;
     }
 
@@ -92,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+
 
         switch (id) {
             case R.id.menuItemAdminMode:
@@ -106,6 +116,26 @@ public class MainActivity extends AppCompatActivity implements
                     Log.d("test","check works");
 
                 break;
+
+            case R.id.menuItemUpdatePOI:
+
+                Bundle bundle = new Bundle();
+
+                //TODO: Fullösning tillsvidare...
+                ArrayList<String> temp = new ArrayList<String>();
+
+                for (int i = 0; i < myCatList.categoryList.size(); i++)
+                    temp.add(myCatList.categoryList.get(i));
+
+                bundle.putStringArrayList(CAT_LIST, temp);
+
+                getSupportFragmentManager().popBackStack();
+                AddDataFragment fragment = new AddDataFragment();
+                fragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+
+
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -121,5 +151,6 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar mToolbar = (Toolbar)findViewById(R.id.toolbar);
         mToolbar.setTitle(s);
     }
+
 
 }

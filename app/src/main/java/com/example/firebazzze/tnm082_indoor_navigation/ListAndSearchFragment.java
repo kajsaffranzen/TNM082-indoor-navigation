@@ -48,7 +48,7 @@ public class ListAndSearchFragment extends Fragment {
     private ExpandableListView myExpandableListView;
     private ExpandableListAdapter myExpandableListAdapter;
 
-    private ArrayList<String> categoryList;
+    public ArrayList<String> categoryList;
     private HashMap<String, List<String>> interestPointsList;
     private List<List<String>> dynamicCategoryList;
 
@@ -104,6 +104,8 @@ public class ListAndSearchFragment extends Fragment {
         ((MainActivity)getActivity()).setToolbarTitle(houseName);
 
 
+
+
         categoryList = new ArrayList<String>();
         interestPointsList = new HashMap<String, List<String>>();
         dynamicCategoryList = new ArrayList<List<String>>();
@@ -134,6 +136,8 @@ public class ListAndSearchFragment extends Fragment {
 
         fillListWithData(houseName);
         setListeners(newHouse);
+
+        ((MainActivity)getActivity()).myCatList = this;
 
         return view;
     }

@@ -66,7 +66,7 @@ public class House {
 
                 //Needed since firebase expects that we add the key
                 //"path" to the first element of the array, really stupid
-                newPOI.getPath().remove(0);
+                //newPOI.getPath().remove(0);
 
                 POIs2.put(snapshot.getKey(), newPOI);
 
@@ -119,6 +119,19 @@ public class House {
         Firebase DB = new Firebase(DBUrl + this.houseName + "/" + POIkey);
 
         DB.child("official").setValue(!POIs2.get(POIkey).getOfficial());
+    }
+
+    public void updatePOI(String POIname, String cat, String desc, int floor, boolean official, List<String> path){
+
+        Firebase DB = new Firebase(DBUrl + this.houseName + "/" + POIname);
+
+        DB.child("category").setValue(cat);
+        DB.child("description").setValue(desc);
+        DB.child("floor").setValue(floor);
+        DB.child("official").setValue(official);
+        DB.child("path").setValue(path);
+
+
     }
 
     // Returns the name of the house
