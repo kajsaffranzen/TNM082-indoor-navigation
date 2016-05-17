@@ -2,7 +2,6 @@ package com.example.firebazzze.tnm082_indoor_navigation;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,7 +32,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -183,7 +181,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         //Display device location
         Location deviceLocation = ((MainActivity) getActivity()).publicPos;
-        LatLng devicePos = new LatLng(0.0, 0.0);
+        LatLng devicePos = new LatLng(58.410318, 15.614802); //LKPG default
 
         if(deviceLocation != null){
             devicePos = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
@@ -332,13 +330,13 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         //get device location
         Location deviceLocation = ((MainActivity) getActivity()).publicPos;
-        LatLng devicePos = new LatLng(0.0, 0.0);
+        LatLng devicePos = new LatLng(58.410318, 15.614802); //LKPG default
 
         if(deviceLocation != null) {
             devicePos = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
         }
 
-        // Zoom in on user position when map is finnished loaded
+        // Zoom in on user position when map is finished loaded
         final LatLng dPos = devicePos;
         mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
