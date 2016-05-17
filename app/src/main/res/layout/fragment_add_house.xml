@@ -74,7 +74,8 @@
             android:layout_height="wrap_content"
             android:text="Bilar"
             android:id="@+id/textView2"
-            android:layout_alignTop="@+id/textView"
+            android:layout_alignBaseline="@+id/houseFilter"
+            android:layout_alignBottom="@+id/houseFilter"
             android:layout_toLeftOf="@+id/carFilter"
             android:layout_toStartOf="@+id/carFilter" />
 
