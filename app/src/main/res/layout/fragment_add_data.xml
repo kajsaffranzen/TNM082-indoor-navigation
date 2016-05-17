@@ -93,7 +93,7 @@
             android:textSize="12pt"
             android:backgroundTint="@color/editTxtLine"
             android:textColor="@color/colorQRText"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_below="@+id/poi_info" />
 
 
@@ -102,9 +102,8 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:background="@drawable/path_done_button"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            />
+            android:layout_below="@+id/isOfficialCheckBox"
+            android:layout_centerHorizontal="true" />
 
         <FrameLayout
             android:id="@+id/isOfficialCheckBox"

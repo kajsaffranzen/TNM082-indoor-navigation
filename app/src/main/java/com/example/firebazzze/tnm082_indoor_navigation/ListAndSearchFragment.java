@@ -88,6 +88,7 @@ public class ListAndSearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            Log.d("TAG", "onCreate: " + houseName);
             houseName = getArguments().getString(KEY);
         }
     }
@@ -96,6 +97,8 @@ public class ListAndSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        Log.d("TAG", "onCreateView: " + houseName);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_and_search, container, false);
 
@@ -103,10 +106,13 @@ public class ListAndSearchFragment extends Fragment {
 
         //Change the toolbar title to housename
         ((MainActivity)getActivity()).setToolbarTitle("Intressepunkter");
-        TextView titel = (TextView)view.findViewById(R.id.infoText);
 
-        titel.setText(houseName);
-
+        //Check if house is null
+        if(houseName != null){
+            TextView titel = (TextView)view.findViewById(R.id.infoText);
+            titel.setText(houseName);
+            loadingPanel.setVisibility(View.VISIBLE);
+        }
 
         categoryList = new ArrayList<String>();
         interestPointsList = new HashMap<String, List<String>>();
@@ -323,6 +329,8 @@ public class ListAndSearchFragment extends Fragment {
         addPOIBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                listSearch.setVisibility(View.GONE);
 
                 FragmentManager fm = getActivity().getSupportFragmentManager();
 

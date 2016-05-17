@@ -307,8 +307,8 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_list_and_search_fragment:
                 //Does not work, needs a houseName
-                //fragment = new ListAndSearchFragment();
-                //flag = true;
+                fragment = new ListAndSearchFragment();
+                flag = true;
                 break;
             case R.id.nav_login_fragment:
                 fragment = new LoginFragment();

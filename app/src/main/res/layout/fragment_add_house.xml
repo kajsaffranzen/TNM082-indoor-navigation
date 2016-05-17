@@ -33,7 +33,7 @@
             android:layout_height="80dp"
             android:layout_marginLeft="15dp"
             android:layout_marginBottom="15dp"
-            android:background="@drawable/qr_img"
+            android:background="@drawable/qr_img2"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"/>
 
