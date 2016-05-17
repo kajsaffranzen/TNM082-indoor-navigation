@@ -155,7 +155,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                     .title(platenr)
                     .snippet("Upptagen")
                     .position(carPos)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon_car_black))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon_car_gray))
             );
         }
 
@@ -266,7 +266,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                         .title(c.getKey())
                         .snippet("Upptagen")
                         .position(newMarkerCoords)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon_car_black))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon_car_gray))
                 );
             }
 
@@ -280,7 +280,6 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                 );
             }
         }
-
     }
 
     //Set Listeners
