@@ -57,6 +57,17 @@
             />
 
         <EditText
+            android:id="@+id/POIdesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Beskrivning av intressepunkt"
+            android:textSize="11pt"
+            android:backgroundTint="@color/editTxtLine"
+            android:textColor="@color/colorQRText"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/catSpinner" />
+
+        <EditText
             android:id="@+id/POIpath"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,7 +77,7 @@
             android:textColorLink="@color/editTxtLine"
             android:textColor="@color/colorQRText"
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/catSpinner" />
+            android:layout_below="@+id/POIdesc" />
 
         <Button
             android:id="@+id/addPath"
@@ -74,7 +85,7 @@
             android:layout_height="@dimen/btn_size"
             android:background="@drawable/ic_add"
             android:width="@dimen/btn_size"
-            android:layout_below="@+id/catSpinner"
+            android:layout_below="@+id/POIdesc"
             android:layout_alignRight="@+id/POIpath"/>
 
         <ListView
@@ -83,19 +94,6 @@
             android:id="@+id/poi_info"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/POIpath"/>
-
-
-        <EditText
-            android:id="@+id/POIdesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Beskrivning"
-            android:textSize="12pt"
-            android:backgroundTint="@color/editTxtLine"
-            android:textColor="@color/colorQRText"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/poi_info" />
-
 
         <ImageButton
             android:id="@+id/createPOI"
@@ -109,7 +107,7 @@
             android:id="@+id/isOfficialCheckBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/POIdesc"></FrameLayout>
+            android:layout_below="@+id/POIpath"></FrameLayout>
 
 
 
