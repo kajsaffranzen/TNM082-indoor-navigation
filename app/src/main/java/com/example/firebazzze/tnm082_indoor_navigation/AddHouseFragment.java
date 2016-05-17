@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,10 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     private static final String KEY = "housename";
     private String currentMarkerName = null;
 
+    private SupportMapFragment mapFragment;
+    private View view;
+    private ViewGroup mContainter;
+
     private Map<String, House> houseMap;
     private List<String> houseNameList;
 
@@ -111,8 +116,24 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_house, container, false);
+
+
+        if(view != null && this.mContainter == container){
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if(parent != null){
+                parent.removeView(view);
+            }
+        }
+        else{
+            try{
+                // Inflate the layout for this fragment
+                view = inflater.inflate(R.layout.fragment_add_house, container, false);
+                this.mContainter = container;
+            } catch (InflateException e){
+                Log.d("e", "Inflateexception");
+            }
+        }
+
 
         //To get the back button to work properly
         ((MainActivity)getActivity()).fromMaps = true;
@@ -136,7 +157,6 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         setListeners();
 
-        // Inflate the layout for this fragment
         return view;
     }
 
@@ -162,18 +182,6 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     public void onDestroyView() {
         // TODO Auto-generated method stub
         super.onDestroyView();
-
-        try {
-            SupportMapFragment fragment = (SupportMapFragment) getChildFragmentManager()
-                    .findFragmentById(R.id.map);
-
-            FragmentTransaction ft = getActivity().getSupportFragmentManager()
-                    .beginTransaction();
-            ft.remove(fragment);
-            ft.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void addMarkers() {
@@ -294,6 +302,9 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onDetach() {
         super.onDetach();
+
+
+
         mListener = null;
     }
 

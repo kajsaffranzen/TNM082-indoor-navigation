@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements
         //Navigate to the camera view
         getSupportFragmentManager().popBackStack();
         QRFragment fragment = new QRFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
 
     }
 
@@ -221,8 +221,7 @@ public class MainActivity extends AppCompatActivity implements
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
 
 
-        //Ugly fix: Map fragment could not be created twice so when backing to that fragment, it would crach
-        //Instead map is now removed onDestroy, and on back the view is recreated.
+        //Ugly fix
         if(f instanceof ListAndSearchFragment && fromMaps) {
             getSupportFragmentManager().popBackStack();
             AddHouseFragment fragment = new AddHouseFragment();
@@ -237,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
             return;
         }
+
 
         //Default
         if (!(f instanceof QRFragment)) {//the fragment on which you want to handle your back press
@@ -293,43 +293,36 @@ public class MainActivity extends AppCompatActivity implements
     private void changeFragment(MenuItem menuItem){
 
         Fragment fragment = null;
-        boolean flag = false;
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch(menuItem.getItemId()) {
             default:
             case R.id.nav_qr_fragment:
                 fragment = new QRFragment();
-                flag = true;
                 break;
             case R.id.nav_map_fragment:
                 fragment = new AddHouseFragment();
-                flag = true;
                 break;
             case R.id.nav_list_and_search_fragment:
-                //Does not work, needs a houseName
                 fragment = new ListAndSearchFragment();
-                flag = true;
                 break;
             case R.id.nav_login_fragment:
                 fragment = new LoginFragment();
-                flag = true;
                 break;
             case R.id.nav_about_fragment:
                 fragment = new AboutFragment();
-                flag = true;
                 break;
             case R.id.nav_help_fragment:
                 fragment = new HelpFragment();
-                flag = true;
                 break;
         }
 
-        if(flag){
+        if(fragment != null){
             fragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainer, fragment)
                     .addToBackStack(menuItem.toString())
                     .commit();
         }
+
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
