@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements
     public boolean isAdmin = false;
     public DetailFragment detailFragment;
     public AddDataChildFragment addDataChild;
+    public LoginFragment loginFragment;
 
     //Navigation drawer
     private DrawerLayout mDrawerLayout;
@@ -150,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
 
     }
+
 
     private void updateLocation(Location location) {
         publicPos = location;
@@ -348,6 +350,12 @@ public class MainActivity extends AppCompatActivity implements
 
     //Used to have a public house, Get House
     public House getHouse(){ return house; }
+
+    //set Admin
+    public void setAdmin(boolean b){ isAdmin = b; }
+
+    //get Admin
+    public boolean getAdmin(){ return isAdmin; }
 
     @Override
     public void setTitle(CharSequence title) {

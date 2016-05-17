@@ -59,6 +59,8 @@ public class ListAndSearchFragment extends Fragment {
     private Button searchInflaterB;
     private Button addPOIBtn;
 
+    private LoginFragment loginFragment;
+
     private ListView listSearch;
     private TextView infoText;
     private ArrayAdapter<String> searchListAdapter;
@@ -373,11 +375,13 @@ public class ListAndSearchFragment extends Fragment {
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment DetailFragment = new DetailFragment();
+        loginFragment = new LoginFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(KEY, POIkey);
 
         DetailFragment.setArguments(bundle);
+       // fm.beginTransaction().replace(R.id.fragmentContainer, DetailFragment).addToBackStack("DetailFragment").add(R.id.officalBoxLogin, loginFragment).addToBackStack("LoginFragment").commit();
         fm.beginTransaction().replace(R.id.fragmentContainer, DetailFragment).addToBackStack("DetailFragment").commit();
     }
 

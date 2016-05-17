@@ -4,34 +4,18 @@
     android:layout_height="match_parent"
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.DetailFragment">
 
-    <RelativeLayout
-        android:id="@+id/detailOfficialButtonLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            android:id="@+id/makeOfficialButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Gör officiell"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true"/>
-
-    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="40dp">
-
-
+        android:paddingTop="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="30dp">
+            android:paddingBottom="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -56,6 +40,15 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="20dp"
                 android:textColor="#000000"/>
+
+            <CheckBox
+                android:id="@+id/officalBoxDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Officiell intressepunkt"
+                android:layout_gravity="center_horizontal"
+                android:textSize="10pt"
+                android:textColor="@color/colorQRText" />
 
         </LinearLayout>
 

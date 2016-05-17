@@ -89,7 +89,7 @@ public class AddDataChildFragment extends Fragment {
         });
 
         //hide checkbox if not admin mode
-        if( ((MainActivity)getActivity()).isAdmin )
+        if( ((MainActivity)getActivity()).getAdmin() )
             checkBox.setVisibility(View.VISIBLE);
         else
             checkBox.setVisibility(View.INVISIBLE);

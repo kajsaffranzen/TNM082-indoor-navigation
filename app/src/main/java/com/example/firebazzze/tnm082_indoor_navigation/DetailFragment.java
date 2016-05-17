@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
@@ -45,14 +46,15 @@ public class DetailFragment extends Fragment {
     private String POIkey;
 
     private OnFragmentInteractionListener mListener;
+    private boolean officialPOI;
 
     //GUI Elements
-    private Button makeOfficialButton;
     private ImageButton doneButton;
     private TextView poiName;
     private TextView poiDescription;
     private TextView poiFindText;
     private RelativeLayout offRelLay;
+    private CheckBox checkBox;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -105,13 +107,10 @@ public class DetailFragment extends Fragment {
         poiName = (TextView)view.findViewById(R.id.detailPoiNameText);
         poiDescription = (TextView)view.findViewById(R.id.detailPoiDescriptionText);
         poiFindText = (TextView)view.findViewById(R.id.detailFindText);
-
-        makeOfficialButton = (Button) view.findViewById(R.id.makeOfficialButton);
+        checkBox = (CheckBox) view.findViewById(R.id.officalBoxDetail);
         doneButton = (ImageButton) view.findViewById(R.id.detailDoneButton);
 
         ListView lv = (ListView)view.findViewById(R.id.listView);
-
-        offRelLay = (RelativeLayout)view.findViewById(R.id.detailOfficialButtonLayout);
 
 
         //get properties from the poiList and set text
@@ -131,26 +130,26 @@ public class DetailFragment extends Fragment {
                 R.layout.path_list_item_layout,
 
                 //android.R.layout.simple_list_item_checked,
-
                 ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getPath()
         );
         lv.setAdapter(arrayAdapter);
 
-        //Change the text on the button depending on if the POI is official or not
+
+        //check if user is admin and show make official checkbox visible if user is admin
+        officialPOI = ((MainActivity)getActivity()).getAdmin();
+        Log.i("KAJSA", ""+officialPOI);
+
+
         if(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getOfficial())
-            makeOfficialButton.setText("Gör inofficiell");
-        else makeOfficialButton.setText("Gör officiell");
+            checkBox.setChecked(true);
+        else
+            checkBox.setChecked(false);
 
+        if(officialPOI == true)
+            checkBox.setVisibility(View.VISIBLE);
+        else
+            checkBox.setVisibility(View.GONE);
 
-        //show "make official button visible if user is admin
-        if( ((MainActivity)getActivity()).isAdmin ) {
-            offRelLay.setVisibility(View.VISIBLE);
-            makeOfficialButton.setVisibility(View.VISIBLE);
-        }
-        else {
-            offRelLay.setVisibility(View.GONE);
-            makeOfficialButton.setVisibility(View.GONE);
-        }
 
         //add listeners to buttons ect
         setListeners();
@@ -161,13 +160,12 @@ public class DetailFragment extends Fragment {
     private void setListeners() {
 
         //update official in database whn button is clicked
-        makeOfficialButton.setOnClickListener(new View.OnClickListener() {
+        checkBox.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 ((MainActivity)getActivity()).getHouse().setOfficial(POIkey);
             }
         });
-
 
         //Done button
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -183,10 +181,10 @@ public class DetailFragment extends Fragment {
 
     public void refreshFragment() {
 
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.detach(this);
-                ft.attach(this);
-                ft.commit();
+        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this);
+        ft.attach(this);
+        ft.commit();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
