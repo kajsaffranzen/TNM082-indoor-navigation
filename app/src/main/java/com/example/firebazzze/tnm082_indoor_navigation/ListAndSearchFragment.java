@@ -187,18 +187,25 @@ public class ListAndSearchFragment extends Fragment {
 
             boolean flag = false;
 
+
+            /*String category = newHouse.getPOIs2().get(key).getCategory();
+            category = Character.toUpperCase(category.charAt(0)) + category.substring(1);*/
+
             for(int k = 0; k < categoryList.size(); k++) {
-                if(categoryList.get(k).equals( newHouse.getPOIs2().get(key).getCategory() ))
+                String s = newHouse.getPOIs2().get(key).getCategory();
+                s = Character.toUpperCase(s.charAt(0)) + s.substring(1);
+                if(categoryList.get(k).equals(s))
                     flag = true;
             }
 
             if(!flag)
                 addCategory( newHouse.getPOIs2().get(key).getCategory() );
 
+            String s = Character.toUpperCase(key.charAt(0)) + key.substring(1);
             if(newHouse.getPOIs2().get(key).getOfficial())
-                addItemToCategoryByName( newHouse.getPOIs2().get(key).getCategory(), "***" + key );
+                addItemToCategoryByName( newHouse.getPOIs2().get(key).getCategory(), "***" + s );
             else
-                addItemToCategoryByName( newHouse.getPOIs2().get(key).getCategory(), key );
+                addItemToCategoryByName( newHouse.getPOIs2().get(key).getCategory(), s );
 
             myExpandableListAdapter.notifyDataSetChanged();
 
@@ -216,6 +223,7 @@ public class ListAndSearchFragment extends Fragment {
         List<String> newList = new ArrayList<String>();
 
         dynamicCategoryList.add(newList);
+        name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
         categoryList.add(name);
     }
 
@@ -223,9 +231,11 @@ public class ListAndSearchFragment extends Fragment {
     private void addItemToCategoryByName(String categoryName, String itemName) {
         int index = -1;
 
-        for(int i=0; i<categoryList.size(); i++)
+        for(int i=0; i<categoryList.size(); i++){
+            categoryName = Character.toUpperCase(categoryName.charAt(0)) + categoryName.substring(1);
             if(categoryList.get(i).equals(categoryName))
                 index = i;
+        }
 
         dynamicCategoryList.get(index).add(itemName);
     }

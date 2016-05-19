@@ -209,6 +209,10 @@ public class House {
     // Add a new POI to the database
     public void addPOI(String name, String cat, String desc, int floor, boolean official, List<String> path) {
 
+        name = Character.toLowerCase(name.charAt(0)) + name.substring(1);
+        cat = Character.toLowerCase(cat.charAt(0)) + cat.substring(1);
+        desc = Character.toLowerCase(desc.charAt(0)) + desc.substring(1);
+
         Firebase DB = new Firebase(DBUrl + this.houseName);
 
         Firebase newPOSDBref = DB.child(name);
