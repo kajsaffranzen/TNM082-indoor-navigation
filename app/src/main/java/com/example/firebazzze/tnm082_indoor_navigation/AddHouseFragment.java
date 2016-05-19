@@ -154,6 +154,16 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                 .title(platenr)
                 .position(carPos)
                 .icon(markerColor));
+
+        // Zoom in on user position when map is finished loaded
+        final LatLng dPos = carPos;
+        mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(dPos.latitude, dPos.longitude), 15));
+            }
+        });
     }
 
     @Override
