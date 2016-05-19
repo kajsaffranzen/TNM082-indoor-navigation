@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements
 
     public boolean fromUpdate = false;
 
+    private MenuItem oldMenuItem;
+
     public House garage;
 
     public Map<String, Car> Cars = new HashMap<String, Car>();
@@ -372,6 +374,8 @@ public class MainActivity extends AppCompatActivity implements
 
         Fragment fragment = null;
         FragmentManager fragmentManager = getSupportFragmentManager();
+
+
         switch(menuItem.getItemId()) {
             default:
             case R.id.nav_qr_fragment:
@@ -404,6 +408,10 @@ public class MainActivity extends AppCompatActivity implements
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
+        if(oldMenuItem != null) {
+            oldMenuItem.setChecked(false);
+        }
+        oldMenuItem = menuItem;
         // Set action bar title
         //setTitle(menuItem.getTitle());
         // Close the navigation drawer

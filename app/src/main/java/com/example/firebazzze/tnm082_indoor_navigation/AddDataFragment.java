@@ -299,18 +299,12 @@ public class AddDataFragment extends Fragment {
             FragmentManager fm = getActivity().getSupportFragmentManager();
             AddDataChildFragment addDataChildFragment = (AddDataChildFragment) fm.findFragmentById(R.id.isOfficialCheckBox);
 
-            //officialPOI = addDataChildFragment.getOfficial();
-            //Log.i("official", ""+officialPOI);
-
             House h = ((MainActivity)getActivity()).getHouse();
             if (POIname.getText().toString() != oldPOIname) {
                 h.updatePOI(POIname.getText().toString(),oldPOIname ,chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
-                Log.i("oldPOIname = ", ""+oldPOIname);
                 ((MainActivity)getActivity()).fromUpdate = false;
             } else {
                 h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
-                Log.i("oldPOIname = ", ""+oldPOIname);
-                Log.i("POIname = ", POIname.getText().toString());
             }
 
             Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
