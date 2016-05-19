@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -265,6 +266,11 @@ public class MainActivity extends AppCompatActivity implements
         Button searchInflaterB = (Button) this.findViewById(R.id.searchInflaterButton);
         if(searchInflaterB != null)
             searchInflaterB.setVisibility(View.GONE);
+
+        EditText searchField = (EditText) this.findViewById(R.id.toolbarSearchField);
+
+        if(searchField != null)
+            searchField.setVisibility(View.GONE);
     }
 
     //to make the fragments work

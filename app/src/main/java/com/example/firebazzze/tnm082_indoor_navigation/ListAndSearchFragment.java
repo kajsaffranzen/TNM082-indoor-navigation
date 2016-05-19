@@ -378,7 +378,9 @@ public class ListAndSearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                searchField.setVisibility(View.GONE);
                 listSearch.setVisibility(View.GONE);
+                searchInflaterB.setVisibility(View.GONE);
 
                 FragmentManager fm = getActivity().getSupportFragmentManager();
 
