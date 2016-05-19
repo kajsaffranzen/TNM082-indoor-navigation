@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements
@@ -67,11 +68,14 @@ public class MainActivity extends AppCompatActivity implements
     public boolean isAdmin = false;
     public DetailFragment detailFragment;
     public AddDataChildFragment addDataChild;
+    public LoginFragment loginFragment;
 
     //Navigation drawer
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView nvDrawer;
+
+    private ArrayList<String> historyList = new ArrayList<String>();
 
     private String mActivityTitle;
     private CharSequence mTitle;
@@ -150,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
 
     }
+
 
     private void updateLocation(Location location) {
         publicPos = location;
@@ -342,6 +347,12 @@ public class MainActivity extends AppCompatActivity implements
     //Used to have a public house, Get House
     public House getHouse(){ return house; }
 
+    //set Admin
+    public void setAdmin(boolean b){ isAdmin = b; }
+
+    //get Admin
+    public boolean getAdmin(){ return isAdmin; }
+
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
@@ -383,5 +394,12 @@ public class MainActivity extends AppCompatActivity implements
 
         DB.child("bilar").child(platenr).child("used").setValue(Cars.get(platenr).getUsed());
 
+    }
+    public void addToHistory(String s){
+        if(!historyList.contains(s))
+            historyList.add(s);
+    }
+    public ArrayList<String> getHistoryList(){
+        return historyList;
     }
 }

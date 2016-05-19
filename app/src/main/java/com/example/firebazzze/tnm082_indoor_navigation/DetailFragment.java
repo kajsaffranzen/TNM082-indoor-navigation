@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -37,14 +38,15 @@ public class DetailFragment extends Fragment {
     private String POIkey;
 
     private OnFragmentInteractionListener mListener;
+    private boolean officialPOI;
 
     //GUI Elements
-    private Button makeOfficialButton;
     private ImageButton doneButton;
     private TextView poiName;
     private TextView poiDescription;
     private TextView poiFindText;
     private RelativeLayout offRelLay;
+    private CheckBox checkBox;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -97,22 +99,24 @@ public class DetailFragment extends Fragment {
         poiName = (TextView)view.findViewById(R.id.detailPoiNameText);
         poiDescription = (TextView)view.findViewById(R.id.detailPoiDescriptionText);
         poiFindText = (TextView)view.findViewById(R.id.detailFindText);
-
-        makeOfficialButton = (Button) view.findViewById(R.id.makeOfficialButton);
+        checkBox = (CheckBox) view.findViewById(R.id.officalBoxDetail);
         doneButton = (ImageButton) view.findViewById(R.id.detailDoneButton);
 
         ListView lv = (ListView)view.findViewById(R.id.listView);
-
-        offRelLay = (RelativeLayout)view.findViewById(R.id.detailOfficialButtonLayout);
 
 
         //get properties from the poiList and set text
         try {
             poiFindText.setText("Hitta till");// + " " + ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getCategory());
-            poiName.setText(POIkey);
+            setPOIName(POIkey);
 
-            if(((MainActivity)getActivity()).getHouse().getPOIs2().get(POIkey).getDescription().length() > 1)
-                poiDescription.setText(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getDescription());
+
+            if(((MainActivity)getActivity()).getHouse().getPOIs2().get(POIkey).getDescription().length() > 1){
+                String s = ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getDescription();
+                s =  Character.toUpperCase(s.charAt(0)) + s.substring(1);
+                poiDescription.setText(s);
+            }
+
 
         } catch(Exception err) {
             Log.d("error", "OnCreateView get poi stuff " + err.getMessage());
@@ -126,28 +130,24 @@ public class DetailFragment extends Fragment {
                     R.layout.path_list_item_layout,
 
                     //android.R.layout.simple_list_item_checked,
-
                     ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getPath()
             );
             lv.setAdapter(arrayAdapter);
         }
 
-        //Change the text on the button depending on if the POI is official or not
+
+        //check if user is admin and show make official checkbox visible if user is admin
+        officialPOI = ((MainActivity)getActivity()).getAdmin();
+
         if(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getOfficial())
-            makeOfficialButton.setText("Gör inofficiell");
-        else makeOfficialButton.setText("Gör officiell");
+            checkBox.setChecked(true);
+        else
+            checkBox.setChecked(false);
 
-
-        //show "make official button visible if user is admin
-        if( ((MainActivity)getActivity()).isAdmin ) {
-            //offRelLay.setVisibility(View.VISIBLE);
-            //makeOfficialButton.setVisibility(View.VISIBLE);
-            Log.d("", "");
-        }
-        else {
-            offRelLay.setVisibility(View.GONE);
-            makeOfficialButton.setVisibility(View.GONE);
-        }
+        if(officialPOI == true)
+            checkBox.setVisibility(View.VISIBLE);
+        else
+            checkBox.setVisibility(View.GONE);
 
         //add listeners to buttons ect
         setListeners();
@@ -155,16 +155,24 @@ public class DetailFragment extends Fragment {
         return view;
     }
 
+    private void setPOIName(String s){
+        if(s.length() > 15 ){
+            poiName.setTextSize(38);
+        }
+        s = Character.toUpperCase(s.charAt(0)) + s.substring(1);
+        poiName.setText(s);
+    }
+
+
     private void setListeners() {
 
         //update official in database whn button is clicked
-        makeOfficialButton.setOnClickListener(new View.OnClickListener() {
+        checkBox.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 ((MainActivity)getActivity()).getHouse().setOfficial(POIkey);
             }
         });
-
 
         //Done button
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -180,10 +188,10 @@ public class DetailFragment extends Fragment {
 
     public void refreshFragment() {
 
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.detach(this);
-                ft.attach(this);
-                ft.commit();
+        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this);
+        ft.attach(this);
+        ft.commit();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
