@@ -280,11 +280,11 @@ public class AddDataFragment extends Fragment {
             House h = ((MainActivity)getActivity()).getHouse();
             if (POIname.getText().toString() != oldPOIname) {
                 h.updatePOI(POIname.getText().toString(),oldPOIname ,chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
-                Log.i("oldPOIname = ", oldPOIname);
+                Log.i("oldPOIname = ", ""+oldPOIname);
                 ((MainActivity)getActivity()).fromUpdate = false;
             } else {
                 h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
-                Log.i("oldPOIname = ", oldPOIname);
+                Log.i("oldPOIname = ", ""+oldPOIname);
                 Log.i("POIname = ", POIname.getText().toString());
             }
 
