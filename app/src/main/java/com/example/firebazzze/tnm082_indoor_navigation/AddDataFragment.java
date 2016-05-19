@@ -101,15 +101,9 @@ public class AddDataFragment extends Fragment {
         ((MainActivity)getActivity()).setToolbarTitle("Lägg till intressepunkter");
 
         listOfPath = new ArrayList<>();
-       // adapter = new ArrayAdapter<String>(getActivity(), R.layout.item_layout_add, R.id.Itemname, listOfPath);
-
 
         lv = (ListView) view.findViewById(R.id.poi_info);
-        //lv.getSelectedItem().
 
-       // counter = 0;
-
-        //lv.setAdapter(adapter);
 
         POIname = (EditText) view.findViewById(R.id.POIname);
         POIpath = (EditText) view.findViewById(R.id.POIpath);
@@ -133,7 +127,6 @@ public class AddDataFragment extends Fragment {
 
         }
 
-       // adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listOfPath);
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.item_layout_add, R.id.Itemname, listOfPath);
         lv.setAdapter(adapter);
 
@@ -152,7 +145,7 @@ public class AddDataFragment extends Fragment {
             }
         });
 
-        final Button btnAddPath = (Button) view.findViewById(R.id.POIaddPath);
+        btnAddPath = (Button) view.findViewById(R.id.POIaddPath);
         ImageButton btnPathDone = (ImageButton) view.findViewById(R.id.POIpathDone);
         final RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.test);
         final RelativeLayout rl2 = (RelativeLayout) view.findViewById(R.id.test2);

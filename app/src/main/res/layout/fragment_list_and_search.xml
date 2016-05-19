@@ -50,7 +50,7 @@
         android:id="@+id/buttoncreatepoi"
         android:layout_width="@dimen/btn_size_big"
         android:layout_height="@dimen/btn_size_big"
-        android:background="@drawable/ic_add"
+        android:background="@drawable/add_poi_button"
         android:width="@dimen/btn_size_big"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="15dp"/>

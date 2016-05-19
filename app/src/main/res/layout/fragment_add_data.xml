@@ -36,7 +36,7 @@
                 android:id="@+id/addPath"
                 android:layout_width="@dimen/btn_size_small"
                 android:layout_height="@dimen/btn_size_small"
-                android:background="@drawable/ic_add"
+                android:background="@drawable/add_path_button"
                 android:layout_alignRight="@+id/POIpath"
                 android:layout_centerVertical="true"/>
 

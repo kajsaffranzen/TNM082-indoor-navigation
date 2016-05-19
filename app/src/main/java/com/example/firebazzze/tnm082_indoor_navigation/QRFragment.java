@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,7 +56,7 @@ public class QRFragment extends Fragment {
     private static final String CAR_KEY = "carkey";
     private OnFragmentInteractionListener mListener;
     private Button goToMapsBtn;
-    private Button historyBtn;
+    private ImageButton historyBtn;
 
     private ArrayList<String> historyList = new ArrayList<String>();
 
@@ -159,7 +160,7 @@ public class QRFragment extends Fragment {
         scanned = false;
 
         //Add historybtn
-        historyBtn = (Button) view.findViewById(R.id.historyBtn);
+        historyBtn = (ImageButton) view.findViewById(R.id.historyBtn);
 
         historyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,7 +191,7 @@ public class QRFragment extends Fragment {
         /*String hus = "vitahuset";
         goToListAndSearch(hus);*/
 
-        cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
+       cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
         barcodeInfo = (TextView) view.findViewById(R.id.code_info);
         focusImage = (ImageView) view.findViewById(R.id.focusImage);
 
@@ -408,6 +409,10 @@ public class QRFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void setScanned(Boolean scan){
+        scanned = scan;
     }
 
     /**
