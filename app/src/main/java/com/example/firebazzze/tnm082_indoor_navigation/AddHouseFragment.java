@@ -294,6 +294,11 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                 List<String> coordList = Arrays.asList(dataSnapshot.child("latlng").getValue().toString().split(","));
                 LatLng newMarkerCoords = new LatLng( Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
 
+                //*****
+                    //Store houses in a list in order to make search smoother
+                    houseMap.put(dataSnapshot.getKey(), new House(dataSnapshot.getKey()));
+                //*****
+
                 //Set marker on map
                 Marker m = mMap.addMarker(new MarkerOptions()
                         .title(dataSnapshot.getKey())
@@ -440,40 +445,33 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                 //Loop through markers to find search matches
                 for (Map.Entry<String, Marker> entry : markerMap.entrySet()) {
                     final String markerName = entry.getKey();
-                    if(markerName.equals("DeviceLoc")) continue;
+                    if(markerName.equals("DeviceLoc")) continue; //ignore user position marker name
 
                     //Is car
                     if(markerName.length() > 5 && !markerName.substring(0, 3).matches("[0-9]+") &&
                             markerName.substring(3, 6).matches("[0-9]+") &&
-                            markerName.toString().toLowerCase().contains(s.toString().toString())) {
+                            markerName.toString().toLowerCase().contains(s.toString().toLowerCase())) {
                         searchResults.add(markerName + " (bil)");
                     }
+                }
 
-                    //Is house
-                    else if(markerName.toString().toLowerCase().contains(s.toString().toString())) {
-                        searchResults.add(markerName);
+                //HouseLoop
+                for (Map.Entry<String, House> HOUSE : houseMap.entrySet()) {
+                    final String hName = HOUSE.getKey();
+                    boolean addAllPois = false;
 
-                        //TODO - ADD POIS HERE
-                        String DBUrl = "https://tnm082-indoor.firebaseio.com/";
-                        Firebase ref = new Firebase(DBUrl);
+                    if(hName.toLowerCase().contains(s.toString().toLowerCase())) {
+                        searchResults.add(hName);
+                        addAllPois = true;
+                    }
 
-                        ref.child(markerName.toString()).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                    Log.d("ok", "HOUSE ALSO CONTAINS: "+postSnapshot.getKey());
+                    //POIloop
+                    Map<String, POI> poiMap = HOUSE.getValue().getPOIs2();
+                    for(Map.Entry<String, POI> POI : poiMap.entrySet()) {
+                        final String pName = POI.getKey();
 
-                                    if(!postSnapshot.getKey().equals("latlng")) {
-                                        searchResults.add(postSnapshot.getKey() + " (" + markerName + ")");
-                                        searchListAdapter.notifyDataSetChanged();
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(FirebaseError firebaseError) {
-                            }
-                        });
+                        if(pName.toLowerCase().contains(s.toString().toLowerCase()) || addAllPois)
+                            searchResults.add(pName + " (" + hName + ")");
                     }
                 }
 
