@@ -466,7 +466,7 @@ public class MainActivity extends AppCompatActivity implements
         if(publicPos != null)
             s = publicPos.getLatitude() + ", " + publicPos.getLongitude();
         else {
-            Toast.makeText(this, "Device position could not be found, park position is therefore not correct",
+            Toast.makeText(this, "Din position kan inte hittas, därmed är parkeringspositionen inte korrekt",
                     Toast.LENGTH_LONG).show();
         }
 

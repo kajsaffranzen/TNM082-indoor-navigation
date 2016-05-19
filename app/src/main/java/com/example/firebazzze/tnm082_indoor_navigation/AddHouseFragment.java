@@ -773,9 +773,9 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         TextView textName = new TextView(getContext());
-        textName.setText("Name");
+        textName.setText("Namn");
         TextView textType = new TextView(getContext());
-        textType.setText("Type");
+        textType.setText("Kategori");
 
         //Types of items that can be added onto the map view
         List<String> typeList = new ArrayList<>();
@@ -850,7 +850,7 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }
         });

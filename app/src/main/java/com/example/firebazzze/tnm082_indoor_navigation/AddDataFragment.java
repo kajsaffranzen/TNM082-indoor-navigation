@@ -307,7 +307,7 @@ public class AddDataFragment extends Fragment {
                 h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
             }
 
-            Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "" + POIname.getText().toString() + "har lagts till", Toast.LENGTH_SHORT).show();
 
             //Reset text field
             POIname.setText("");
@@ -365,7 +365,7 @@ public class AddDataFragment extends Fragment {
             }
         });
 
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }
         });
