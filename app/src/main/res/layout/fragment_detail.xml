@@ -19,7 +19,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="27dp"
                 android:text="Hitta till"
                 android:id="@+id/detailFindText"
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -31,13 +31,14 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/detailPoiNameText"
                 android:layout_gravity="center_horizontal"
-                android:textSize="50dp"
+                android:textSize="38dp"
                 android:textColor="#000000" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/detailPoiDescriptionText"
+                android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
                 android:textSize="20dp"
                 android:textColor="#000000"/>

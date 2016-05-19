@@ -108,10 +108,15 @@ public class DetailFragment extends Fragment {
         //get properties from the poiList and set text
         try {
             poiFindText.setText("Hitta till");// + " " + ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getCategory());
-            poiName.setText(POIkey);
+            setPOIName(POIkey);
 
-            if(((MainActivity)getActivity()).getHouse().getPOIs2().get(POIkey).getDescription().length() > 1)
-                poiDescription.setText(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getDescription());
+
+            if(((MainActivity)getActivity()).getHouse().getPOIs2().get(POIkey).getDescription().length() > 1){
+                String s = ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getDescription();
+                s =  Character.toUpperCase(s.charAt(0)) + s.substring(1);
+                poiDescription.setText(s);
+            }
+
 
         } catch(Exception err) {
             Log.d("error", "OnCreateView get poi stuff " + err.getMessage());
@@ -133,8 +138,6 @@ public class DetailFragment extends Fragment {
 
         //check if user is admin and show make official checkbox visible if user is admin
         officialPOI = ((MainActivity)getActivity()).getAdmin();
-        Log.i("KAJSA", ""+officialPOI);
-
 
         if(((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getOfficial())
             checkBox.setChecked(true);
@@ -151,6 +154,15 @@ public class DetailFragment extends Fragment {
 
         return view;
     }
+
+    private void setPOIName(String s){
+        if(s.length() > 15 ){
+            poiName.setTextSize(38);
+        }
+        s = Character.toUpperCase(s.charAt(0)) + s.substring(1);
+        poiName.setText(s);
+    }
+
 
     private void setListeners() {
 
