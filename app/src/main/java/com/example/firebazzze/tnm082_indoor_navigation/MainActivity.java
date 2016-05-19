@@ -226,8 +226,6 @@ public class MainActivity extends AppCompatActivity implements
         //get current fragment
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
 
-        Log.i("rickard", f.toString());
-
         //Ugly fix
         if(f instanceof ListAndSearchFragment && fromMaps) {
             removeSearchOption();
