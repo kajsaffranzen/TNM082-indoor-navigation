@@ -133,7 +133,8 @@ public class AddDataFragment extends Fragment {
 
         }
 
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listOfPath);
+       // adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listOfPath);
+        adapter = new ArrayAdapter<String>(getActivity(), R.layout.item_layout_add, R.id.Itemname, listOfPath);
         lv.setAdapter(adapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -159,7 +160,6 @@ public class AddDataFragment extends Fragment {
         btnAddPath.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //btnAddPath.setBackgroundColor(Color.color);
                 btnAddPath.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
                 rl2.setVisibility(View.GONE);
                 rl.setVisibility(View.VISIBLE);
@@ -178,30 +178,11 @@ public class AddDataFragment extends Fragment {
             }
         });
 
-        btnAddPath.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rl2.setVisibility(View.GONE);
-                rl.setVisibility(View.VISIBLE);
-            }
-        });
-
-        btnPathDone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rl.setVisibility(View.GONE);
-                rl2.setVisibility(View.VISIBLE);
-                btnAddPath.setText("Ändra vägbeskrivning");
-            }
-        });
 
         createPOI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!POIpath.getText().toString().equals(""))
-                    checkPathField();
-                else
-                    addNewPOI();
+                addNewPOI();
             }
         });
 
@@ -212,7 +193,7 @@ public class AddDataFragment extends Fragment {
                     addPath();
 
                 else
-                    Toast.makeText(getActivity(), "Fyll i fältet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Fyll i fältet!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -272,9 +253,7 @@ public class AddDataFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 POIpath.setText("");
-
                 POIpath.setHint("Lägg till punkt nr " + (listOfPath.size() + 1));
-                addNewPOI();
             }
         });
 
@@ -298,13 +277,14 @@ public class AddDataFragment extends Fragment {
             //get AddDataChildFragment and its functions
             FragmentManager fm = getActivity().getSupportFragmentManager();
             AddDataChildFragment addDataChildFragment = (AddDataChildFragment) fm.findFragmentById(R.id.isOfficialCheckBox);
+            officialPOI = addDataChildFragment.getOfficial();
 
             House h = ((MainActivity)getActivity()).getHouse();
             if (POIname.getText().toString() != oldPOIname) {
-                h.updatePOI(POIname.getText().toString(),oldPOIname ,chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
+                h.updatePOI(POIname.getText().toString(),oldPOIname ,chosenCat, POIdesc.getText().toString(), 1, officialPOI, listOfPath);
                 ((MainActivity)getActivity()).fromUpdate = false;
             } else {
-                h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
+                h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, officialPOI, listOfPath);
             }
 
             Toast.makeText(getActivity(), "" + POIname.getText().toString() + "har lagts till", Toast.LENGTH_SHORT).show();
@@ -330,7 +310,6 @@ public class AddDataFragment extends Fragment {
             if (listOfPath.isEmpty()){
                 btnAddPath.setBackgroundColor(Color.RED);
                 btnAddPath.setText("Lägg till en vägbeskrivning");
-                //POIpath.setBackgroundColor(Color.RED);
                 POIpath.addTextChangedListener(POIpathWatcher);
             }
 
