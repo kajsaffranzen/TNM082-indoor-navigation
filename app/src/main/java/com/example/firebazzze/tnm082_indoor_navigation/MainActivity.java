@@ -25,6 +25,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -225,13 +226,19 @@ public class MainActivity extends AppCompatActivity implements
         //get current fragment
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
 
+        Log.i("rickard", f.toString());
 
         //Ugly fix
         if(f instanceof ListAndSearchFragment && fromMaps) {
+            removeSearchOption();
             getSupportFragmentManager().popBackStack();
             AddHouseFragment fragment = new AddHouseFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
             return;
+        }
+
+        else if(f instanceof ListAndSearchFragment){
+            removeSearchOption();
         }
 
         //Even uglier fix... Dont try this at home
@@ -253,6 +260,13 @@ public class MainActivity extends AppCompatActivity implements
         else{
             moveTaskToBack(true);
         }
+    }
+    //Used to remove the search function from the toolbar
+    private void removeSearchOption() {
+
+        Button searchInflaterB = (Button) this.findViewById(R.id.searchInflaterButton);
+        if(searchInflaterB != null)
+            searchInflaterB.setVisibility(View.GONE);
     }
 
     //to make the fragments work
