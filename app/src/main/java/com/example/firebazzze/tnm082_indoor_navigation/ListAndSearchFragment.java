@@ -104,7 +104,7 @@ public class ListAndSearchFragment extends Fragment {
 
         loadingPanel = (ProgressBar)view.findViewById(R.id.loadingPanel);
 
-        //Change the toolbar title to housename
+        //Change the toolbar title
         ((MainActivity)getActivity()).setToolbarTitle("Intressepunkter");
 
         //Check if house is null
@@ -331,6 +331,7 @@ public class ListAndSearchFragment extends Fragment {
             public void onClick(View v) {
 
                 listSearch.setVisibility(View.GONE);
+                searchInflaterB.setVisibility(View.GONE);
 
                 FragmentManager fm = getActivity().getSupportFragmentManager();
 
@@ -388,5 +389,7 @@ public class ListAndSearchFragment extends Fragment {
         DetailFragment.setArguments(bundle);
         fm.beginTransaction().replace(R.id.fragmentContainer, DetailFragment).addToBackStack("DetailFragment").commit();
     }
+
+
 
 }

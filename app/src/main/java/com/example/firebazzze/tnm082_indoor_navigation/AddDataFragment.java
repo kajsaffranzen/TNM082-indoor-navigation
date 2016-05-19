@@ -94,6 +94,7 @@ public class AddDataFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add_data, container, false);
 
+        ((MainActivity)getActivity()).setToolbarTitle("Lägg till intressepunkter");
 
         listOfPath = new ArrayList<>();
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.item_layout_add, R.id.Itemname, listOfPath);

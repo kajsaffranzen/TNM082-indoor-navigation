@@ -112,6 +112,8 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_house, container, false);
 
+        ((MainActivity)getActivity()).setToolbarTitle("Karta");
+
         //To get the back button to work properly
         ((MainActivity)getActivity()).fromMaps = true;
 
