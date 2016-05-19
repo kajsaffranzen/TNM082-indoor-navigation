@@ -10,7 +10,7 @@ android:layout_height="match_parent">
         android:paddingRight="32dp"
         android:paddingTop="16dp"
         android:text="@string/header_help_nav"
-        android:textSize="32sp" />
+        android:textSize="26sp" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -28,7 +28,7 @@ android:layout_height="match_parent">
         android:paddingRight="32dp"
         android:paddingTop="16dp"
         android:text="@string/header_help_add"
-        android:textSize="32sp" />
+        android:textSize="26sp" />
 
     <TextView
         android:layout_width="match_parent"
