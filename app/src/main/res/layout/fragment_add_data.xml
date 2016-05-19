@@ -80,6 +80,17 @@
             android:textColor="@color/colorQRText"
             android:layout_marginTop="15dp" /><!--fixa margin-->
 
+        <EditText
+            android:id="@+id/POIdesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Beskrivning av intressepunkt"
+            android:textSize="11pt"
+            android:backgroundTint="@color/editTxtLine"
+            android:textColor="@color/colorQRText"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/POIname" />
+
         <TextView
             android:id="@+id/cat_info"
             android:layout_width="match_parent"
@@ -89,7 +100,7 @@
             android:backgroundTint="@color/editTxtLine"
             android:textColor="@color/colorQRText"
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/POIname" />
+            android:layout_below="@+id/POIdesc" />
 
         <Spinner
             android:id="@+id/catSpinner"
@@ -102,6 +113,8 @@
             android:layout_below="@+id/cat_info"
             />
 
+
+
         <Button
             android:text="Lägg till vägbeskrivning"
             android:id="@+id/POIaddPath"
@@ -111,18 +124,8 @@
             android:layout_height="40dp"
             android:layout_below="@+id/catSpinner"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
             />
-
-        <EditText
-            android:id="@+id/POIdesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Beskrivning"
-            android:textSize="12pt"
-            android:backgroundTint="@color/editTxtLine"
-            android:textColor="@color/colorQRText"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/POIaddPath" />
 
 
         <ImageButton
@@ -137,7 +140,7 @@
             android:id="@+id/isOfficialCheckBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/POIdesc"></FrameLayout>
+            android:layout_below="@+id/POIaddPath"></FrameLayout>
     </RelativeLayout>
 
 </RelativeLayout>
