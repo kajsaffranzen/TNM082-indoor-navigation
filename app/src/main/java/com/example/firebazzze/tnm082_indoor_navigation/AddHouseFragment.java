@@ -518,8 +518,9 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                             markerName.substring(3, 6).matches("[0-9]+")) {
                         //TODO - Set what happens when car is selected
                         String toastMessage = "Implement this car action";
-                        Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
-                        toast.show();
+
+                        //Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
+                        //toast.show();
                     }
 
                     else if(markerName.contains("(")) {
@@ -559,9 +560,19 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                         searchResults.get(position).substring(3, 6).matches("[0-9]+")) {
 
                     //TODO - Set what happens when car is selected
-                    String toastMessage = "Implement this car action";
-                    Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
-                    toast.show();
+
+                    listSearch.setVisibility(View.GONE);
+
+                    mapsFragmentLayout.setVisibility(View.VISIBLE);
+
+                    String s =  searchResults.get(position).replace("(bil)", "");
+                    s = s.trim();
+
+                    ((MainActivity)getActivity()).showCarDialog(s);
+
+                    //String toastMessage = "Implement this car action";
+                    //Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
+                    //toast.show();
                 }
 
                 else if(searchResults.get(position).contains("(")) {
@@ -624,6 +635,30 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
 
         mListener = null;
+    }
+
+    public void updateMarker(String title, boolean used) {
+
+        Marker m = markerMap.get(title);
+
+        m.hideInfoWindow();
+
+        if(!used) {
+            m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon_car));
+            m.setSnippet("Ledig");
+            Location l = ((MainActivity) getActivity()).getLatLng();
+            if (l != null){
+                LatLng pos = new LatLng(l.getLatitude(), l.getLongitude());
+                m.setVisible(false);
+                m.setPosition(pos);
+                m.setVisible(true);
+            }
+        }
+        else {
+            m.setSnippet("Används");
+            m.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.maps_icon_car_gray));
+        }
+
     }
 
     /**
@@ -710,9 +745,9 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                //Check if marker is car, if so dont make the infoWindow clickable
-                if(((MainActivity)getActivity()).getCar(marker.getTitle()) == null)
+                if(!marker.getTitle().equals("Din position"))
                     currentMarkerName = marker.getTitle();
+
                 return false;
             }
         });
@@ -730,7 +765,15 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 if(currentMarkerName != null)
-                    goToListAndSearch(currentMarkerName);
+                    //Check if marker is car, if so dont make the infoWindow clickable
+                    if(((MainActivity)getActivity()).getCar(marker.getTitle()) == null){
+                        goToListAndSearch(currentMarkerName);
+                    }
+                    else{
+                        ((MainActivity)getActivity()).showCarDialog(marker.getTitle());
+                    }
+
+
             }
         });
     }

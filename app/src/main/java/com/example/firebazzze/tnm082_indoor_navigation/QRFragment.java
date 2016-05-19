@@ -250,7 +250,7 @@ public class QRFragment extends Fragment {
 
                             if(barcodes.valueAt(0).displayValue.length() > 5 && !barcodes.valueAt(0).displayValue.substring(0,3).matches("[0-9]+") && barcodes.valueAt(0).displayValue.substring(3,6).matches("[0-9]+")){
 
-                                showCarDialog(barcodes.valueAt(0).displayValue);
+                                ((MainActivity) getActivity()).showCarDialog(barcodes.valueAt(0).displayValue);
 
                             }
                             else {
@@ -294,61 +294,6 @@ public class QRFragment extends Fragment {
         return view;
     }
 
-    private void showCarDialog(String platenr){
-
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        Car c = ((MainActivity) getActivity()).getCar(platenr);
-        String s;
-        if(c != null) {
-            if (c.getUsed()) s = "Bilen används";
-            else s = "Bilen är ledig";
-
-            ((MainActivity)getActivity()).addToHistory(platenr);
-
-            final String plateNr = platenr;
-
-            alertDialog.setTitle(s)
-                    .setCancelable(true)
-                    .setPositiveButton("Hitta senaste position", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            showCarOnMap(plateNr);
-                            dialog.cancel();
-                            scanned = false;
-                        }
-                    });
-
-            if (!c.getUsed()) {
-                alertDialog.setNeutralButton("Använd", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ((MainActivity) getActivity()).getCar(plateNr).setUsed(true);
-                        //((MainActivity) getActivity()).updateCar(barcodes.valueAt(0).displayValue);
-                        dialog.cancel();
-                        scanned = false;
-                    }
-                });
-            } else {
-                alertDialog.setNeutralButton("Parkera", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ((MainActivity) getActivity()).getCar(plateNr).setUsed(false);
-                        ((MainActivity) getActivity()).updateCar(plateNr);
-                        dialog.cancel();
-                        scanned = false;
-                    }
-                });
-            }
-
-            AlertDialog alertDialog2 = alertDialog.create();
-            alertDialog2.show();
-        }else{
-            Toast.makeText((MainActivity)getActivity(), "Bilen hann inte laddas",
-                    Toast.LENGTH_LONG).show();
-            scanned = false;
-        }
-
-    }
 
     private void showHistoryDialog() {
         historyList = ((MainActivity)getActivity()).getHistoryList();
@@ -367,7 +312,7 @@ public class QRFragment extends Fragment {
                             String s = historyList.get(which);
 
                             if(s.length() > 5 && !s.substring(0,3).matches("[0-9]+") && s.substring(3,6).matches("[0-9]+"))
-                                showCarDialog(s);
+                                ((MainActivity)getActivity()).showCarDialog(s);
                             else
                                 goToListAndSearch(s);
                         }
@@ -409,6 +354,10 @@ public class QRFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void setScanned(boolean scan) {
+        scanned = scan;
     }
 
     /**
