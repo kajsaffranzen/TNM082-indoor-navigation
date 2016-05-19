@@ -1,6 +1,8 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -225,20 +227,39 @@ public class MainActivity extends AppCompatActivity implements
         switch (id) {
 
             case R.id.deletePOI:
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setMessage("Är du säker på att du vill ta bort " + poiName);
 
-                FragmentManager fm = getSupportFragmentManager();
-                //fm.popBackStack();
-                Fragment ListAndSearchFragment = new ListAndSearchFragment();
-                Bundle bundle = new Bundle();
-                Log.i("testing", getHouse().getHouseName());
-                bundle.putString(KEY, getHouse().getHouseName());
+                alertDialogBuilder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        FragmentManager fm = getSupportFragmentManager();
+                        //fm.popBackStack();
+                        Fragment ListAndSearchFragment = new ListAndSearchFragment();
+                        Bundle bundle = new Bundle();
+                        Log.i("testing", getHouse().getHouseName());
+                        bundle.putString(KEY, getHouse().getHouseName());
 
-                ListAndSearchFragment.setArguments(bundle);
-                fm.beginTransaction().replace(R.id.fragmentContainer, ListAndSearchFragment)
-                        .addToBackStack(null)
-                        .commit();
+                        ListAndSearchFragment.setArguments(bundle);
+                        fm.beginTransaction().replace(R.id.fragmentContainer, ListAndSearchFragment)
+                                .addToBackStack(null)
+                                .commit();
 
-                getHouse().deletePOI(poiName);
+                        getHouse().deletePOI(poiName);
+                        Toast.makeText(MainActivity.this, "Du har nu tagit bort " + poiName, Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                alertDialogBuilder.setNegativeButton("Nej", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
 
                 break;
 
