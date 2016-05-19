@@ -2,6 +2,7 @@ package com.example.firebazzze.tnm082_indoor_navigation;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.location.Location;
 import android.location.LocationListener;
@@ -22,6 +23,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements
     public AddDataChildFragment addDataChild;
     public LoginFragment loginFragment;
 
+    private static final String CAR_KEY = "carkey";
     //Navigation drawer
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -190,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-
                     Car car = postSnapshot.getValue(Car.class);
                     addCar(postSnapshot.getKey(), car);
                 }
@@ -397,6 +399,10 @@ public class MainActivity extends AppCompatActivity implements
         return Cars.get(reg);
     }
 
+    public Location getLatLng(){
+        return publicPos;
+    }
+
     public void setToolbarTitle(String s){
         Toolbar mToolbar = (Toolbar)findViewById(R.id.toolbar);
         mToolbar.setTitle(s);
@@ -404,10 +410,12 @@ public class MainActivity extends AppCompatActivity implements
     public void updateCar(String platenr){
         String DBUrl = "https://tnm082-indoor.firebaseio.com/";
 
-        //Probably not needed
-        if(publicPos.getLongitude() != 0.0 && publicPos.getLatitude() != 0.0)
-            Cars.get(platenr).updateLatlng(publicPos);
+        if(publicPos != null)
+            if(publicPos.getLongitude() != 0.0 && publicPos.getLatitude() != 0.0)
+                Cars.get(platenr).updateLatlng(publicPos);
 
+        else
+            Toast.makeText(this, "Kunde inte parkera bilen eftersom enhetens position inte kunde hittas", Toast.LENGTH_LONG);
         Firebase DB = new Firebase(DBUrl);
 
         String s = "0, 0";
@@ -419,7 +427,7 @@ public class MainActivity extends AppCompatActivity implements
                     Toast.LENGTH_LONG).show();
         }
 
-        //if(Cars.get(platenr).getUsed())
+        if(!Cars.get(platenr).getUsed())
         DB.child("bilar").child(platenr).child("latlng").setValue(s);
 
         DB.child("bilar").child(platenr).child("used").setValue(Cars.get(platenr).getUsed());
@@ -432,4 +440,105 @@ public class MainActivity extends AppCompatActivity implements
     public ArrayList<String> getHistoryList(){
         return historyList;
     }
+
+    public void showCarDialog(String platenr){
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        final Fragment frag = (Fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+
+
+
+        Car c = this.getCar(platenr);
+        String s;
+        if(c != null) {
+            if (c.getUsed()) s = " används";
+              else s = " är ledig";
+
+            this.addToHistory(platenr);
+
+            final String plateNr = platenr;
+
+
+            s = platenr + s;
+
+            alertDialog.setTitle(s)
+                    .setCancelable(true);
+
+            if(frag instanceof QRFragment) {
+                alertDialog.setPositiveButton("Hitta senaste pos", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showCarOnMap(plateNr);
+                        if (frag instanceof QRFragment) {
+                            QRFragment test = (QRFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+                            test.setScanned(false);
+                        }
+                        dialog.cancel();
+                    }
+                });
+            }
+
+            if (!c.getUsed()) {
+                alertDialog.setNeutralButton("Använd", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getCar(plateNr).setUsed(true);
+                        updateCar(plateNr);
+                        if(frag instanceof QRFragment){
+                            QRFragment test = (QRFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+                            test.setScanned(false);
+                        }else{
+                            AddHouseFragment test = (AddHouseFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+                            test.updateMarker(plateNr, true);
+                        }
+                        dialog.cancel();
+                    }
+                });
+            } else {
+                alertDialog.setNeutralButton("Parkera", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getCar(plateNr).setUsed(false);
+                        updateCar(plateNr);
+                        if(frag instanceof QRFragment){
+                            QRFragment test = (QRFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+                            test.setScanned(false);
+                        }else{
+                            AddHouseFragment test = (AddHouseFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+                            test.updateMarker(plateNr, false);
+                        }
+                        dialog.cancel();
+                    }
+                });
+            }
+
+            AlertDialog alertDialog2 = alertDialog.create();
+            alertDialog2.show();
+        }else{
+            Toast.makeText(this, "Bilen hann inte laddas",
+                    Toast.LENGTH_LONG).show();
+            if(frag instanceof QRFragment){
+                QRFragment test = (QRFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+                test.setScanned(false);
+            }
+        }
+
+    }
+
+    public void showCarOnMap(String platenr){
+
+        FragmentManager fm = this.getSupportFragmentManager();
+        Fragment AddHouseFragment = new AddHouseFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(CAR_KEY, platenr);
+
+        AddHouseFragment.setArguments(bundle);
+
+        fm.beginTransaction().replace(R.id.fragmentContainer, AddHouseFragment)
+                .addToBackStack("AddHouseFragment")
+                .commit();
+    }
+
 }
