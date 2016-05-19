@@ -4,8 +4,8 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
         android:paddingTop="16dp"
@@ -13,8 +13,8 @@
         android:textSize="32sp" />
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:paddingLeft="48dp"
         android:paddingRight="32dp"
         android:paddingTop="5dp"
@@ -22,8 +22,8 @@
         android:textSize="16sp" />
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
         android:paddingTop="16dp"
@@ -31,9 +31,9 @@
         android:textSize="32sp" />
 
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:paddingTop="5dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:paddingLeft="48dp"
         android:paddingRight="32dp"
         android:text="@string/text_about_version"

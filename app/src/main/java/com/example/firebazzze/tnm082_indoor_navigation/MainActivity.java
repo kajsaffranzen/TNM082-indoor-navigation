@@ -1,53 +1,33 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.ValueEventListener;
 import com.firebase.client.DataSnapshot;
-
-
 import com.firebase.client.FirebaseError;
 
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
-
-import java.io.IOException;
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,10 +49,17 @@ public class MainActivity extends AppCompatActivity implements
     public AddDataChildFragment addDataChild;
     public LoginFragment loginFragment;
 
+    private static final String KEY = "housename";
+
     //Navigation drawer
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView nvDrawer;
+
+    public ListAndSearchFragment myCatList;
+    private static final String CAT_LIST = "catlist";
+
+    private ArrayList<String> historyList = new ArrayList<String>();
 
     private String mActivityTitle;
     private CharSequence mTitle;
@@ -81,12 +68,19 @@ public class MainActivity extends AppCompatActivity implements
 
     public boolean fromMaps = false;
 
+    public boolean fromUpdate = false;
+
+    private MenuItem oldMenuItem;
+
     public House garage;
 
     public Map<String, Car> Cars = new HashMap<String, Car>();
     public Map<String, House> Houses = new HashMap<String, House>();
 
     public Location publicPos;
+
+    public POI poi;
+    public String poiName;
 
 
     @Override
@@ -150,6 +144,17 @@ public class MainActivity extends AppCompatActivity implements
         QRFragment fragment = new QRFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
 
+        /*DrawerLayout layout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        layout.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent ev)
+            {
+                hideKeyboard(view);
+                return false;
+            }
+        });*/
     }
 
 
@@ -185,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        addDataChild = (AddDataChildFragment) getSupportFragmentManager().findFragmentById(R.id.isOfficialCheckBox);
+       /* addDataChild = (AddDataChildFragment) getSupportFragmentManager().findFragmentById(R.id.isOfficialCheckBox);
 
         //refresh the detail view in order to show/hide admin button
         if(detailFragment != null && detailFragment.isAdded())
@@ -210,9 +215,82 @@ public class MainActivity extends AppCompatActivity implements
         // true, then it has handled the app icon touch event
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
-        }
+        }*/
+        int id = item.getItemId();
 
-        return super.onOptionsItemSelected(item);
+
+        switch (id) {
+
+            case R.id.deletePOI:
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setMessage("Är du säker på att du vill ta bort " + poiName);
+
+                alertDialogBuilder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        FragmentManager fm = getSupportFragmentManager();
+                        //fm.popBackStack();
+                        Fragment ListAndSearchFragment = new ListAndSearchFragment();
+                        Bundle bundle = new Bundle();
+                        Log.i("testing", getHouse().getHouseName());
+                        bundle.putString(KEY, getHouse().getHouseName());
+
+                        ListAndSearchFragment.setArguments(bundle);
+                        fm.beginTransaction().replace(R.id.fragmentContainer, ListAndSearchFragment)
+                                .addToBackStack(null)
+                                .commit();
+
+                        getHouse().deletePOI(poiName);
+                        Toast.makeText(MainActivity.this, "Du har nu tagit bort " + poiName, Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                alertDialogBuilder.setNegativeButton("Nej", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+
+                break;
+
+
+            case R.id.updatePOI:
+
+                Bundle newBundle = new Bundle();
+
+                //TODO: Fullösning tillsvidare...
+                ArrayList<String> temp = new ArrayList<String>();
+
+                for (int i = 0; i < myCatList.categoryList.size(); i++)
+                    temp.add(myCatList.categoryList.get(i));
+
+                newBundle.putStringArrayList(CAT_LIST, temp);
+                fromUpdate = true;
+
+                getSupportFragmentManager().popBackStack();
+                AddDataFragment fragmentData = new AddDataFragment();
+                fragmentData.setArguments(newBundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragmentData).addToBackStack(null).commit();
+        }
+                return super.onOptionsItemSelected(item);
+
+    }
+
+
+    //hides keyboard whenever the user clicks outside the keyboard
+    //TODO: in addData, if you click on the addPath-button you sometimes have to do it twice because the first time it only hides the keyboard
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (getCurrentFocus() != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     //Override the back button when on qr fragment
@@ -296,6 +374,8 @@ public class MainActivity extends AppCompatActivity implements
 
         Fragment fragment = null;
         FragmentManager fragmentManager = getSupportFragmentManager();
+
+
         switch(menuItem.getItemId()) {
             default:
             case R.id.nav_qr_fragment:
@@ -328,6 +408,10 @@ public class MainActivity extends AppCompatActivity implements
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
+        if(oldMenuItem != null) {
+            oldMenuItem.setChecked(false);
+        }
+        oldMenuItem = menuItem;
         // Set action bar title
         //setTitle(menuItem.getTitle());
         // Close the navigation drawer
@@ -391,5 +475,12 @@ public class MainActivity extends AppCompatActivity implements
 
         DB.child("bilar").child(platenr).child("used").setValue(Cars.get(platenr).getUsed());
 
+    }
+    public void addToHistory(String s){
+        if(!historyList.contains(s))
+            historyList.add(s);
+    }
+    public ArrayList<String> getHistoryList(){
+        return historyList;
     }
 }

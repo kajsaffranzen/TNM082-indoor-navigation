@@ -57,7 +57,7 @@ public class ListAndSearchFragment extends Fragment {
     private ExpandableListView myExpandableListView;
     private ExpandableListAdapter myExpandableListAdapter;
 
-    private ArrayList<String> categoryList;
+    public ArrayList<String> categoryList;
     private HashMap<String, List<String>> interestPointsList;
     private List<List<String>> dynamicCategoryList;
 
@@ -157,6 +157,8 @@ public class ListAndSearchFragment extends Fragment {
 
         fillListWithData(houseName);
         setListeners(newHouse);
+
+        ((MainActivity)getActivity()).myCatList = this;
 
         return view;
     }
@@ -380,6 +382,7 @@ public class ListAndSearchFragment extends Fragment {
 
                 //Go to DetailViewIP pass the POI key
                 goToDetailFragment(searchResults.get(position));
+                //((MainActivity) getActivity()).hideKeyboardFrom(getContext(), view);
             }
         });
 
@@ -389,6 +392,7 @@ public class ListAndSearchFragment extends Fragment {
             public void onClick(View v) {
 
                 listSearch.setVisibility(View.GONE);
+                searchInflaterB.setVisibility(View.GONE);
 
                 FragmentManager fm = getActivity().getSupportFragmentManager();
 
@@ -479,5 +483,4 @@ public class ListAndSearchFragment extends Fragment {
             public void onCancelled(FirebaseError firebaseError) {}
         });
     }
-
 }
