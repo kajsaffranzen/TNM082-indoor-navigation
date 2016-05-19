@@ -370,6 +370,7 @@ public class ListAndSearchFragment extends Fragment {
 
                 //Go to DetailViewIP pass the POI key
                 goToDetailFragment(searchResults.get(position));
+                //((MainActivity) getActivity()).hideKeyboardFrom(getContext(), view);
             }
         });
 

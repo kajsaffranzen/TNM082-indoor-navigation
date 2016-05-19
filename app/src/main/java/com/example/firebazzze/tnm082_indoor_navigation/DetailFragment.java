@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.gesture.GestureOverlayView;
+import android.graphics.Color;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,13 +15,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
+
+import java.util.List;
 
 
 /**
@@ -40,13 +47,18 @@ public class DetailFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private boolean officialPOI;
 
+    private int itemPos;
+    private String test;
+
     //GUI Elements
     private ImageButton doneButton;
     private TextView poiName;
     private TextView poiDescription;
     private TextView poiFindText;
     private RelativeLayout offRelLay;
+    private ListView lv;
     private CheckBox checkBox;
+
 
     public DetailFragment() {
         // Required empty public constructor
@@ -102,7 +114,7 @@ public class DetailFragment extends Fragment {
         checkBox = (CheckBox) view.findViewById(R.id.officalBoxDetail);
         doneButton = (ImageButton) view.findViewById(R.id.detailDoneButton);
 
-        ListView lv = (ListView)view.findViewById(R.id.listView);
+        lv = (ListView)view.findViewById(R.id.listView);
 
 
         //get properties from the poiList and set text
@@ -129,10 +141,20 @@ public class DetailFragment extends Fragment {
                     //android.R.layout.simple_list_item_1,
                     R.layout.path_list_item_layout,
 
+                    R.id.pathText,
+
                     //android.R.layout.simple_list_item_checked,
                     ((MainActivity) getActivity()).getHouse().getPOIs2().get(POIkey).getPath()
             );
             lv.setAdapter(arrayAdapter);
+
+            //when user click on POI
+            lv.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    pathCheck(lv, position);
+                }
+            });
         }
 
 
@@ -192,6 +214,26 @@ public class DetailFragment extends Fragment {
         ft.detach(this);
         ft.attach(this);
         ft.commit();
+    }
+
+    public void pathCheck (ListView mView, int c) {
+        for(int i = 0; i <= c; i++){
+            View v;
+            if(mView.getChildAt(i) != null){
+                v = mView.getChildAt(i);
+                //change background color
+                v.setBackgroundColor(Color.parseColor("#f2f2f2"));
+
+                //change text color
+                RelativeLayout rl = (RelativeLayout) v.findViewById(R.id.pathListLayout);
+                TextView tv = (TextView) rl.findViewById(R.id.pathText);
+                tv.setTextColor(Color.parseColor("#cccccc"));
+
+                //make icon invisible
+                ImageView iv = (ImageView) v.findViewById(R.id.checkPath);
+                iv.setVisibility(View.GONE);
+            }
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

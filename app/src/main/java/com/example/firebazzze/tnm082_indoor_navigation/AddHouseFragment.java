@@ -7,20 +7,26 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.InflateException;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +35,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -72,10 +79,21 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
     private View view;
     private ViewGroup mContainter;
 
-    private Map<String, House> houseMap;
     private List<String> houseNameList;
-
+    private Map<String, House> houseMap;
     private Map<String, Marker> markerMap;
+
+    //Layouts
+    RelativeLayout mapsFragmentLayout;
+
+    //Toolbar
+    private EditText searchField;
+    private Button searchInflaterB;
+
+    //Searching items
+    private ListView listSearch;
+    private List<String> searchResults;
+    private ArrayAdapter<String> searchListAdapter;
 
     private ProgressBar mapsLoadingPanel;
 
@@ -168,6 +186,26 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
         carFilt = (CheckBox) view.findViewById(R.id.carFilter);
         houseFilt = (CheckBox) view.findViewById(R.id.houseFilter);
+
+        //Layout_______________________
+        mapsFragmentLayout = (RelativeLayout) view.findViewById(R.id.mapsFragmentLayout);
+
+        //Toolbar______________________
+        //search field in toolbar
+        searchField = (EditText) getActivity().findViewById(R.id.toolbarSearchField);
+        searchField.setVisibility(View.GONE);
+
+        //search inflater button
+        searchInflaterB = (Button) getActivity().findViewById(R.id.searchInflaterButton);
+        searchInflaterB.setVisibility(View.VISIBLE);
+
+        //Search List Stuff_____________
+        //List for search results
+        searchResults = new ArrayList<String>();
+        listSearch = (ListView) view.findViewById(R.id.mapsViewSearchList);
+        searchListAdapter = new ArrayAdapter<String>(
+                getContext(),R.layout.item_layout_search,searchResults);
+        listSearch.setAdapter(searchListAdapter);
 
         Log.i("tester", "here: " + platenr);
 
@@ -266,6 +304,11 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
 
                 List<String> coordList = Arrays.asList(dataSnapshot.child("latlng").getValue().toString().split(","));
                 LatLng newMarkerCoords = new LatLng( Double.parseDouble(coordList.get(0)), Double.parseDouble(coordList.get(1)));
+
+                //*****
+                    //Store houses in a list in order to make search smoother
+                    houseMap.put(dataSnapshot.getKey(), new House(dataSnapshot.getKey()));
+                //*****
 
                 //Set marker on map
                 Marker m = mMap.addMarker(new MarkerOptions()
@@ -390,6 +433,170 @@ public class AddHouseFragment extends Fragment implements OnMapReadyCallback {
                 gotToQrView();
             }
         });
+
+        //Handle searches
+        searchField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                //string empty, dont search
+                if (s.toString().equals("")) {
+                    searchField.setHint("Sök");
+                    listSearch.setVisibility(View.GONE);
+                    mapsFragmentLayout.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                searchResults.clear();
+
+                //Loop through markers to find search matches
+                for (Map.Entry<String, Marker> entry : markerMap.entrySet()) {
+                    final String markerName = entry.getKey();
+                    if(markerName.equals("DeviceLoc")) continue; //ignore user position marker name
+
+                    //Is car
+                    if(markerName.length() > 5 && !markerName.substring(0, 3).matches("[0-9]+") &&
+                            markerName.substring(3, 6).matches("[0-9]+") &&
+                            markerName.toString().toLowerCase().contains(s.toString().toLowerCase())) {
+                        searchResults.add(markerName + " (bil)");
+                    }
+                }
+
+                //HouseLoop
+                for (Map.Entry<String, House> HOUSE : houseMap.entrySet()) {
+                    final String hName = HOUSE.getKey();
+                    boolean addAllPois = false;
+
+                    if(hName.toLowerCase().contains(s.toString().toLowerCase())) {
+                        searchResults.add(hName);
+                        addAllPois = true;
+                    }
+
+                    //POIloop
+                    Map<String, POI> poiMap = HOUSE.getValue().getPOIs2();
+                    for(Map.Entry<String, POI> POI : poiMap.entrySet()) {
+                        final String pName = POI.getKey();
+
+                        if(pName.toLowerCase().contains(s.toString().toLowerCase()) || addAllPois)
+                            searchResults.add(pName + " (" + hName + ")");
+                    }
+                }
+
+                listSearch.setVisibility(View.VISIBLE);
+                mapsFragmentLayout.setVisibility(View.GONE);
+                searchListAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        //On enter click for search
+        searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                //string empty, dont search
+                if (searchField.getText().toString().equals("")) {
+                    searchField.setHint("Sök");
+                    listSearch.setVisibility(View.GONE);
+                    mapsFragmentLayout.setVisibility(View.VISIBLE);
+                    return false;
+                }
+
+                //If exact match, go to item
+                for (Map.Entry<String, Marker> entry : markerMap.entrySet()) {
+                    String markerName = entry.getKey();
+                    if(markerName.equals("DeviceLoc")) continue;
+
+                    if (markerName.length() > 5 && !markerName.substring(0, 3).matches("[0-9]+") &&
+                            markerName.substring(3, 6).matches("[0-9]+")) {
+                        //TODO - Set what happens when car is selected
+                        String toastMessage = "Implement this car action";
+                        Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
+                    else if(markerName.contains("(")) {
+                        //TODO - Set what happens when POI is selected
+                        String toastMessage = "Implement this POI action";
+                        Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
+                    else if(markerName.toString().toLowerCase().equals(searchField.getText().toString().toLowerCase())) {
+                        goToListAndSearch(markerName);
+                        return false;
+                    }
+                }
+
+                //Else, no exact match found
+                String toastMessage = searchField.getText().toString() + " finns inte";
+                Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
+                toast.show();
+
+                //Close keyboard
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
+                return false;
+            }
+        });
+
+        //Handle onClick for searchList items
+        listSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                //Dont go to listNSearch if item is a car
+                if (searchResults.get(position).length() > 5 &&
+                        !searchResults.get(position).substring(0, 3).matches("[0-9]+") &&
+                        searchResults.get(position).substring(3, 6).matches("[0-9]+")) {
+
+                    //TODO - Set what happens when car is selected
+                    String toastMessage = "Implement this car action";
+                    Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+                else if(searchResults.get(position).contains("(")) {
+                    //TODO - Set what happens when POI is selected
+                    String toastMessage = "Implement this POI action";
+                    Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+                else {
+                    //Go to DetailViewIP pass the POI key
+                    goToListAndSearch(searchResults.get(position));
+                }
+            }
+        });
+
+        //Handle the toolbar search button
+        searchInflaterB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchField.setVisibility(View.VISIBLE);
+                searchField.setText("");
+
+                //set focus in search field and pop up keyboard
+                showSoftKeyboard( searchField );
+            }
+        });
+    }
+
+    //Show keyboard
+    private void showSoftKeyboard(View view){
+        if(view.requestFocus()){
+            InputMethodManager imm =(InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view,InputMethodManager.SHOW_IMPLICIT);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

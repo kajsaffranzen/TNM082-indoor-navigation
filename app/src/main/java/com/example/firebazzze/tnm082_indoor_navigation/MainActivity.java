@@ -1,6 +1,8 @@
 package com.example.firebazzze.tnm082_indoor_navigation;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,6 +27,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -49,6 +56,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements
@@ -73,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView nvDrawer;
+
+    private ArrayList<String> historyList = new ArrayList<String>();
 
     private String mActivityTitle;
     private CharSequence mTitle;
@@ -150,6 +160,17 @@ public class MainActivity extends AppCompatActivity implements
         QRFragment fragment = new QRFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
 
+        /*DrawerLayout layout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        layout.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent ev)
+            {
+                hideKeyboard(view);
+                return false;
+            }
+        });*/
     }
 
 
@@ -213,6 +234,18 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    //hides keyboard whenever the user clicks outside the keyboard
+    //TODO: in addData, if you click on the addPath-button you sometimes have to do it twice because the first time it only hides the keyboard
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (getCurrentFocus() != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     //Override the back button when on qr fragment
@@ -391,5 +424,12 @@ public class MainActivity extends AppCompatActivity implements
 
         DB.child("bilar").child(platenr).child("used").setValue(Cars.get(platenr).getUsed());
 
+    }
+    public void addToHistory(String s){
+        if(!historyList.contains(s))
+            historyList.add(s);
+    }
+    public ArrayList<String> getHistoryList(){
+        return historyList;
     }
 }
