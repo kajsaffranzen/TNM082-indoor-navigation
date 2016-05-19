@@ -19,7 +19,12 @@ import android.widget.ImageView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -160,9 +165,9 @@ public class QRFragment extends Fragment {
 
         ((MainActivity)getActivity()).setToolbarTitle("QR-skanning");
 
-       /* String hus = "gulahuset";
+        /*String hus = "vitahuset";
         goToListAndSearch(hus);*/
-        
+
         cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
         barcodeInfo = (TextView) view.findViewById(R.id.code_info);
         focusImage = (ImageView) view.findViewById(R.id.focusImage);
@@ -224,44 +229,50 @@ public class QRFragment extends Fragment {
                                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                                 Car c = ((MainActivity) getActivity()).getCar(barcodes.valueAt(0).displayValue);
                                 String s;
-                                if(c.getUsed()) s = "Bilen används";
-                                else s = "Bilen är ledig";
+                                if(c != null) {
+                                    if (c.getUsed()) s = "Bilen används";
+                                    else s = "Bilen är ledig";
 
-                                alertDialog.setTitle(s)
-                                        .setCancelable(true)
-                                        .setPositiveButton("Hitta senaste pos", new DialogInterface.OnClickListener() {
+                                    alertDialog.setTitle(s)
+                                            .setCancelable(true)
+                                            .setPositiveButton("Hitta senaste pos", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    showCarOnMap(barcodes.valueAt(0).displayValue);
+                                                    dialog.cancel();
+                                                    scanned = false;
+                                                }
+                                            });
+
+                                    if (!c.getUsed()) {
+                                        alertDialog.setNeutralButton("Använd", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                showCarOnMap(barcodes.valueAt(0).displayValue);
+                                                ((MainActivity) getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed(true);
+                                                //((MainActivity) getActivity()).updateCar(barcodes.valueAt(0).displayValue);
                                                 dialog.cancel();
                                                 scanned = false;
                                             }
                                         });
+                                    } else {
+                                        alertDialog.setNeutralButton("Parkera", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                ((MainActivity) getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed(false);
+                                                ((MainActivity) getActivity()).updateCar(barcodes.valueAt(0).displayValue);
+                                                dialog.cancel();
+                                                scanned = false;
+                                            }
+                                        });
+                                    }
 
-                                if(!c.getUsed()){
-                                    alertDialog.setNeutralButton("Använd", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            ((MainActivity)getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed(true);
-                                            //((MainActivity) getActivity()).updateCar(barcodes.valueAt(0).displayValue);
-                                            dialog.cancel();
-                                            scanned = false;
-                                        }
-                                    });
+                                    AlertDialog alertDialog2 = alertDialog.create();
+                                    alertDialog2.show();
                                 }else{
-                                    alertDialog.setNeutralButton("Parkera", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            ((MainActivity) getActivity()).getCar(barcodes.valueAt(0).displayValue).setUsed(false);
-                                            ((MainActivity) getActivity()).updateCar(barcodes.valueAt(0).displayValue);
-                                            dialog.cancel();
-                                            scanned = false;
-                                        }
-                                    });
+                                    Toast.makeText((MainActivity)getActivity(), "Bilen hann inte laddas",
+                                            Toast.LENGTH_LONG).show();
+                                    scanned = false;
                                 }
-
-                                AlertDialog alertDialog2 = alertDialog.create();
-                                alertDialog2.show();
 
                             }
                             else {
@@ -271,7 +282,27 @@ public class QRFragment extends Fragment {
 
                                 } else {
                                     //go to next fragment and send text from qr
-                                    goToListAndSearch(barcodes.valueAt(0).displayValue);
+
+                                    //to check if the house really exists
+                                    String DBUrl = "https://tnm082-indoor.firebaseio.com/";
+                                    Firebase DB = new Firebase(DBUrl + barcodes.valueAt(0).displayValue);
+
+                                    DB.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            if(dataSnapshot.exists()) goToListAndSearch(barcodes.valueAt(0).displayValue);
+                                            else {
+                                                Toast.makeText((MainActivity)getActivity(), "Huset kunde inte hittas, testa kartan",
+                                                        Toast.LENGTH_LONG).show();
+                                                scanned = false;
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(FirebaseError firebaseError) {
+
+                                        }
+                                    });
                                 }
                             }
 
