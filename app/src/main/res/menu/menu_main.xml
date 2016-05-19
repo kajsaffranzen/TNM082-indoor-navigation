@@ -6,9 +6,11 @@
         android:id="@+id/deletePOI"
         android:orderInCategory="100"
         android:title="Radera"
-        app:showAsAction="never" />
+        android:icon="@drawable/img_menu_delete_white"
+        app:showAsAction="always" />
 
     <item android:id="@+id/updatePOI"
         android:title="Uppdatera"
-        app:showAsAction="never" />
+        android:icon="@drawable/img_menu_edit_white"
+        app:showAsAction="always" />
 </menu>
