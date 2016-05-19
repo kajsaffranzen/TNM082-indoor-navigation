@@ -5,9 +5,19 @@
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.AddHouseFragment"
     android:id="@+id/addHouseFragmentLayout">
 
+    <ListView
+        android:id="@+id/mapsViewSearchList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:visibility="gone">
+    </ListView>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/mapsFragmentLayout">
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
@@ -16,6 +26,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context="com.example.firebazzze.tnm082_indoor_navigation.MapsActivity" />
+
+        <CheckBox
+            android:id="@+id/houseFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignLeft="@+id/addPoiBtn"
+            android:layout_alignStart="@+id/addPoiBtn" />
+        <CheckBox
+            android:id="@+id/carFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <Button
             android:id="@+id/addPoiBtn"
@@ -44,8 +69,26 @@
             android:layout_centerInParent="true"
             android:indeterminate="true" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hus"
+            android:id="@+id/textView"
+            android:layout_alignBaseline="@+id/houseFilter"
+            android:layout_alignBottom="@+id/houseFilter"
+            android:layout_toLeftOf="@+id/houseFilter"
+            android:layout_toStartOf="@+id/houseFilter" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bilar"
+            android:id="@+id/textView2"
+            android:layout_alignBaseline="@+id/houseFilter"
+            android:layout_alignBottom="@+id/houseFilter"
+            android:layout_toLeftOf="@+id/carFilter"
+            android:layout_toStartOf="@+id/carFilter" />
+
     </RelativeLayout>
-
-
 
 </FrameLayout>

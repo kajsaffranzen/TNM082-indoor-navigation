@@ -56,6 +56,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements
@@ -74,11 +75,14 @@ public class MainActivity extends AppCompatActivity implements
     public boolean isAdmin = false;
     public DetailFragment detailFragment;
     public AddDataChildFragment addDataChild;
+    public LoginFragment loginFragment;
 
     //Navigation drawer
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView nvDrawer;
+
+    private ArrayList<String> historyList = new ArrayList<String>();
 
     private String mActivityTitle;
     private CharSequence mTitle;
@@ -154,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements
         //Navigate to the camera view
         getSupportFragmentManager().popBackStack();
         QRFragment fragment = new QRFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
 
         /*DrawerLayout layout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -168,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         });*/
     }
+
 
     private void updateLocation(Location location) {
         publicPos = location;
@@ -251,8 +256,7 @@ public class MainActivity extends AppCompatActivity implements
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
 
 
-        //Ugly fix: Map fragment could not be created twice so when backing to that fragment, it would crach
-        //Instead map is now removed onDestroy, and on back the view is recreated.
+        //Ugly fix
         if(f instanceof ListAndSearchFragment && fromMaps) {
             getSupportFragmentManager().popBackStack();
             AddHouseFragment fragment = new AddHouseFragment();
@@ -267,6 +271,7 @@ public class MainActivity extends AppCompatActivity implements
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
             return;
         }
+
 
         //Default
         if (!(f instanceof QRFragment)) {//the fragment on which you want to handle your back press
@@ -323,43 +328,36 @@ public class MainActivity extends AppCompatActivity implements
     private void changeFragment(MenuItem menuItem){
 
         Fragment fragment = null;
-        boolean flag = false;
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch(menuItem.getItemId()) {
             default:
             case R.id.nav_qr_fragment:
                 fragment = new QRFragment();
-                flag = true;
                 break;
             case R.id.nav_map_fragment:
                 fragment = new AddHouseFragment();
-                flag = true;
                 break;
             case R.id.nav_list_and_search_fragment:
-                //Does not work, needs a houseName
                 fragment = new ListAndSearchFragment();
-                flag = true;
                 break;
             case R.id.nav_login_fragment:
                 fragment = new LoginFragment();
-                flag = true;
                 break;
             case R.id.nav_about_fragment:
                 fragment = new AboutFragment();
-                flag = true;
                 break;
             case R.id.nav_help_fragment:
                 fragment = new HelpFragment();
-                flag = true;
                 break;
         }
 
-        if(flag){
+        if(fragment != null){
             fragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainer, fragment)
                     .addToBackStack(menuItem.toString())
                     .commit();
         }
+
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
@@ -378,6 +376,12 @@ public class MainActivity extends AppCompatActivity implements
 
     //Used to have a public house, Get House
     public House getHouse(){ return house; }
+
+    //set Admin
+    public void setAdmin(boolean b){ isAdmin = b; }
+
+    //get Admin
+    public boolean getAdmin(){ return isAdmin; }
 
     @Override
     public void setTitle(CharSequence title) {
@@ -420,5 +424,12 @@ public class MainActivity extends AppCompatActivity implements
 
         DB.child("bilar").child(platenr).child("used").setValue(Cars.get(platenr).getUsed());
 
+    }
+    public void addToHistory(String s){
+        if(!historyList.contains(s))
+            historyList.add(s);
+    }
+    public ArrayList<String> getHistoryList(){
+        return historyList;
     }
 }
