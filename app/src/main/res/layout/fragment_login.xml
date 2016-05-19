@@ -11,5 +11,4 @@
         android:textSize="10pt"
         android:textColor="@color/colorQRText" />
 
-
 </LinearLayout>

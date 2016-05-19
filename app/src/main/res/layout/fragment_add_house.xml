@@ -5,9 +5,19 @@
     tools:context="com.example.firebazzze.tnm082_indoor_navigation.AddHouseFragment"
     android:id="@+id/addHouseFragmentLayout">
 
+    <ListView
+        android:id="@+id/mapsViewSearchList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:visibility="gone">
+    </ListView>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/mapsFragmentLayout">
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
@@ -80,7 +90,5 @@
             android:layout_toStartOf="@+id/carFilter" />
 
     </RelativeLayout>
-
-
 
 </FrameLayout>

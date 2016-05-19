@@ -309,7 +309,7 @@ public class QRFragment extends Fragment {
 
             alertDialog.setTitle(s)
                     .setCancelable(true)
-                    .setPositiveButton("Hitta senaste pos", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("Hitta senaste position", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             showCarOnMap(plateNr);

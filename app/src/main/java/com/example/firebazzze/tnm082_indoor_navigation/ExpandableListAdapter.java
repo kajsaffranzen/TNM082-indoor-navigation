@@ -94,31 +94,31 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         //Set icon depending on category
         //Maybe pre-define an array with the categories?
         switch (textGroup) {
-            case "skrivare":
+            case "Skrivare":
                 imageViewGroup.setBackgroundResource(R.drawable.ic_local_printshop_black_48dp);
                 break;
-            case "sal":
+            case "Sal":
                 imageViewGroup.setBackgroundResource(R.drawable.ic_place_black_48dp);
                 break;
-            case "lokal":
+            case "Lokal":
                 imageViewGroup.setBackgroundResource(R.drawable.ic_place_black_48dp);
                 break;
-            case "resturang":
+            case "Resturang":
                 imageViewGroup.setBackgroundResource(R.drawable.ic_restaurant_black_48dp);
                 break;
-            case "kaffemaskin":
+            case "Kaffemaskin":
                 imageViewGroup.setBackgroundResource(R.drawable.ic_local_cafe_black_48dp);
                 break;
-            case "badrum":
+            case "Badrum":
                 imageViewGroup.setBackgroundResource(R.drawable.ic_wc_black_48dp);
                 break;
-            case "terass":
+            case "Terass":
                 imageViewGroup.setBackgroundResource(R.drawable.ic_local_florist_black_48dp);
                 break;
-            case "kiosk":
+            case "Kiosk":
                 imageViewGroup.setBackgroundResource(R.drawable.ic_cake_black_48dp);
                 break;
-            case "relax":
+            case "Relax":
                 imageViewGroup.setBackgroundResource(R.drawable.ic_weekend_black_48dp);
                 break;
             default:
@@ -141,8 +141,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         ImageView imgView = (ImageView) convertView.findViewById(R.id.officialMarkImg);
 
         String text = (String) getChild(groupPosition, childPosition);
-
-        Log.i("rickard", text);
 
         if(text.contains("***")) {
             text = text.replace("***", "");
