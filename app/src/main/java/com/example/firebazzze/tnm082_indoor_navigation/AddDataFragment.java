@@ -151,7 +151,8 @@ public class AddDataFragment extends Fragment {
             }
         });
 
-        final Button btnAddPath = (Button) view.findViewById(R.id.POIaddPath);
+        //final Button
+                btnAddPath = (Button) view.findViewById(R.id.POIaddPath);
         ImageButton btnPathDone = (ImageButton) view.findViewById(R.id.POIpathDone);
         final RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.test);
         final RelativeLayout rl2 = (RelativeLayout) view.findViewById(R.id.test2);
@@ -328,8 +329,14 @@ public class AddDataFragment extends Fragment {
                 POIname.addTextChangedListener(POInameWatcher);
             }
             if (listOfPath.isEmpty()){
-                btnAddPath.setBackgroundColor(Color.RED);
-                btnAddPath.setText("Lägg till en vägbeskrivning");
+
+                if(btnAddPath != null) {
+                    btnAddPath.setBackgroundColor(Color.RED);
+                    btnAddPath.setText("Lägg till en vägbeskrivning");
+                } else {
+                    Log.d("ok", "btnAddPath is null!");
+                }
+
                 //POIpath.setBackgroundColor(Color.RED);
                 POIpath.addTextChangedListener(POIpathWatcher);
             }
