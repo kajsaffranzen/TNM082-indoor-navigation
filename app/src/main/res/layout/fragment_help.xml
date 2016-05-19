@@ -23,7 +23,7 @@ android:layout_height="match_parent">
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
         android:paddingTop="16dp"
@@ -31,7 +31,7 @@ android:layout_height="match_parent">
         android:textSize="32sp" />
 
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:paddingTop="5dp"
         android:layout_height="match_parent"
         android:paddingLeft="48dp"
