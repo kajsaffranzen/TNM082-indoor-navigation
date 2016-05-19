@@ -221,15 +221,11 @@ public class House {
 
     }
 
-    public void updatePOI(String POIname, String cat, String desc, int floor, boolean official, List<String> path){
+    public void updatePOI(String POIname, String oldPOIname, String cat, String desc, int floor, boolean official, List<String> path){
 
-        Firebase DB = new Firebase(DBUrl + this.houseName + "/" + POIname);
+        deletePOI(oldPOIname);
 
-        DB.child("category").setValue(cat);
-        DB.child("description").setValue(desc);
-        DB.child("floor").setValue(floor);
-        DB.child("official").setValue(official);
-        DB.child("path").setValue(path);
+        addPOI(POIname,cat,desc,floor,official,path);
 
 
     }

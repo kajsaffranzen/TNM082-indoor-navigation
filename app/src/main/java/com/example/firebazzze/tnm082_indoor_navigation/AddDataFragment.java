@@ -64,6 +64,7 @@ public class AddDataFragment extends Fragment {
 
     private String spinnerText;
     private String addCat;
+    private String oldPOIname;
 
     private boolean officialPOI = false;
 
@@ -118,6 +119,7 @@ public class AddDataFragment extends Fragment {
 
         if(((MainActivity)getActivity()).poi != null && ((MainActivity)getActivity()).poiName !=null && ((MainActivity)getActivity()).fromUpdate){
             POIname.setText(((MainActivity)getActivity()).poiName);
+            oldPOIname = ((MainActivity)getActivity()).poiName;
             POIdesc.setText(( (MainActivity)getActivity()).poi.getDescription());
             ArrayAdapter myAdap = (ArrayAdapter) spinner.getAdapter();
             int spinnerPos = myAdap.getPosition(((MainActivity)getActivity()).poi.category);
@@ -276,11 +278,14 @@ public class AddDataFragment extends Fragment {
             //Log.i("official", ""+officialPOI);
 
             House h = ((MainActivity)getActivity()).getHouse();
-            if (h.getPOIs2().get(POIname.getText().toString()) != null) {
-                h.updatePOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
+            if (POIname.getText().toString() != oldPOIname) {
+                h.updatePOI(POIname.getText().toString(),oldPOIname ,chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
+                Log.i("oldPOIname = ", oldPOIname);
                 ((MainActivity)getActivity()).fromUpdate = false;
             } else {
                 h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
+                Log.i("oldPOIname = ", oldPOIname);
+                Log.i("POIname = ", POIname.getText().toString());
             }
 
             Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
@@ -390,6 +395,8 @@ public class AddDataFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        ((MainActivity)getActivity()).poiName = "";
+        ((MainActivity)getActivity()).poi = null;
         mListener = null;
     }
 
