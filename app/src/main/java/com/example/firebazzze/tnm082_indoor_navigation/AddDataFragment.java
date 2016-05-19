@@ -54,7 +54,7 @@ public class AddDataFragment extends Fragment {
     private final String NEW_CATEGORY = "Lägg till ny kategori";
 
     private View view;
-    private int counter;
+    //private int counter;
     private String chosenCat;
     private Button addPathBtn;
     private Button btnAddPath;
@@ -66,6 +66,7 @@ public class AddDataFragment extends Fragment {
 
     private String spinnerText;
     private String addCat;
+    private String oldPOIname;
 
     private boolean officialPOI = false;
 
@@ -100,15 +101,15 @@ public class AddDataFragment extends Fragment {
         ((MainActivity)getActivity()).setToolbarTitle("Lägg till intressepunkter");
 
         listOfPath = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.item_layout_add, R.id.Itemname, listOfPath);
+       // adapter = new ArrayAdapter<String>(getActivity(), R.layout.item_layout_add, R.id.Itemname, listOfPath);
 
 
         lv = (ListView) view.findViewById(R.id.poi_info);
         //lv.getSelectedItem().
 
-        counter = 0;
+       // counter = 0;
 
-        lv.setAdapter(adapter);
+        //lv.setAdapter(adapter);
 
         POIname = (EditText) view.findViewById(R.id.POIname);
         POIpath = (EditText) view.findViewById(R.id.POIpath);
@@ -118,6 +119,22 @@ public class AddDataFragment extends Fragment {
         spinner = (Spinner) view.findViewById(R.id.catSpinner);
 
         fillScroller();
+
+        if(((MainActivity)getActivity()).poi != null && ((MainActivity)getActivity()).poiName !=null && ((MainActivity)getActivity()).fromUpdate){
+            POIname.setText(((MainActivity)getActivity()).poiName);
+            oldPOIname = ((MainActivity)getActivity()).poiName;
+            POIdesc.setText(( (MainActivity)getActivity()).poi.getDescription());
+            ArrayAdapter myAdap = (ArrayAdapter) spinner.getAdapter();
+            int spinnerPos = myAdap.getPosition(((MainActivity)getActivity()).poi.category);
+            spinner.setSelection(spinnerPos);
+            for(int i = 0; i < ((MainActivity) getActivity()).poi.getPath().size() ; i++) {
+                listOfPath.add(((MainActivity) getActivity()).poi.getPath().get(i));
+            }
+
+        }
+
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listOfPath);
+        lv.setAdapter(adapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -134,9 +151,9 @@ public class AddDataFragment extends Fragment {
             }
         });
 
-        btnAddPath = (Button) view.findViewById(R.id.POIaddPath);
+        //final Button
+                btnAddPath = (Button) view.findViewById(R.id.POIaddPath);
         ImageButton btnPathDone = (ImageButton) view.findViewById(R.id.POIpathDone);
-
         final RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.test);
         final RelativeLayout rl2 = (RelativeLayout) view.findViewById(R.id.test2);
 
@@ -156,6 +173,23 @@ public class AddDataFragment extends Fragment {
                 if(!POIpath.getText().toString().equals(""))
                     checkPathField();
 
+                rl.setVisibility(View.GONE);
+                rl2.setVisibility(View.VISIBLE);
+                btnAddPath.setText("Ändra vägbeskrivning");
+            }
+        });
+
+        btnAddPath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rl2.setVisibility(View.GONE);
+                rl.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnPathDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 rl.setVisibility(View.GONE);
                 rl2.setVisibility(View.VISIBLE);
                 btnAddPath.setText("Ändra vägbeskrivning");
@@ -189,8 +223,8 @@ public class AddDataFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 listOfPath.remove(position);
                 adapter.notifyDataSetChanged();
-                counter--;
-                POIpath.setHint("Lägg till punkt nr " + (counter + 1));
+               // counter--;
+                POIpath.setHint("Lägg till punkt nr " + (listOfPath.size() + 1));
             }
 
         });
@@ -213,12 +247,12 @@ public class AddDataFragment extends Fragment {
     //adds the path to the list
     public void addPath(){
         listOfPath.add(POIpath.getText().toString());
-        counter++;
+        //counter++;
         adapter.notifyDataSetChanged();
 
         //Reset text field
         POIpath.setText("");
-        POIpath.setHint("Lägg till punkt nr " + (counter + 1));
+        POIpath.setHint("Lägg till punkt nr " + (listOfPath.size() + 1));
 
     }
 
@@ -239,7 +273,9 @@ public class AddDataFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 POIpath.setText("");
-                POIpath.setHint("Lägg till punkt nr " + (counter));
+
+                POIpath.setHint("Lägg till punkt nr " + (listOfPath.size() + 1));
+                addNewPOI();
             }
         });
 
@@ -264,13 +300,15 @@ public class AddDataFragment extends Fragment {
             FragmentManager fm = getActivity().getSupportFragmentManager();
             AddDataChildFragment addDataChildFragment = (AddDataChildFragment) fm.findFragmentById(R.id.isOfficialCheckBox);
 
-            officialPOI = addDataChildFragment.getOfficial();
-            Log.i("official", ""+officialPOI);
-
             House h = ((MainActivity)getActivity()).getHouse();
-            h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, officialPOI, listOfPath);
+            if (POIname.getText().toString() != oldPOIname) {
+                h.updatePOI(POIname.getText().toString(),oldPOIname ,chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
+                ((MainActivity)getActivity()).fromUpdate = false;
+            } else {
+                h.addPOI(POIname.getText().toString(), chosenCat, POIdesc.getText().toString(), 1, false, listOfPath);
+            }
 
-            Toast.makeText(getActivity(), "SUCCESFULLY ADDED", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "" + POIname.getText().toString() + "har lagts till", Toast.LENGTH_SHORT).show();
 
             //Reset text field
             POIname.setText("");
@@ -291,8 +329,14 @@ public class AddDataFragment extends Fragment {
                 POIname.addTextChangedListener(POInameWatcher);
             }
             if (listOfPath.isEmpty()){
-                btnAddPath.setBackgroundColor(Color.RED);
-                btnAddPath.setText("Lägg till en vägbeskrivning");
+
+                if(btnAddPath != null) {
+                    btnAddPath.setBackgroundColor(Color.RED);
+                    btnAddPath.setText("Lägg till en vägbeskrivning");
+                } else {
+                    Log.d("ok", "btnAddPath is null!");
+                }
+
                 //POIpath.setBackgroundColor(Color.RED);
                 POIpath.addTextChangedListener(POIpathWatcher);
             }
@@ -328,7 +372,7 @@ public class AddDataFragment extends Fragment {
             }
         });
 
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }
         });
@@ -379,6 +423,8 @@ public class AddDataFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        ((MainActivity)getActivity()).poiName = "";
+        ((MainActivity)getActivity()).poi = null;
         mListener = null;
     }
 

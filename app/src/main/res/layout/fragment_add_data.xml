@@ -36,7 +36,7 @@
                 android:id="@+id/addPath"
                 android:layout_width="@dimen/btn_size_small"
                 android:layout_height="@dimen/btn_size_small"
-                android:background="@drawable/ic_add"
+                android:background="@drawable/add_path_button"
                 android:layout_alignRight="@+id/POIpath"
                 android:layout_centerVertical="true"/>
 
@@ -67,80 +67,77 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible">
-    <!-- TODO: Update blank fragment layout -->
+        <!-- TODO: Update blank fragment layout -->
 
-    <EditText
-        android:id="@+id/POIname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Namn"
-        android:textSize="12pt"
-        android:backgroundTint="@color/editTxtLine"
-        android:textColorLink="@color/editTxtLine"
-        android:textColor="@color/colorQRText"
-        android:layout_marginTop="15dp" /><!--fixa margin-->
+        <EditText
+            android:id="@+id/POIname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Namn"
+            android:textSize="12pt"
+            android:backgroundTint="@color/editTxtLine"
+            android:textColorLink="@color/editTxtLine"
+            android:textColor="@color/colorQRText"
+            android:layout_marginTop="15dp" /><!--fixa margin-->
 
-    <TextView
-        android:id="@+id/cat_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Välj kategori"
-        android:textSize="12pt"
-        android:backgroundTint="@color/editTxtLine"
-        android:textColor="@color/colorQRText"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/POIname" />
+        <TextView
+            android:id="@+id/cat_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Välj kategori"
+            android:textSize="12pt"
+            android:backgroundTint="@color/editTxtLine"
+            android:textColor="@color/colorQRText"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/POIname" />
 
-    <Spinner
-        android:id="@+id/catSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dialog"
-        android:overScrollMode="ifContentScrolls"
-        android:layout_alignParentRight="true"
-        android:drawSelectorOnTop="false"
-        android:layout_below="@+id/cat_info"
-        />
+        <Spinner
+            android:id="@+id/catSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
+            android:overScrollMode="ifContentScrolls"
+            android:layout_alignParentRight="true"
+            android:drawSelectorOnTop="false"
+            android:layout_below="@+id/cat_info"
+            />
 
-    <Button
-        android:text="Lägg till vägbeskrivning"
-        android:id="@+id/POIaddPath"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/catSpinner"
-        android:layout_centerHorizontal="true"
-        />
+        <Button
+            android:text="Lägg till vägbeskrivning"
+            android:id="@+id/POIaddPath"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/catSpinner"
+            android:layout_centerHorizontal="true"
+            />
 
-    <EditText
-        android:id="@+id/POIdesc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Beskrivning"
-        android:textSize="12pt"
-        android:backgroundTint="@color/editTxtLine"
-        android:textColor="@color/colorQRText"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/POIaddPath" />
+        <EditText
+            android:id="@+id/POIdesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Beskrivning"
+            android:textSize="12pt"
+            android:backgroundTint="@color/editTxtLine"
+            android:textColor="@color/colorQRText"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/POIaddPath" />
 
 
-    <ImageButton
-        android:id="@+id/createPOI"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="@drawable/path_done_button"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"/>
+        <ImageButton
+            android:id="@+id/createPOI"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/path_done_button"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"/>
 
         <FrameLayout
-        android:id="@+id/isOfficialCheckBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/POIdesc"></FrameLayout>
+            android:id="@+id/isOfficialCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/POIdesc"></FrameLayout>
     </RelativeLayout>
 
 </RelativeLayout>
-
-
-

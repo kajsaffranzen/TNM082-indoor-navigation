@@ -80,7 +80,7 @@ public class House {
         DB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists())
+                if (dataSnapshot.exists())
                     getData();
                 else
                     addData();
@@ -152,14 +152,14 @@ public class House {
             public void onChildAdded(DataSnapshot snapshot, String s) {
 
                 //TODO - should not need this, replace with try catch
-                if(!snapshot.getKey().equals("latlng")) {
+                if (!snapshot.getKey().equals("latlng")) {
 
                     POI newPOI = snapshot.getValue(POI.class);
 
                     //Needed since firebase expects that we add the key
                     //"path" to the first element of the array, really stupid
 
-                    if(newPOI.getPath() != null && newPOI.getPath().contains("null")) {
+                    if (newPOI.getPath() != null && newPOI.getPath().contains("null")) {
                         newPOI.getPath().remove("null");
                     }
 
@@ -183,7 +183,9 @@ public class House {
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
             }
 
-            @Override public void onCancelled(FirebaseError error) { }
+            @Override
+            public void onCancelled(FirebaseError error) {
+            }
         });
     }
 
@@ -209,6 +211,10 @@ public class House {
     // Add a new POI to the database
     public void addPOI(String name, String cat, String desc, int floor, boolean official, List<String> path) {
 
+        name = Character.toLowerCase(name.charAt(0)) + name.substring(1);
+        cat = Character.toLowerCase(cat.charAt(0)) + cat.substring(1);
+        desc = Character.toLowerCase(desc.charAt(0)) + desc.substring(1);
+
         Firebase DB = new Firebase(DBUrl + this.houseName);
 
         Firebase newPOSDBref = DB.child(name);
@@ -218,6 +224,24 @@ public class House {
         POI test = new POI(cat, desc, floor, official, path);
 
         newPOSDBref.setValue(test);
+
+    }
+
+    public void updatePOI(String POIname, String oldPOIname, String cat, String desc, int floor, boolean official, List<String> path){
+
+        deletePOI(oldPOIname);
+
+        addPOI(POIname,cat,desc,floor,official,path);
+
+
+    }
+
+    public void deletePOI(String POIname){
+
+        Firebase DB = new Firebase(DBUrl + this.houseName + "/" + POIname);
+
+        DB.removeValue();
+
 
     }
 

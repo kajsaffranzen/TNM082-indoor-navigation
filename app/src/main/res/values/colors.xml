@@ -6,6 +6,7 @@
     <!--Toolbar-->
     <color name="colorPrimary">#EC6F6C</color>
     <color name="colorPrimaryDark">#EC6F6C</color>
+    <color name="colorPrimaryDarker">#cb1d1a</color>
     <color name="colorAccent">#3C3C3C</color>
     <!--Text-->
     <color name="colorQRText">#3C3C3C</color>
