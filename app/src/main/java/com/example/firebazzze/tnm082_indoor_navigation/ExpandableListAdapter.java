@@ -142,8 +142,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         String text = (String) getChild(groupPosition, childPosition);
 
-        Log.i("rickard", text);
-
         if(text.contains("***")) {
             text = text.replace("***", "");
             imgView.setVisibility(View.VISIBLE);

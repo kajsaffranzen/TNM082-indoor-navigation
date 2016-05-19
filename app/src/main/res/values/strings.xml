@@ -22,6 +22,8 @@
         <item>@string/cat_ovrigt</item>
     </string-array>
 
+    <string name="toolbar_map">Karta</string>
+
     <!-- Text help fragment -->
     <string name="header_help_nav">Navigering</string>
     <string name="text_help_nav">Navigering genom appen sker med hjälp av menyn i toolbaren. Där kommer

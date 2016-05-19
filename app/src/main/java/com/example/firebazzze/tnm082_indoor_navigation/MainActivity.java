@@ -6,50 +6,28 @@ import android.content.DialogInterface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.ValueEventListener;
 import com.firebase.client.DataSnapshot;
-
-
 import com.firebase.client.FirebaseError;
 
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
-
-import java.io.IOException;
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements
     public boolean isAdmin = true;
     public DetailFragment detailFragment;
     public AddDataChildFragment addDataChild;
+    public LoginFragment loginFragment;
 
     private static final String KEY = "housename";
 
@@ -79,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements
 
     public ListAndSearchFragment myCatList;
     private static final String CAT_LIST = "catlist";
+
+    private ArrayList<String> historyList = new ArrayList<String>();
 
     private String mActivityTitle;
     private CharSequence mTitle;
@@ -159,9 +140,21 @@ public class MainActivity extends AppCompatActivity implements
         //Navigate to the camera view
         getSupportFragmentManager().popBackStack();
         QRFragment fragment = new QRFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
 
+        /*DrawerLayout layout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        layout.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent ev)
+            {
+                hideKeyboard(view);
+                return false;
+            }
+        });*/
     }
+
 
     private void updateLocation(Location location) {
         publicPos = location;
@@ -286,6 +279,18 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+
+    //hides keyboard whenever the user clicks outside the keyboard
+    //TODO: in addData, if you click on the addPath-button you sometimes have to do it twice because the first time it only hides the keyboard
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (getCurrentFocus() != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
     //Override the back button when on qr fragment
     @Override
     public void onBackPressed() {
@@ -294,8 +299,7 @@ public class MainActivity extends AppCompatActivity implements
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
 
 
-        //Ugly fix: Map fragment could not be created twice so when backing to that fragment, it would crach
-        //Instead map is now removed onDestroy, and on back the view is recreated.
+        //Ugly fix
         if(f instanceof ListAndSearchFragment && fromMaps) {
             getSupportFragmentManager().popBackStack();
             AddHouseFragment fragment = new AddHouseFragment();
@@ -310,6 +314,7 @@ public class MainActivity extends AppCompatActivity implements
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit();
             return;
         }
+
 
         //Default
         if (!(f instanceof QRFragment)) {//the fragment on which you want to handle your back press
@@ -366,43 +371,36 @@ public class MainActivity extends AppCompatActivity implements
     private void changeFragment(MenuItem menuItem){
 
         Fragment fragment = null;
-        boolean flag = false;
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch(menuItem.getItemId()) {
             default:
             case R.id.nav_qr_fragment:
                 fragment = new QRFragment();
-                flag = true;
                 break;
             case R.id.nav_map_fragment:
                 fragment = new AddHouseFragment();
-                flag = true;
                 break;
             case R.id.nav_list_and_search_fragment:
-                //Does not work, needs a houseName
                 fragment = new ListAndSearchFragment();
-                flag = true;
                 break;
             case R.id.nav_login_fragment:
                 fragment = new LoginFragment();
-                flag = true;
                 break;
             case R.id.nav_about_fragment:
                 fragment = new AboutFragment();
-                flag = true;
                 break;
             case R.id.nav_help_fragment:
                 fragment = new HelpFragment();
-                flag = true;
                 break;
         }
 
-        if(flag){
+        if(fragment != null){
             fragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainer, fragment)
                     .addToBackStack(menuItem.toString())
                     .commit();
         }
+
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
@@ -421,6 +419,12 @@ public class MainActivity extends AppCompatActivity implements
 
     //Used to have a public house, Get House
     public House getHouse(){ return house; }
+
+    //set Admin
+    public void setAdmin(boolean b){ isAdmin = b; }
+
+    //get Admin
+    public boolean getAdmin(){ return isAdmin; }
 
     @Override
     public void setTitle(CharSequence title) {
@@ -463,5 +467,12 @@ public class MainActivity extends AppCompatActivity implements
 
         DB.child("bilar").child(platenr).child("used").setValue(Cars.get(platenr).getUsed());
 
+    }
+    public void addToHistory(String s){
+        if(!historyList.contains(s))
+            historyList.add(s);
+    }
+    public ArrayList<String> getHistoryList(){
+        return historyList;
     }
 }

@@ -72,6 +72,8 @@ public class House {
         addData();
     }
 
+
+
     private void houseExists() {
         Firebase DB = new Firebase(DBUrl + this.houseName);
 

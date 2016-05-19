@@ -24,12 +24,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                android:title="QR-scanning">
 
                 <EditText
                     android:id="@+id/toolbarSearchField"
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch"
                     android:hint="Sök intressepunkt"
                     android:visibility="gone"/>
 
