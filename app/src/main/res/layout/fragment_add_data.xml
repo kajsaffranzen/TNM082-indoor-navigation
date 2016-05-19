@@ -29,7 +29,7 @@
             android:id="@+id/addPath"
             android:layout_width="@dimen/btn_size"
             android:layout_height="@dimen/btn_size"
-            android:background="@drawable/add_button"
+            android:background="@drawable/add_path_button"
             android:width="@dimen/btn_size"
             android:layout_alignRight="@+id/POIpath"/>
 

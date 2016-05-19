@@ -4,7 +4,7 @@
     <item
         android:state_pressed="true"
         android:state_enabled="true"
-        android:drawable="@drawable/qr_img" /> <!--Needs changing!-->
+        android:drawable="@drawable/planet_earth_pressed" />
     <!--State from beginning-->
     <item
         android:state_enabled="true"
